@@ -5,6 +5,9 @@ fn main() {
     println!("P3\n{} {}\n255", width, height);
 
     for line in (0..height).rev() {
+
+    	eprint!("\rScanlines remaining: {} ", line);
+
         for column in 0..width {
             let r: f32 = (column as f32) / ((width - 1) as f32);
             let g: f32 = (line as f32) / ((height - 1) as f32);
@@ -17,4 +20,6 @@ fn main() {
             println!("{} {} {}", ir, ig, ib);
         }
     }
+
+    eprintln!("\nDone.");
 }
