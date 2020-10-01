@@ -36,10 +36,11 @@ impl Vec3 {
 
 	pub fn normalize(&mut self) -> &mut Self {
 		let norm = self.length();
-
-		self.0 /= norm;
-		self.1 /= norm;
-		self.2 /= norm;
+		*self = Self (
+			self.0 / norm,
+			self.1 / norm,
+			self.2 / norm
+		);
 
 		self
 	}
