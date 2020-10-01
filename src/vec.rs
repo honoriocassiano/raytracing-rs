@@ -4,17 +4,13 @@ use std::fmt;
 type Scalar = f64;
 
 
-pub struct Vec3 (Scalar,Scalar,Scalar);
+pub struct Vec3 (pub Scalar, pub Scalar, pub Scalar);
 
 
 impl Vec3 {
 
 	pub fn zero() -> Self {
 		Self(0.0, 0.0, 0.0)
-	}
-
-	pub fn new(x: Scalar, y: Scalar, z: Scalar) -> Self {
-		Self(x, y, z)
 	}
 
 	pub fn x(&self) -> Scalar {
