@@ -17,16 +17,16 @@ impl Vec3 {
 		Self(x, y, z)
 	}
 
-	pub fn x(&mut self) -> &mut Scalar {
-		&mut self.0
+	pub fn x(&self) -> Scalar {
+		self.0
 	}
 
-	pub fn y(&mut self) -> &mut Scalar {
-		&mut self.1
+	pub fn y(&self) -> Scalar {
+		self.1
 	}
 
-	pub fn z(&mut self) -> &mut Scalar {
-		&mut self.2
+	pub fn z(&self) -> Scalar {
+		self.2
 	}
 
 	pub fn length(&self) -> Scalar {
