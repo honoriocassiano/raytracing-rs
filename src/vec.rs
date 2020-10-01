@@ -165,6 +165,21 @@ impl ops::MulAssign<Scalar> for Vec3 {
 }
 
 
+// Right hand scalar multiplication operator
+impl ops::Mul<Vec3> for Scalar {
+
+	type Output = Vec3;
+
+	fn mul(self, vec: Vec3) -> Self::Output {
+		Vec3 (
+			vec.0 * self,
+			vec.1 * self,
+			vec.2 * self
+		)
+	}
+}
+
+
 // Division operators
 impl ops::Div<Scalar> for Vec3 {
 
