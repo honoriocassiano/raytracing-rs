@@ -50,3 +50,52 @@ impl HitRecord {
 pub trait Hit {
 	fn hit(&self, ray: &Ray, t_min: f64, t_max: f64) -> Option<HitRecord>;
 }
+
+
+// Hit list
+pub struct HitList {
+	objects: Vec<Box<(dyn Hit)>>
+}
+
+
+impl HitList {
+	pub fn new() -> Self {
+		Self { objects: Vec::new() }
+	}
+
+	pub fn with(object: Box<dyn Hit>) -> Self {
+		Self { objects: vec!(object) }
+	}
+
+	pub fn clear(&mut self) {
+		self.objects.clear();
+	}
+
+	pub fn add(&mut self, object: Box<dyn Hit>) {
+		self.objects.push(object);
+	}
+
+	// pub fn add() {
+
+	// }
+}
+
+
+impl Hit for HitList {
+	fn hit(&self, ray: &Ray, t_min: f64, t_max: f64) -> Option<HitRecord> {
+		let mut last_hit: Option<HitRecord> = None;
+		let mut closest_so_far = t_max;
+
+		for object in &self.objects {
+			match object.hit(ray, t_min, closest_so_far) {
+				Some(value) => {
+					last_hit = Some(value);
+					closest_so_far = value.t();
+				}
+				None => {}
+			}
+		}
+
+		last_hit
+	}
+}
