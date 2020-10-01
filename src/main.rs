@@ -2,6 +2,7 @@ use std::io::stdout;
 
 
 mod vec;
+mod ray;
 mod color;
 
 
