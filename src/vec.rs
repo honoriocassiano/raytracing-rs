@@ -47,7 +47,7 @@ impl Vec3 {
 		self
 	}
 
-	pub fn unit(&self) -> Self {
+	pub fn normalized(&self) -> Self {
 		let norm = self.length();
 
 		Self (self.0 / norm, self.2 / norm, self.2 / norm)
