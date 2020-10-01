@@ -6,6 +6,7 @@ type Scalar = f64;
 
 pub struct Vec3 (Scalar,Scalar,Scalar);
 
+
 impl Vec3 {
 
 	pub fn zero() -> Self {
@@ -53,6 +54,7 @@ impl Vec3 {
 	}
 }
 
+
 // Addition operators
 impl ops::Add for Vec3 {
 
@@ -66,6 +68,7 @@ impl ops::Add for Vec3 {
 		)
 	}
 }
+
 
 impl ops::AddAssign for Vec3 {
 
@@ -94,6 +97,7 @@ impl ops::Sub for Vec3 {
 	}
 }
 
+
 impl ops::SubAssign for Vec3 {
 
 	fn sub_assign(&mut self, other: Self) {
@@ -105,6 +109,7 @@ impl ops::SubAssign for Vec3 {
 		);
 	}
 }
+
 
 // Unary negation
 impl ops::Neg for Vec3 {
@@ -135,6 +140,7 @@ impl ops::Mul<Scalar> for Vec3 {
 	}
 }
 
+
 impl ops::Mul<Vec3> for Vec3 {
 
 	type Output = Self;
@@ -148,6 +154,7 @@ impl ops::Mul<Vec3> for Vec3 {
 	}
 }
 
+
 impl ops::MulAssign<Scalar> for Vec3 {
 
 	fn mul_assign(&mut self, scalar: Scalar) {
@@ -159,6 +166,7 @@ impl ops::MulAssign<Scalar> for Vec3 {
 		);
 	}
 }
+
 
 // Indexing operators
 impl ops::Index<usize> for Vec3 {
@@ -174,6 +182,7 @@ impl ops::Index<usize> for Vec3 {
 		}
 	}
 }
+
 
 impl ops::IndexMut<usize> for Vec3 {
 
@@ -200,6 +209,7 @@ impl fmt::Display for Vec3 {
 pub fn dot(u: &Vec3, v: &Vec3) -> Scalar {
 	(u.0 * v.0) + (u.1 * v.1) + (u.2 * v.2)
 }
+
 
 pub fn cross(u: &Vec3, v: &Vec3) -> Vec3 {
 	Vec3 (
