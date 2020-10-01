@@ -15,9 +15,13 @@ use crate::ray::{Ray, Point3};
 
 fn ray_color(ray: &Ray) -> Color {
 
-	if hit_sphere(ray, &Point3(0.0, 0.0, -1.0), 0.5) {
+	let t = hit_sphere(ray, &Point3(0.0, 0.0, -1.0), 0.5);
 
-		Color(1.0, 0.0, 0.0)
+	if t > 0.0 {
+
+		let normal = (ray.at(t) - Vec3(0.0, 0.0, -1.0)).normalized();
+
+		0.5 * Color(normal.x() + 1.0, normal.y() + 1.0, normal.z() + 1.0)
 
 	} else {
 
@@ -30,7 +34,7 @@ fn ray_color(ray: &Ray) -> Color {
 }
 
 
-fn hit_sphere(ray: &Ray, center: &Point3, radius: f64) -> bool {
+fn hit_sphere(ray: &Ray, center: &Point3, radius: f64) -> f64 {
 	let oc = ray.origin - *center;
 
 	let a: f64 = dot(&ray.direction, &ray.direction);
@@ -39,7 +43,11 @@ fn hit_sphere(ray: &Ray, center: &Point3, radius: f64) -> bool {
 
 	let discriminant: f64 = b*b - 4.0*a*c;
 
-	discriminant > 0.0
+	if discriminant < 0.0 {
+		-1.0
+	} else {
+		(-b - discriminant.sqrt()) / (2.0*a)
+	}
 }
 
 
