@@ -1,20 +1,12 @@
-use std::io::Write;
-
-use vec::Vec3 as Color;
-use vec::Vec3 as Point3;
+use std::io::stdout;
 
 
 mod vec;
+mod color;
 
 
-fn write_color<T: Write>(out: &mut T , color: &Color) {
-
-	let ir = (255.999 * color.x()) as i32;
-	let ig = (255.999 * color.y()) as i32;
-	let ib = (255.999 * color.z()) as i32;
-
-	out.write(format!("{} {} {}", ir, ig, ib).as_bytes()).unwrap();
-}
+use crate::color::Color;
+use crate::color::write_color;
 
 
 fn main() {
@@ -29,15 +21,13 @@ fn main() {
 		eprint!("\rScanlines remaining: {} ", line);
 
 		for column in 0..width {
-			let r: f32 = (column as f32) / ((width - 1) as f32);
-			let g: f32 = (line as f32) / ((height - 1) as f32);
-			let b: f32 = 0.25;
+			let r: f64 = (column as f64) / ((width - 1) as f64);
+			let g: f64 = (line as f64) / ((height - 1) as f64);
+			let b: f64 = 0.25;
 
-			let ir = (255.999 * r) as i32;
-			let ig = (255.999 * g) as i32;
-			let ib = (255.999 * b) as i32;
+			let color = Color(r, g, b);
 
-			println!("{} {} {}", ir, ig, ib);
+			write_color(&mut stdout(), &color);
 		}
 	}
 
