@@ -2,6 +2,7 @@ pub use crate::vec::Vec3 as Point3;
 
 type Scalar = f64;
 
+#[derive(Copy, Clone)]
 pub struct Ray {
 	pub origin: Point3,
 	pub direction: Point3
