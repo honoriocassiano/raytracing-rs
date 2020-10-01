@@ -168,6 +168,34 @@ impl ops::MulAssign<Scalar> for Vec3 {
 }
 
 
+// Division operators
+impl ops::Div<Scalar> for Vec3 {
+
+	type Output = Self;
+
+	fn div(self, scalar: Scalar) -> Self::Output {
+		Self (
+			self.0 / scalar,
+			self.1 / scalar,
+			self.2 / scalar
+		)
+	}
+}
+
+
+impl ops::DivAssign<Scalar> for Vec3 {
+
+	fn div_assign(&mut self, scalar: Scalar) {
+	
+		*self = Self (
+			self.0 / scalar,
+			self.1 / scalar,
+			self.2 / scalar
+		);
+	}
+}
+
+
 // Indexing operators
 impl ops::Index<usize> for Vec3 {
 
