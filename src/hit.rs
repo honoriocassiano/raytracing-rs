@@ -10,5 +10,5 @@ pub struct HitRecord {
 }
 
 pub trait Hit {
-	fn hit(ray: &Ray, t_min: f64, t_max: f64) -> Option<HitRecord>;
+	fn hit(&self, ray: &Ray, t_min: f64, t_max: f64) -> Option<HitRecord>;
 }
