@@ -2,30 +2,59 @@ use std::io::stdout;
 
 
 mod vec;
+mod ray;
 mod color;
 
 
+use crate::vec::Vec3;
 use crate::color::Color;
 use crate::color::write_color;
+use crate::ray::{Ray, Point3};
+
+
+fn ray_color(ray: &Ray) -> Color {
+	let unit: Vec3 = ray.direction.normalized();
+
+	let t: f64 = 0.5 * (unit.y() + 1.0);
+
+	((1.0-t) * Color(1.0, 1.0, 1.0)) + (t * Color(0.5, 0.7, 1.0))
+}
 
 
 fn main() {
 
-	let width: i32 = 256;
-	let height: i32 = 256;
+	let aspect_ratio: f64 = 16.0 / 9.0;
 
-	println!("P3\n{} {}\n255", width, height);
+	let image_width: i32 = 400;
+	let image_height: i32 = ((image_width as f64) / aspect_ratio) as i32;
 
-	for line in (0..height).rev() {
+	let viewport_height: f64 = 2.0;
+	let viewport_width: f64 = aspect_ratio * viewport_height;
+	let focal_length: f64 = 1.0;
+
+	let origin = Point3(0.0, 0.0, 0.0);
+	let horizontal = Vec3(viewport_width, 0.0, 0.0);
+	let vertical = Vec3(0.0, viewport_height, 0.0);
+
+	let lower_left_corner = origin - horizontal/2.0 - vertical/2.0 - Vec3(0.0, 0.0, focal_length);
+
+	println!("P3\n{} {}\n255", image_width, image_height);
+
+	for line in (0..image_height).rev() {
 
 		eprint!("\rScanlines remaining: {} ", line);
 
-		for column in 0..width {
-			let r: f64 = (column as f64) / ((width - 1) as f64);
-			let g: f64 = (line as f64) / ((height - 1) as f64);
-			let b: f64 = 0.25;
+		for column in 0..image_width {
+			let u = (column as f64) / (image_width - 1) as f64;
+			let v = (line as f64) / (image_height - 1) as f64;
 
-			let color = Color(r, g, b);
+			let r = Ray{
+				origin,
+				direction: lower_left_corner + u*horizontal + v*vertical - origin
+			};
+
+
+			let color = ray_color(&r);
 
 			write_color(&mut stdout(), &color);
 		}

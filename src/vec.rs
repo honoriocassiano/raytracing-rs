@@ -4,6 +4,7 @@ use std::fmt;
 type Scalar = f64;
 
 
+#[derive(Copy, Clone)]
 pub struct Vec3 (pub Scalar, pub Scalar, pub Scalar);
 
 
@@ -35,10 +36,11 @@ impl Vec3 {
 
 	pub fn normalize(&mut self) -> &mut Self {
 		let norm = self.length();
-
-		self.0 /= norm;
-		self.1 /= norm;
-		self.2 /= norm;
+		*self = Self (
+			self.0 / norm,
+			self.1 / norm,
+			self.2 / norm
+		);
 
 		self
 	}
@@ -46,7 +48,7 @@ impl Vec3 {
 	pub fn normalized(&self) -> Self {
 		let norm = self.length();
 
-		Self (self.0 / norm, self.2 / norm, self.2 / norm)
+		Self (self.0 / norm, self.1 / norm, self.2 / norm)
 	}
 }
 
@@ -160,6 +162,21 @@ impl ops::MulAssign<Scalar> for Vec3 {
 			self.1 * scalar,
 			self.2 * scalar
 		);
+	}
+}
+
+
+// Right hand scalar multiplication operator
+impl ops::Mul<Vec3> for Scalar {
+
+	type Output = Vec3;
+
+	fn mul(self, vec: Vec3) -> Self::Output {
+		Vec3 (
+			vec.0 * self,
+			vec.1 * self,
+			vec.2 * self
+		)
 	}
 }
 
