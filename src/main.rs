@@ -4,6 +4,9 @@ use std::io::stdout;
 mod vec;
 mod ray;
 mod color;
+mod hit;
+mod sphere;
+mod util;
 
 
 use crate::vec::Vec3;
@@ -11,27 +14,28 @@ use crate::vec::{dot, cross};
 use crate::color::Color;
 use crate::color::write_color;
 use crate::ray::{Ray, Point3};
+use crate::hit::{Hit, HitList};
+use crate::sphere::{Sphere};
+use crate::util::{PI, INFINITY};
+use crate::util::{degrees_to_radians};
 
 
-fn ray_color(ray: &Ray) -> Color {
+fn ray_color(ray: &Ray, world: &HitList) -> Color {
 
-	let t = hit_sphere(ray, &Point3(0.0, 0.0, -1.0), 0.5);
+	match world.hit(ray, 0.0, INFINITY) {
+		Some(value) => {
+			0.5 * (value.normal() + Color(1.0, 1.0, 1.0))
+		},
+		None => {
+			let unit: Vec3 = ray.direction.normalized();
 
-	if t > 0.0 {
+			let t: f64 = 0.5 * (unit.y() + 1.0);
 
-		let normal = (ray.at(t) - Vec3(0.0, 0.0, -1.0)).normalized();
-
-		0.5 * Color(normal.x() + 1.0, normal.y() + 1.0, normal.z() + 1.0)
-
-	} else {
-
-		let unit: Vec3 = ray.direction.normalized();
-
-		let t: f64 = 0.5 * (unit.y() + 1.0);
-
-		((1.0-t) * Color(1.0, 1.0, 1.0)) + (t * Color(0.5, 0.7, 1.0))
+			((1.0-t) * Color(1.0, 1.0, 1.0)) + (t * Color(0.5, 0.7, 1.0))
+		},
 	}
 }
+
 
 
 fn hit_sphere(ray: &Ray, center: &Point3, radius: f64) -> f64 {
@@ -57,6 +61,20 @@ fn main() {
 
 	let image_width: i32 = 400;
 	let image_height: i32 = ((image_width as f64) / aspect_ratio) as i32;
+
+	let mut world = HitList::new();
+
+
+	world.add(Box::new(Sphere {
+		center: Point3(0.0, 0.0, -1.0),
+		radius: 0.5
+	}));
+
+	world.add(Box::new(Sphere {
+		center: Point3(0.0, -100.5, -1.0),
+		radius: 100.0
+	}));
+
 
 	let viewport_height: f64 = 2.0;
 	let viewport_width: f64 = aspect_ratio * viewport_height;
@@ -84,7 +102,7 @@ fn main() {
 			};
 
 
-			let color = ray_color(&r);
+			let color = ray_color(&r, &world);
 
 			write_color(&mut stdout(), &color);
 		}
