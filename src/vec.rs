@@ -4,6 +4,7 @@ use std::fmt;
 type Scalar = f64;
 
 
+#[derive(Copy, Clone)]
 pub struct Vec3 (pub Scalar, pub Scalar, pub Scalar);
 
 
