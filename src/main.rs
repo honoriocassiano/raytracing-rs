@@ -4,6 +4,8 @@ use std::io::stdout;
 mod vec;
 mod ray;
 mod color;
+mod hit;
+mod sphere;
 
 
 use crate::vec::Vec3;
