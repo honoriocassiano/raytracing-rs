@@ -1,9 +1,9 @@
 use std::ops;
+use std::fmt;
 
 type Scalar = f64;
 
-// TODO Implement 'Display' trait
-#[derive(Debug)]
+
 pub struct Vec3 (Scalar,Scalar,Scalar);
 
 impl Vec3 {
@@ -187,8 +187,16 @@ impl ops::IndexMut<usize> for Vec3 {
 	}
 }
 
-// Utilitary functions
 
+// Format string
+impl fmt::Display for Vec3 {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "({}, {}, {})", self.0, self.1, self.2)
+    }
+}
+
+
+// Utilitary functions
 pub fn dot(u: &Vec3, v: &Vec3) -> Scalar {
 	(u.0 * v.0) + (u.1 * v.1) + (u.2 * v.2)
 }
