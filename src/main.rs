@@ -7,17 +7,39 @@ mod color;
 
 
 use crate::vec::Vec3;
+use crate::vec::{dot, cross};
 use crate::color::Color;
 use crate::color::write_color;
 use crate::ray::{Ray, Point3};
 
 
 fn ray_color(ray: &Ray) -> Color {
-	let unit: Vec3 = ray.direction.normalized();
 
-	let t: f64 = 0.5 * (unit.y() + 1.0);
+	if hit_sphere(ray, &Point3(0.0, 0.0, -1.0), 0.5) {
 
-	((1.0-t) * Color(1.0, 1.0, 1.0)) + (t * Color(0.5, 0.7, 1.0))
+		Color(1.0, 0.0, 0.0)
+
+	} else {
+
+		let unit: Vec3 = ray.direction.normalized();
+
+		let t: f64 = 0.5 * (unit.y() + 1.0);
+
+		((1.0-t) * Color(1.0, 1.0, 1.0)) + (t * Color(0.5, 0.7, 1.0))
+	}
+}
+
+
+fn hit_sphere(ray: &Ray, center: &Point3, radius: f64) -> bool {
+	let oc = ray.origin - *center;
+
+	let a: f64 = dot(&ray.direction, &ray.direction);
+	let b: f64 = 2.0 * dot(&oc, &ray.direction);
+	let c: f64 = dot(&oc, &oc) - radius * radius;
+
+	let discriminant: f64 = b*b - 4.0*a*c;
+
+	discriminant > 0.0
 }
 
 
