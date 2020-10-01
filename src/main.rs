@@ -6,6 +6,7 @@ mod ray;
 mod color;
 mod hit;
 mod sphere;
+mod util;
 
 
 use crate::vec::Vec3;
