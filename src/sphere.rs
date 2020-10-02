@@ -2,10 +2,12 @@ use crate::vec::{dot};
 use crate::ray::{Point3, Ray};
 use crate::hit::{Hit, MaterialHitRecord};
 
+
 pub struct Sphere {
 	pub center: Point3,
 	pub radius: f64
 }
+
 
 impl Hit for Sphere {
 	fn hit(&self, ray: &Ray, t_min: f64, t_max: f64) -> Option<MaterialHitRecord> {

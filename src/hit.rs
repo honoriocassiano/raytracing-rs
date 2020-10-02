@@ -3,9 +3,12 @@ use crate::vec::Vec3;
 use crate::hitrecord::BasicHitRecord;
 use crate::material::Material;
 
+
 use std::rc::Rc;
 
+
 type Point3 = Vec3;
+
 
 pub struct MaterialHitRecord {
 	hit: BasicHitRecord,
