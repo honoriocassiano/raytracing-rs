@@ -1,5 +1,6 @@
 use std::ops;
 use std::fmt;
+use crate::util::{rand, rand_between};
 
 type Scalar = f64;
 
@@ -12,6 +13,14 @@ impl Vec3 {
 
 	pub fn zero() -> Self {
 		Self(0.0, 0.0, 0.0)
+	}
+
+	pub fn rand() -> Self {
+		Self(rand(), rand(), rand())
+	}
+
+	pub fn rand_between(min: Scalar, max: Scalar) -> Self {
+		Self(rand_between(min, max), rand_between(min, max), rand_between(min, max))
 	}
 
 	pub fn x(&self) -> Scalar {

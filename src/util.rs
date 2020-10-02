@@ -1,4 +1,5 @@
 use rand::prelude::*;
+use crate::vec::Vec3;
 
 
 pub const INFINITY: f64 = std::f64::INFINITY;
@@ -23,6 +24,7 @@ pub fn rand_between(min: f64, max: f64) -> f64 {
 	rng.gen_range(min, max)
 }
 
+
 pub fn clamp(value: f64, min: f64, max: f64) -> f64 {
 
 	if value < min {
@@ -31,5 +33,17 @@ pub fn clamp(value: f64, min: f64, max: f64) -> f64 {
 		max
 	} else {
 		value
+	}
+}
+
+
+
+pub fn rand_point_in_unit_sphere() -> Vec3 {
+	loop {
+		let point = Vec3::rand_between(-1.0, 1.0);
+
+		if point.sq_length() < 1.0 {
+			break point
+		}
 	}
 }
