@@ -38,12 +38,10 @@ pub fn clamp(value: f64, min: f64, max: f64) -> f64 {
 
 
 
-pub fn rand_point_in_unit_sphere() -> Vec3 {
-	loop {
-		let point = Vec3::rand_between(-1.0, 1.0);
+pub fn rand_unit_vector() -> Vec3 {
+	let azimuth = rand_between(0.0, 2.0*PI);
+	let z = rand_between(-1.0, 1.0);
+	let radius = (1.0 - z*z).sqrt();
 
-		if point.sq_length() < 1.0 {
-			break point
-		}
-	}
+	Vec3(radius*azimuth.cos(), radius*azimuth.sin(), z)
 }
