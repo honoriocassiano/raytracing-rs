@@ -94,6 +94,15 @@ fn generate_world() -> HitList {
 		material: material_left.clone()
 	}));
 
+	// Yes, the radius is negative
+	// Its don`t affect the geometry, but invert the normals
+	// making the faces point to inside
+	world.add(Box::new(Sphere {
+		center: Point3(-1.0, 0.0, -1.0),
+		radius: -0.4,
+		material: material_left.clone()
+	}));
+
 	world.add(Box::new(Sphere {
 		center: Point3(1.0, 0.0, -1.0),
 		radius: 0.5,
