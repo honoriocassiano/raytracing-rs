@@ -63,6 +63,15 @@ impl Vec3 {
 	pub fn reflect(&self, normal: &Self) -> Self {
 		*self - 2.0*dot(self, normal) * (*normal)
 	}
+
+	pub fn refract(&self, normal: &Self, eta_in_over_eta_out: Scalar) -> Vec3 {
+		let cos_theta: f64 = dot(&(-(*self)), normal);
+
+		let vec_out_perp: Self = eta_in_over_eta_out * ((*self) + cos_theta * (*normal));
+		let vec_out_par: Self = -(1.0 - vec_out_perp.sq_length()).abs().sqrt() * (*normal);
+
+		vec_out_perp + vec_out_par
+	}
 }
 
 
@@ -84,7 +93,7 @@ impl ops::Add for Vec3 {
 impl ops::AddAssign for Vec3 {
 
 	fn add_assign(&mut self, other: Self) {
-	
+
 		*self = Self (
 			self.0 + other.0,
 			self.1 + other.1,
@@ -112,7 +121,7 @@ impl ops::Sub for Vec3 {
 impl ops::SubAssign for Vec3 {
 
 	fn sub_assign(&mut self, other: Self) {
-	
+
 		*self = Self (
 			self.0 - other.0,
 			self.1 - other.1,
@@ -169,7 +178,7 @@ impl ops::Mul<Vec3> for Vec3 {
 impl ops::MulAssign<Scalar> for Vec3 {
 
 	fn mul_assign(&mut self, scalar: Scalar) {
-	
+
 		*self = Self (
 			self.0 * scalar,
 			self.1 * scalar,
@@ -212,7 +221,7 @@ impl ops::Div<Scalar> for Vec3 {
 impl ops::DivAssign<Scalar> for Vec3 {
 
 	fn div_assign(&mut self, scalar: Scalar) {
-	
+
 		*self = Self (
 			self.0 / scalar,
 			self.1 / scalar,

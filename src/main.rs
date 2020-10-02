@@ -17,7 +17,7 @@ use crate::sphere::{Sphere};
 use crate::util::{PI, INFINITY};
 use crate::util::{degrees_to_radians, rand, rand_unit_vector, rand_in_hemisphere};
 use crate::camera::Camera;
-use crate::material::{Lambertian, Metal};
+use crate::material::{Lambertian, Metal, Dielectric};
 
 
 fn ray_color(ray: &Ray, world: &HitList, depth: i32) -> Color {
@@ -72,32 +72,41 @@ fn generate_world() -> HitList {
 	let mut world = HitList::new();
 
 	let material_ground = Rc::new(Lambertian::new(&Color(0.8, 0.8, 0.0)));
-	let material_center = Rc::new(Lambertian::new(&Color(0.7, 0.3, 0.3)));
-	let material_left = Rc::new(Metal::new(&Color(0.8, 0.8, 0.8), 0.3));
-	let material_right = Rc::new(Metal::new(&Color(0.8, 0.6, 0.2), 1.0));
+	let material_center = Rc::new(Lambertian::new(&Color(0.1, 0.2, 0.5)));
+	let material_left = Rc::new(Dielectric::new(1.5));
+	let material_right = Rc::new(Metal::new(&Color(0.8, 0.6, 0.2), 0.0));
 
 	world.add(Box::new(Sphere {
 		center: Point3(0.0, -100.5, -1.0),
 		radius: 100.0,
-		material: material_ground
+		material: material_ground.clone()
 	}));
 
 	world.add(Box::new(Sphere {
 		center: Point3(0.0, 0.0, -1.0),
 		radius: 0.5,
-		material: material_center
+		material: material_center.clone()
 	}));
 
 	world.add(Box::new(Sphere {
 		center: Point3(-1.0, 0.0, -1.0),
 		radius: 0.5,
-		material: material_left
+		material: material_left.clone()
+	}));
+
+	// Yes, the radius is negative
+	// Its don`t affect the geometry, but invert the normals
+	// making the faces point to inside
+	world.add(Box::new(Sphere {
+		center: Point3(-1.0, 0.0, -1.0),
+		radius: -0.4,
+		material: material_left.clone()
 	}));
 
 	world.add(Box::new(Sphere {
 		center: Point3(1.0, 0.0, -1.0),
 		radius: 0.5,
-		material: material_right
+		material: material_right.clone()
 	}));
 
 	world
