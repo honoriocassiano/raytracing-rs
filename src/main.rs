@@ -18,15 +18,27 @@ use crate::ray::{Ray, Point3};
 use crate::hit::{Hit, HitList};
 use crate::sphere::{Sphere};
 use crate::util::{PI, INFINITY};
-use crate::util::{degrees_to_radians, rand};
+use crate::util::{degrees_to_radians, rand, rand_unit_vector, rand_in_hemisphere};
 use crate::camera::Camera;
 
 
-fn ray_color(ray: &Ray, world: &HitList) -> Color {
+fn ray_color(ray: &Ray, world: &HitList, depth: i32) -> Color {
 
-	match world.hit(ray, 0.0, INFINITY) {
+	// Stop recursion at ray bounce limit
+	if depth <= 0 {
+		return Color(0.0, 0.0, 0.0);
+	}
+
+	match world.hit(ray, 0.001, INFINITY) {
 		Some(value) => {
-			0.5 * (value.normal() + Color(1.0, 1.0, 1.0))
+
+			let target = value.point() + rand_in_hemisphere(&value.normal());
+			let new_ray = Ray {
+				origin: value.point(),
+				direction: target - value.point()
+			};
+
+			0.5 * ray_color(&new_ray, world, depth - 1)
 		},
 		None => {
 			let unit: Vec3 = ray.direction.normalized();
@@ -63,6 +75,8 @@ fn main() {
 
 	let image_width: i32 = 400;
 	let image_height: i32 = ((image_width as f64) / aspect_ratio) as i32;
+
+	let max_depth = 50;
 	let samples_per_pixel: i32 = 100;
 
 	let mut world = HitList::new();
@@ -95,7 +109,7 @@ fn main() {
 
 				let ray = camera.ray(u, v);
 
-				pixel_color += ray_color(&ray, &world);
+				pixel_color += ray_color(&ray, &world, max_depth);
 			}
 
 			write_color(&mut stdout(), &pixel_color, samples_per_pixel);

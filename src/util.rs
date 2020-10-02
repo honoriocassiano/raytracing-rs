@@ -1,4 +1,5 @@
 use rand::prelude::*;
+use crate::vec::{Vec3, dot};
 
 
 pub const INFINITY: f64 = std::f64::INFINITY;
@@ -23,6 +24,7 @@ pub fn rand_between(min: f64, max: f64) -> f64 {
 	rng.gen_range(min, max)
 }
 
+
 pub fn clamp(value: f64, min: f64, max: f64) -> f64 {
 
 	if value < min {
@@ -31,5 +33,27 @@ pub fn clamp(value: f64, min: f64, max: f64) -> f64 {
 		max
 	} else {
 		value
+	}
+}
+
+
+
+pub fn rand_unit_vector() -> Vec3 {
+	let azimuth = rand_between(0.0, 2.0*PI);
+	let z = rand_between(-1.0, 1.0);
+	let radius = (1.0 - z*z).sqrt();
+
+	Vec3(radius*azimuth.cos(), radius*azimuth.sin(), z)
+}
+
+
+pub fn rand_in_hemisphere(normal: &Vec3) -> Vec3 {
+	let unit_in_shpere = rand_unit_vector();
+
+	let same_hemispherial = dot(&unit_in_shpere, normal) > 0.0;
+
+	match same_hemispherial {
+		true => unit_in_shpere,
+		false => -unit_in_shpere
 	}
 }
