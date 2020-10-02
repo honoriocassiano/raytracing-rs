@@ -73,8 +73,8 @@ fn generate_world() -> HitList {
 
 	let material_ground = Rc::new(Lambertian::new(&Color(0.8, 0.8, 0.0)));
 	let material_center = Rc::new(Lambertian::new(&Color(0.7, 0.3, 0.3)));
-	let material_left = Rc::new(Metal::new(&Color(0.8, 0.8, 0.8)));
-	let material_right = Rc::new(Metal::new(&Color(0.8, 0.6, 0.2)));
+	let material_left = Rc::new(Metal::new(&Color(0.8, 0.8, 0.8), 0.3));
+	let material_right = Rc::new(Metal::new(&Color(0.8, 0.6, 0.2), 1.0));
 
 	world.add(Box::new(Sphere {
 		center: Point3(0.0, -100.5, -1.0),
@@ -114,7 +114,7 @@ fn main() {
 	let max_depth = 50;
 	let samples_per_pixel: i32 = 100;
 
-	let mut world = generate_world();
+	let world = generate_world();
 
 	let camera = Camera::new();
 

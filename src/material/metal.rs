@@ -6,18 +6,24 @@ use super::material::{Material, ScatterRecord};
 
 
 pub struct Metal {
-	albedo: Color
+	albedo: Color,
+	fuzz: f64
 }
 
 impl Metal {
-	pub fn new(color: &Color) -> Self {
+	pub fn new(color: &Color, fuzz: f64) -> Self {
 		Self {
-			albedo: *color
+			albedo: *color,
+			fuzz: fuzz.min(1.0) // TODO Check if this value can be negative
 		}
 	}
 
 	pub fn albedo(&self) -> Color {
 		self.albedo
+	}
+
+	pub fn fuzz(&self) -> f64 {
+		self.fuzz
 	}
 }
 
@@ -27,7 +33,10 @@ impl Material for Metal {
 		let reflected = in_ray.direction.normalized().reflect(&hit.normal());
 
 		let scatter_record = ScatterRecord{
-			ray: Ray { origin: hit.point(), direction: reflected },
+			ray: Ray {
+				origin: hit.point(),
+				direction: reflected + self.fuzz * rand_unit_vector()
+			},
 			attenuation: self.albedo
 		};
 
