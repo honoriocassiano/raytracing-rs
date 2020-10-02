@@ -10,7 +10,7 @@ use std::rc::Rc;
 pub struct Sphere {
 	pub center: Point3,
 	pub radius: f64,
-	pub material: Rc<Material>
+	pub material: Rc<dyn Material>
 }
 
 
