@@ -29,7 +29,7 @@ fn ray_color(ray: &Ray, world: &HitList, depth: i32) -> Color {
 		return Color(0.0, 0.0, 0.0);
 	}
 
-	match world.hit(ray, 0.0, INFINITY) {
+	match world.hit(ray, 0.001, INFINITY) {
 		Some(value) => {
 
 			let target = value.point() + value.normal() + rand_point_in_unit_sphere();
