@@ -7,6 +7,7 @@ mod color;
 mod hit;
 mod sphere;
 mod util;
+mod camera;
 
 
 use crate::vec::Vec3;
@@ -17,7 +18,8 @@ use crate::ray::{Ray, Point3};
 use crate::hit::{Hit, HitList};
 use crate::sphere::{Sphere};
 use crate::util::{PI, INFINITY};
-use crate::util::{degrees_to_radians};
+use crate::util::{degrees_to_radians, rand};
+use crate::camera::Camera;
 
 
 fn ray_color(ray: &Ray, world: &HitList) -> Color {
@@ -61,9 +63,9 @@ fn main() {
 
 	let image_width: i32 = 400;
 	let image_height: i32 = ((image_width as f64) / aspect_ratio) as i32;
+	let samples_per_pixel: i32 = 100;
 
 	let mut world = HitList::new();
-
 
 	world.add(Box::new(Sphere {
 		center: Point3(0.0, 0.0, -1.0),
@@ -75,16 +77,7 @@ fn main() {
 		radius: 100.0
 	}));
 
-
-	let viewport_height: f64 = 2.0;
-	let viewport_width: f64 = aspect_ratio * viewport_height;
-	let focal_length: f64 = 1.0;
-
-	let origin = Point3(0.0, 0.0, 0.0);
-	let horizontal = Vec3(viewport_width, 0.0, 0.0);
-	let vertical = Vec3(0.0, viewport_height, 0.0);
-
-	let lower_left_corner = origin - horizontal/2.0 - vertical/2.0 - Vec3(0.0, 0.0, focal_length);
+	let camera = Camera::new();
 
 	println!("P3\n{} {}\n255", image_width, image_height);
 
@@ -93,18 +86,19 @@ fn main() {
 		eprint!("\rScanlines remaining: {} ", line);
 
 		for column in 0..image_width {
-			let u = (column as f64) / (image_width - 1) as f64;
-			let v = (line as f64) / (image_height - 1) as f64;
 
-			let r = Ray{
-				origin,
-				direction: lower_left_corner + u*horizontal + v*vertical - origin
-			};
+			let mut pixel_color = Color(0.0, 0.0, 0.0);
 
+			for sample in 0..samples_per_pixel {
+				let u = (column as f64 + rand()) / (image_width - 1) as f64;
+				let v = (line as f64 + rand()) / (image_height - 1) as f64;
 
-			let color = ray_color(&r, &world);
+				let ray = camera.ray(u, v);
 
-			write_color(&mut stdout(), &color);
+				pixel_color += ray_color(&ray, &world);
+			}
+
+			write_color(&mut stdout(), &pixel_color, samples_per_pixel);
 		}
 	}
 
