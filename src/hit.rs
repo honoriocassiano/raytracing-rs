@@ -96,8 +96,8 @@ impl Hit for HitList {
 		for object in &self.objects {
 			match object.hit(ray, t_min, closest_so_far) {
 				Some(value) => {
-					last_hit = Some(value);
 					closest_so_far = value.t();
+					last_hit = Some(value);
 				}
 				None => {}
 			}
