@@ -1,6 +1,6 @@
 use crate::vec::{dot};
 use crate::ray::{Point3, Ray};
-use crate::hit::{Hit, HitRecord};
+use crate::hit::{Hit, MaterialHitRecord};
 
 pub struct Sphere {
 	pub center: Point3,
@@ -8,7 +8,7 @@ pub struct Sphere {
 }
 
 impl Hit for Sphere {
-	fn hit(&self, ray: &Ray, t_min: f64, t_max: f64) -> Option<HitRecord> {
+	fn hit(&self, ray: &Ray, t_min: f64, t_max: f64) -> Option<MaterialHitRecord> {
 
 		let oc = ray.origin - self.center;
 
@@ -30,7 +30,7 @@ impl Hit for Sphere {
 
 				let outward_normal = (point - self.center) / self.radius;
 
-				return Some(HitRecord::new(&point, t, ray, &outward_normal));
+				return Some(MaterialHitRecord::new(&point, t, ray, &outward_normal));
 
 				// let normal = (point - self.center) / self.radius;
 
@@ -45,7 +45,7 @@ impl Hit for Sphere {
 
 				let outward_normal = (point - self.center) / self.radius;
 
-				return Some(HitRecord::new(&point, t, ray, &outward_normal));
+				return Some(MaterialHitRecord::new(&point, t, ray, &outward_normal));
 				
 				// let normal = (point - self.center) / self.radius;
 
