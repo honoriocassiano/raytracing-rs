@@ -79,25 +79,25 @@ fn generate_world() -> HitList {
 	world.add(Box::new(Sphere {
 		center: Point3(0.0, -100.5, -1.0),
 		radius: 100.0,
-		material: material_ground
+		material: material_ground.clone()
 	}));
 
 	world.add(Box::new(Sphere {
 		center: Point3(0.0, 0.0, -1.0),
 		radius: 0.5,
-		material: material_center
+		material: material_center.clone()
 	}));
 
 	world.add(Box::new(Sphere {
 		center: Point3(-1.0, 0.0, -1.0),
 		radius: 0.5,
-		material: material_left
+		material: material_left.clone()
 	}));
 
 	world.add(Box::new(Sphere {
 		center: Point3(1.0, 0.0, -1.0),
 		radius: 0.5,
-		material: material_right
+		material: material_right.clone()
 	}));
 
 	world
