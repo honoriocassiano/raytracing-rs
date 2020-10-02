@@ -59,6 +59,10 @@ impl Vec3 {
 
 		Self (self.0 / norm, self.1 / norm, self.2 / norm)
 	}
+
+	pub fn reflect(&self, normal: &Self) -> Self {
+		*self - 2.0*dot(self, normal) * (*normal)
+	}
 }
 
 

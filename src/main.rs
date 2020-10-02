@@ -1,25 +1,23 @@
 use std::io::stdout;
+use std::rc::Rc;
 
 
-mod vec;
-mod ray;
-mod color;
+mod core;
+mod material;
 mod hit;
+mod hitrecord;
 mod sphere;
 mod util;
 mod camera;
 
 
-use crate::vec::Vec3;
-use crate::vec::{dot, cross};
-use crate::color::Color;
-use crate::color::write_color;
-use crate::ray::{Ray, Point3};
+use crate::core::*;
 use crate::hit::{Hit, HitList};
 use crate::sphere::{Sphere};
 use crate::util::{PI, INFINITY};
 use crate::util::{degrees_to_radians, rand, rand_unit_vector, rand_in_hemisphere};
 use crate::camera::Camera;
+use crate::material::{Lambertian, Metal};
 
 
 fn ray_color(ray: &Ray, world: &HitList, depth: i32) -> Color {
@@ -30,15 +28,16 @@ fn ray_color(ray: &Ray, world: &HitList, depth: i32) -> Color {
 	}
 
 	match world.hit(ray, 0.001, INFINITY) {
-		Some(value) => {
+		Some(material_hit) => {
 
-			let target = value.point() + rand_in_hemisphere(&value.normal());
-			let new_ray = Ray {
-				origin: value.point(),
-				direction: target - value.point()
-			};
-
-			0.5 * ray_color(&new_ray, world, depth - 1)
+			match material_hit.material().scatter(ray, material_hit.hit()) {
+				Some(scatter_record) => {
+					scatter_record.attenuation * ray_color(&scatter_record.ray, world, depth -1)
+				},
+				None => {
+					Color(0.0, 0.0, 0.0)
+				}
+			}
 		},
 		None => {
 			let unit: Vec3 = ray.direction.normalized();
@@ -69,6 +68,42 @@ fn hit_sphere(ray: &Ray, center: &Point3, radius: f64) -> f64 {
 }
 
 
+fn generate_world() -> HitList {
+	let mut world = HitList::new();
+
+	let material_ground = Rc::new(Lambertian::new(&Color(0.8, 0.8, 0.0)));
+	let material_center = Rc::new(Lambertian::new(&Color(0.7, 0.3, 0.3)));
+	let material_left = Rc::new(Metal::new(&Color(0.8, 0.8, 0.8), 0.3));
+	let material_right = Rc::new(Metal::new(&Color(0.8, 0.6, 0.2), 1.0));
+
+	world.add(Box::new(Sphere {
+		center: Point3(0.0, -100.5, -1.0),
+		radius: 100.0,
+		material: material_ground
+	}));
+
+	world.add(Box::new(Sphere {
+		center: Point3(0.0, 0.0, -1.0),
+		radius: 0.5,
+		material: material_center
+	}));
+
+	world.add(Box::new(Sphere {
+		center: Point3(-1.0, 0.0, -1.0),
+		radius: 0.5,
+		material: material_left
+	}));
+
+	world.add(Box::new(Sphere {
+		center: Point3(1.0, 0.0, -1.0),
+		radius: 0.5,
+		material: material_right
+	}));
+
+	world
+}
+
+
 fn main() {
 
 	let aspect_ratio: f64 = 16.0 / 9.0;
@@ -79,17 +114,7 @@ fn main() {
 	let max_depth = 50;
 	let samples_per_pixel: i32 = 100;
 
-	let mut world = HitList::new();
-
-	world.add(Box::new(Sphere {
-		center: Point3(0.0, 0.0, -1.0),
-		radius: 0.5
-	}));
-
-	world.add(Box::new(Sphere {
-		center: Point3(0.0, -100.5, -1.0),
-		radius: 100.0
-	}));
+	let world = generate_world();
 
 	let camera = Camera::new();
 
