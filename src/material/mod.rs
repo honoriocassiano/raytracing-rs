@@ -7,3 +7,5 @@ pub use material::Material;
 pub use lambertian::Lambertian;
 pub use metal::Metal;
 pub use dielectric::Dielectric;
+
+pub use material::schlick;
