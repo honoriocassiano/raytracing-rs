@@ -1,5 +1,5 @@
-use crate::ray::Ray;
-use crate::vec::Vec3;
+use crate::core::Ray;
+use crate::core::Vec3;
 use crate::hitrecord::BasicHitRecord;
 use crate::material::Material;
 
@@ -81,10 +81,6 @@ impl HitList {
 	pub fn add(&mut self, object: Box<dyn Hit>) {
 		self.objects.push(object);
 	}
-
-	// pub fn add() {
-
-	// }
 }
 
 

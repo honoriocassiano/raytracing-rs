@@ -1,9 +1,7 @@
 use std::io::stdout;
 
 
-mod vec;
-mod ray;
-mod color;
+mod core;
 mod material;
 mod hit;
 mod hitrecord;
@@ -12,11 +10,7 @@ mod util;
 mod camera;
 
 
-use crate::vec::Vec3;
-use crate::vec::{dot, cross};
-use crate::color::Color;
-use crate::color::write_color;
-use crate::ray::{Ray, Point3};
+use crate::core::*;
 use crate::hit::{Hit, HitList};
 use crate::sphere::{Sphere};
 use crate::util::{PI, INFINITY};

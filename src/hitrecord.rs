@@ -1,5 +1,5 @@
-use crate::ray::Ray;
-use crate::vec::{Vec3, dot};
+use crate::core::Ray;
+use crate::core::{Vec3, dot};
 
 
 type Point3 = Vec3;
