@@ -3,7 +3,7 @@ use crate::vec::Vec3;
 use crate::hitrecord::BasicHitRecord;
 use crate::material::Material;
 
-suse std::rc::Rc;
+use std::rc::Rc;
 
 type Point3 = Vec3;
 
