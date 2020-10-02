@@ -18,7 +18,7 @@ use crate::ray::{Ray, Point3};
 use crate::hit::{Hit, HitList};
 use crate::sphere::{Sphere};
 use crate::util::{PI, INFINITY};
-use crate::util::{degrees_to_radians, rand, rand_unit_vector};
+use crate::util::{degrees_to_radians, rand, rand_unit_vector, rand_in_hemisphere};
 use crate::camera::Camera;
 
 
@@ -32,7 +32,7 @@ fn ray_color(ray: &Ray, world: &HitList, depth: i32) -> Color {
 	match world.hit(ray, 0.001, INFINITY) {
 		Some(value) => {
 
-			let target = value.point() + value.normal() + rand_unit_vector();
+			let target = value.point() + rand_in_hemisphere(&value.normal());
 			let new_ray = Ray {
 				origin: value.point(),
 				direction: target - value.point()
