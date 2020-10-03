@@ -1,44 +1,70 @@
-use crate::core::Vec3;
+use crate::core::{Vec3, cross};
 use crate::core::{Ray, Point3};
+use crate::util::{degrees_to_radians, rand_in_unit_disk};
 
 
 pub struct Camera {
-	origin: Point3,
+	position: Point3,
 	lower_left_corner: Point3,
 
 	horizontal: Vec3,
-	vertical: Vec3
+	vertical: Vec3,
+
+	u: Vec3,
+	v: Vec3,
+	w: Vec3,
+
+	lens_radius: f64,
 }
 
 
 impl Camera {
+	pub fn new(position: Point3, look_at: Point3, up: Vec3, vertical_fov: f64, aspect_ratio: f64,
+			   aperture: f64, focus_distance: f64) -> Self {
+		let theta: f64 = degrees_to_radians(vertical_fov);
+		let h: f64 = (theta / 2.0).tan();
 
-	pub fn new() -> Self {
-		let aspect_ratio: f64 = 16.0 / 9.0;
-
-		let viewport_height: f64 = 2.0;
+		let viewport_height: f64 = 2.0 * h;
 		let viewport_width: f64 = aspect_ratio * viewport_height;
 
-		let focal_length: f64 = 1.0;
+		let w = (position - look_at).normalized();
+		let u = cross(&up, &w).normalized();
+		let v = cross(&w, &u);
 
-		let origin = Point3(0.0, 0.0, 0.0);
-		let horizontal = Vec3(viewport_width, 0.0, 0.0);
-		let vertical = Vec3(0.0, viewport_height, 0.0);
+		let horizontal = focus_distance * viewport_width * u;
+		let vertical = focus_distance * viewport_height * v;
 
-		let lower_left_corner = origin - horizontal/2.0 - vertical/2.0 - Vec3(0.0, 0.0, focal_length);
+		// let lower_left_corner = position - horizontal / 2.0 - vertical / 2.0 - w;
+		let lower_left_corner = position - (horizontal / 2.0) - (vertical / 2.0)
+			- (focus_distance * w);
+
+		let lens_radius = aperture / 2.0;
 
 		Self {
-			origin,
+			position,
 			lower_left_corner,
 			horizontal,
-			vertical
+			vertical,
+			u,
+			v,
+			w,
+			lens_radius,
 		}
 	}
-	
-	pub fn ray(&self, u: f64, v: f64) -> Ray {
+
+	pub fn ray(&self, s: f64, t: f64) -> Ray {
+
+		let rd: Vec3 = self.lens_radius * rand_in_unit_disk();
+		let offset: Vec3 = (self.u * rd.x()) + (self.v * rd.y());
+
 		Ray {
-			origin: self.origin,
-			direction: self.lower_left_corner + u*self.horizontal + v*self.vertical - self.origin
+			origin: self.position + offset,
+			direction: self.lower_left_corner + (s * self.horizontal) + (t * self.vertical) - self.position - offset,
 		}
+
+		// Ray {
+		// 	origin: self.position,
+		// 	direction: self.lower_left_corner + (s * self.horizontal) + (t * self.vertical) - self.position,
+		// }
 	}
 }

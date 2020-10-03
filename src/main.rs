@@ -79,19 +79,19 @@ fn generate_world() -> HitList {
 	world.add(Box::new(Sphere {
 		center: Point3(0.0, -100.5, -1.0),
 		radius: 100.0,
-		material: material_ground.clone()
+		material: material_ground.clone(),
 	}));
 
 	world.add(Box::new(Sphere {
 		center: Point3(0.0, 0.0, -1.0),
 		radius: 0.5,
-		material: material_center.clone()
+		material: material_center.clone(),
 	}));
 
 	world.add(Box::new(Sphere {
 		center: Point3(-1.0, 0.0, -1.0),
 		radius: 0.5,
-		material: material_left.clone()
+		material: material_left.clone(),
 	}));
 
 	// Yes, the radius is negative
@@ -99,14 +99,14 @@ fn generate_world() -> HitList {
 	// making the faces point to inside
 	world.add(Box::new(Sphere {
 		center: Point3(-1.0, 0.0, -1.0),
-		radius: -0.4,
-		material: material_left.clone()
+		radius: -0.45,
+		material: material_left.clone(),
 	}));
 
 	world.add(Box::new(Sphere {
 		center: Point3(1.0, 0.0, -1.0),
 		radius: 0.5,
-		material: material_right.clone()
+		material: material_right.clone(),
 	}));
 
 	world
@@ -125,7 +125,17 @@ fn main() {
 
 	let world = generate_world();
 
-	let camera = Camera::new();
+	let position = Point3(3.0, 3.0, 2.0);
+	let look_at = Point3(0.0, 0.0, -1.0);
+	let up = Point3(0.0, 1.0, 0.0);
+
+	let distance_to_focus = (position - look_at).length();
+	let aperture = 2.0;
+
+	let camera = Camera::new(
+		position,
+		look_at,
+		up, 20.0, aspect_ratio, aperture, distance_to_focus);
 
 	println!("P3\n{} {}\n255", image_width, image_height);
 
