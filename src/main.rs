@@ -71,21 +71,42 @@ fn hit_sphere(ray: &Ray, center: &Point3, radius: f64) -> f64 {
 fn generate_world() -> HitList {
 	let mut world = HitList::new();
 
-	let r = (PI / 4.0).cos();
-
-	let material_left = Rc::new(Lambertian::new(&Color(0.0, 0.0, 1.0)));
-	let material_right = Rc::new(Lambertian::new(&Color(1.0, 0.0, 0.0)));
+	let material_ground = Rc::new(Lambertian::new(&Color(0.8, 0.8, 0.0)));
+	let material_center = Rc::new(Lambertian::new(&Color(0.1, 0.2, 0.5)));
+	let material_left = Rc::new(Dielectric::new(1.5));
+	let material_right = Rc::new(Metal::new(&Color(0.8, 0.6, 0.2), 0.0));
 
 	world.add(Box::new(Sphere {
-		center: Point3(-r, 0.0, -1.0),
-		radius: r,
-		material: material_left.clone()
+		center: Point3(0.0, -100.5, -1.0),
+		radius: 100.0,
+		material: material_ground.clone(),
 	}));
 
 	world.add(Box::new(Sphere {
-		center: Point3(r, 0.0, -1.0),
-		radius: r,
-		material: material_right.clone()
+		center: Point3(0.0, 0.0, -1.0),
+		radius: 0.5,
+		material: material_center.clone(),
+	}));
+
+	world.add(Box::new(Sphere {
+		center: Point3(-1.0, 0.0, -1.0),
+		radius: 0.5,
+		material: material_left.clone(),
+	}));
+
+	// Yes, the radius is negative
+	// Its don`t affect the geometry, but invert the normals
+	// making the faces point to inside
+	world.add(Box::new(Sphere {
+		center: Point3(-1.0, 0.0, -1.0),
+		radius: -0.45,
+		material: material_left.clone(),
+	}));
+
+	world.add(Box::new(Sphere {
+		center: Point3(1.0, 0.0, -1.0),
+		radius: 0.5,
+		material: material_right.clone(),
 	}));
 
 	world
@@ -104,10 +125,17 @@ fn main() {
 
 	let world = generate_world();
 
+	let position = Point3(3.0, 3.0, 2.0);
+	let look_at = Point3(0.0, 0.0, -1.0);
+	let up = Point3(0.0, 1.0, 0.0);
+
+	let distance_to_focus = (position - look_at).length();
+	let aperture = 2.0;
+
 	let camera = Camera::new(
-		Point3(-2.0, 2.0, 1.0),
-		Point3(0.0, 0.0, -1.0),
-		Point3(0.0, 1.0, 0.0), 90.0, aspect_ratio);
+		position,
+		look_at,
+		up, 20.0, aspect_ratio, aperture, distance_to_focus);
 
 	println!("P3\n{} {}\n255", image_width, image_height);
 

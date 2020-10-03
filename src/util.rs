@@ -57,3 +57,14 @@ pub fn rand_in_hemisphere(normal: &Vec3) -> Vec3 {
 		false => -unit_in_shpere
 	}
 }
+
+
+pub fn rand_in_unit_disk() -> Vec3 {
+	loop {
+		let p = Vec3(rand_between(-1.0, 1.0), rand_between(-1.0, 1.0), 0.0);
+
+		if p.sq_length() < 1.0 {
+			break p;
+		}
+	}
+}
