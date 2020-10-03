@@ -104,7 +104,10 @@ fn main() {
 
 	let world = generate_world();
 
-	let camera = Camera::new(90.0, aspect_ratio);
+	let camera = Camera::new(
+		Point3(-2.0, 2.0, 1.0),
+		Point3(0.0, 0.0, -1.0),
+		Point3(0.0, 1.0, 0.0), 90.0, aspect_ratio);
 
 	println!("P3\n{} {}\n255", image_width, image_height);
 
