@@ -26,7 +26,7 @@ fn ray_color(ray: &Ray, world: &HitList, depth: i32) -> Color {
 		return Color(0.0, 0.0, 0.0);
 	}
 
-	match world.hit(ray, 0.001, INFINITY) {
+	match world.hit(*ray, 0.001, INFINITY) {
 		Some(material_hit) => {
 			match material_hit.material().scatter(ray, material_hit.hit()) {
 				Some(scatter_record) => {
