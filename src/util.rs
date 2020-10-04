@@ -47,10 +47,10 @@ pub fn rand_unit_vector() -> Vec3 {
 }
 
 
-pub fn rand_in_hemisphere(normal: &Vec3) -> Vec3 {
+pub fn rand_in_hemisphere(normal: Vec3) -> Vec3 {
 	let unit_in_shpere = rand_unit_vector();
 
-	let same_hemispherial = unit_in_shpere.dot(*normal) > 0.0;
+	let same_hemispherial = unit_in_shpere.dot(normal) > 0.0;
 
 	match same_hemispherial {
 		true => unit_in_shpere,
