@@ -7,14 +7,13 @@ mod material;
 mod hit;
 mod sphere;
 mod util;
-mod camera;
 
 
 use crate::core::*;
 use crate::hit::{Hit, HitList};
 use crate::sphere::{Sphere};
 use crate::util::{INFINITY, rand_between, rand};
-use crate::camera::Camera;
+use crate::core::Camera;
 use crate::material::{Lambertian, Metal, Dielectric, Material};
 
 

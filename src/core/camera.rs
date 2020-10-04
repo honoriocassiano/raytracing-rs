@@ -1,5 +1,5 @@
-use crate::core::Vec3;
-use crate::core::{Ray, Point3};
+use super::Vec3;
+use super::{Ray, Point3};
 use crate::util::{degrees_to_radians, rand_in_unit_disk};
 
 
