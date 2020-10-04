@@ -69,7 +69,7 @@ fn hit_sphere(ray: &Ray, center: &Point3, radius: f64) -> f64 {
 fn generate_random_scene() -> HitList {
 	let mut world = HitList::new();
 
-	let ground_material = Rc::new(Lambertian::new(&Color(0.5, 0.5, 0.5)));
+	let ground_material = Rc::new(Lambertian::new(Color(0.5, 0.5, 0.5)));
 
 	world.add(Box::new(Sphere {
 		center: Point3(0.0, -1000.0, 0.0),
@@ -93,7 +93,7 @@ fn generate_random_scene() -> HitList {
 					// Diffuse
 					let albedo = Color::rand() * Color::rand();
 
-					sphere_material = Rc::new(Lambertian::new(&albedo));
+					sphere_material = Rc::new(Lambertian::new(albedo));
 
 				} else if choose_material < 0.95 {
 					// Metal
@@ -117,7 +117,7 @@ fn generate_random_scene() -> HitList {
 	}
 
 	let material1 = Rc::new(Dielectric::new(1.5));
-	let material2 = Rc::new(Lambertian::new(&Color(0.4, 0.4, 0.1)));
+	let material2 = Rc::new(Lambertian::new(Color(0.4, 0.4, 0.1)));
 	let material3 = Rc::new(Metal::new(Color(0.7, 0.6, 0.5), 0.0));
 
 	world.add(Box::new(Sphere {
@@ -145,8 +145,8 @@ fn generate_random_scene() -> HitList {
 fn generate_world() -> HitList {
 	let mut world = HitList::new();
 
-	let material_ground = Rc::new(Lambertian::new(&Color(0.8, 0.8, 0.0)));
-	let material_center = Rc::new(Lambertian::new(&Color(0.1, 0.2, 0.5)));
+	let material_ground = Rc::new(Lambertian::new(Color(0.8, 0.8, 0.0)));
+	let material_center = Rc::new(Lambertian::new(Color(0.1, 0.2, 0.5)));
 	let material_left = Rc::new(Dielectric::new(1.5));
 	let material_right = Rc::new(Metal::new(Color(0.8, 0.6, 0.2), 0.0));
 
