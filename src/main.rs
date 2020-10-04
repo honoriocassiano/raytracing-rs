@@ -19,18 +19,18 @@ use crate::camera::Camera;
 use crate::material::{Lambertian, Metal, Dielectric, Material};
 
 
-fn ray_color(ray: &Ray, world: &HitList, depth: i32) -> Color {
+fn ray_color(ray: Ray, world: &HitList, depth: i32) -> Color {
 
 	// Stop recursion at ray bounce limit
 	if depth <= 0 {
 		return Color(0.0, 0.0, 0.0);
 	}
 
-	match world.hit(*ray, 0.001, INFINITY) {
+	match world.hit(ray, 0.001, INFINITY) {
 		Some(material_hit) => {
-			match material_hit.material().scatter(ray, material_hit.hit()) {
+			match material_hit.material().scatter(&ray, material_hit.hit()) {
 				Some(scatter_record) => {
-					scatter_record.attenuation * ray_color(&scatter_record.ray, world, depth - 1)
+					scatter_record.attenuation * ray_color(scatter_record.ray, world, depth - 1)
 				}
 				None => {
 					Color(0.0, 0.0, 0.0)
@@ -164,7 +164,7 @@ fn main() {
 
 				let ray = camera.ray(u, v);
 
-				pixel_color += ray_color(&ray, &world, max_depth);
+				pixel_color += ray_color(ray, &world, max_depth);
 			}
 
 			write_color(&mut stdout(), &pixel_color, samples_per_pixel);
