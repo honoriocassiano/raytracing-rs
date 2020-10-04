@@ -167,7 +167,7 @@ fn main() {
 				pixel_color += ray_color(ray, &world, max_depth);
 			}
 
-			write_color(&mut stdout(), &pixel_color, samples_per_pixel);
+			write_color(&mut stdout(), pixel_color, samples_per_pixel);
 		}
 	}
 

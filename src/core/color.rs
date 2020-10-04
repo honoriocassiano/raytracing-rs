@@ -4,7 +4,7 @@ use crate::util::clamp;
 pub use super::vec::Vec3 as Color;
 
 
-pub fn write_color<T: Write>(out: &mut T, pixel_color: &Color, samples_per_pixel: i32) {
+pub fn write_color<T: Write>(out: &mut T, pixel_color: Color, samples_per_pixel: i32) {
 
 	let Color(mut r, mut g, mut b) = pixel_color;
 
