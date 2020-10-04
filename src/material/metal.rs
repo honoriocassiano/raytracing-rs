@@ -30,7 +30,7 @@ impl Metal {
 
 impl Material for Metal {
 	fn scatter(&self, in_ray: &Ray, hit: &BasicHitRecord) -> Option<ScatterRecord> {
-		let reflected = in_ray.direction.normalized().reflect(&hit.normal());
+		let reflected = in_ray.direction.normalized().reflect(hit.normal());
 
 		let scatter_record = ScatterRecord{
 			ray: Ray {

@@ -32,12 +32,12 @@ impl Dielectric {
 		};
 
 		if (eta_in_over_eta_out * sin_theta) > 1.0 {
-			Some(unit_direction.reflect(&hit.normal()))
+			Some(unit_direction.reflect(hit.normal()))
 		} else {
 			let reflection_prob = schlick(cos_theta, eta_in_over_eta_out);
 
 			if rand() < reflection_prob {
-				Some(unit_direction.reflect(&hit.normal()))
+				Some(unit_direction.reflect(hit.normal()))
 			} else {
 				None
 			}

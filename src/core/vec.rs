@@ -72,8 +72,8 @@ impl Vec3 {
 		)
 	}
 
-	pub fn reflect(&self, normal: &Self) -> Self {
-		*self - 2.0 * self.dot(*normal) * (*normal)
+	pub fn reflect(&self, normal: Self) -> Self {
+		*self - 2.0 * self.dot(normal) * (normal)
 	}
 
 	pub fn refract(&self, normal: &Self, eta_in_over_eta_out: Scalar) -> Vec3 {
