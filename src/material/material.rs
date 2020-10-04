@@ -10,7 +10,7 @@ pub struct ScatterRecord {
 
 
 pub trait Material {
-	fn scatter(&self, in_ray: &Ray, hit: &BasicHitRecord) -> Option<ScatterRecord>;
+	fn scatter(&self, in_ray: Ray, hit: BasicHitRecord) -> Option<ScatterRecord>;
 }
 
 

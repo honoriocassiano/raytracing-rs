@@ -28,7 +28,7 @@ fn ray_color(ray: Ray, world: &HitList, depth: i32) -> Color {
 
 	match world.hit(ray, 0.001, INFINITY) {
 		Some(material_hit) => {
-			match material_hit.material().scatter(&ray, material_hit.hit()) {
+			match material_hit.material().scatter(ray, *material_hit.hit()) {
 				Some(scatter_record) => {
 					scatter_record.attenuation * ray_color(scatter_record.ray, world, depth - 1)
 				}

@@ -46,7 +46,7 @@ impl Dielectric {
 
 
 impl Material for Dielectric {
-	fn scatter(&self, in_ray: &Ray, hit: &BasicHitRecord) -> Option<ScatterRecord> {
+	fn scatter(&self, in_ray: Ray, hit: BasicHitRecord) -> Option<ScatterRecord> {
 		let eta_in_over_eta_out = {
 			if hit.front_face() {
 				1.0 / self.refractive_index
@@ -61,7 +61,7 @@ impl Material for Dielectric {
 		let sin_theta = (1.0 - cos_theta * cos_theta).sqrt();
 
 		let scatter_direction: Vec3 = {
-			match self.is_reflection(&unit_direction, hit, cos_theta, sin_theta) {
+			match self.is_reflection(&unit_direction, &hit, cos_theta, sin_theta) {
 				Some(reflected) => {
 					reflected
 				}
