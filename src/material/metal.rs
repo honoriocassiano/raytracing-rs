@@ -11,9 +11,9 @@ pub struct Metal {
 }
 
 impl Metal {
-	pub fn new(color: &Color, fuzz: f64) -> Self {
+	pub fn new(color: Color, fuzz: f64) -> Self {
 		Self {
-			albedo: *color,
+			albedo: color,
 			fuzz: fuzz.min(1.0) // TODO Check if this value can be negative
 		}
 	}
