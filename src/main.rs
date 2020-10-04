@@ -5,22 +5,19 @@ use std::rc::Rc;
 mod core;
 mod material;
 mod hit;
-mod hitrecord;
 mod sphere;
 mod util;
-mod camera;
 
 
 use crate::core::*;
 use crate::hit::{Hit, HitList};
 use crate::sphere::{Sphere};
-use crate::util::{PI, INFINITY, rand_between};
-use crate::util::{degrees_to_radians, rand, rand_unit_vector, rand_in_hemisphere};
-use crate::camera::Camera;
+use crate::util::{INFINITY, rand_between, rand};
+use crate::core::Camera;
 use crate::material::{Lambertian, Metal, Dielectric, Material};
 
 
-fn ray_color(ray: &Ray, world: &HitList, depth: i32) -> Color {
+fn ray_color(ray: Ray, world: &HitList, depth: i32) -> Color {
 
 	// Stop recursion at ray bounce limit
 	if depth <= 0 {
@@ -31,7 +28,7 @@ fn ray_color(ray: &Ray, world: &HitList, depth: i32) -> Color {
 		Some(material_hit) => {
 			match material_hit.material().scatter(ray, material_hit.hit()) {
 				Some(scatter_record) => {
-					scatter_record.attenuation * ray_color(&scatter_record.ray, world, depth - 1)
+					scatter_record.attenuation * ray_color(scatter_record.ray, world, depth - 1)
 				}
 				None => {
 					Color(0.0, 0.0, 0.0)
@@ -49,27 +46,10 @@ fn ray_color(ray: &Ray, world: &HitList, depth: i32) -> Color {
 }
 
 
-fn hit_sphere(ray: &Ray, center: &Point3, radius: f64) -> f64 {
-	let oc = ray.origin - *center;
-
-	let a: f64 = ray.direction.sq_length();
-	let half_b: f64 = dot(&oc, &ray.direction);
-	let c: f64 = oc.sq_length() - radius * radius;
-
-	let discriminant: f64 = half_b * half_b - a * c;
-
-	if discriminant < 0.0 {
-		-1.0
-	} else {
-		(-half_b - discriminant.sqrt()) / a
-	}
-}
-
-
 fn generate_random_scene() -> HitList {
 	let mut world = HitList::new();
 
-	let ground_material = Rc::new(Lambertian::new(&Color(0.5, 0.5, 0.5)));
+	let ground_material = Rc::new(Lambertian::new(Color(0.5, 0.5, 0.5)));
 
 	world.add(Box::new(Sphere {
 		center: Point3(0.0, -1000.0, 0.0),
@@ -93,14 +73,14 @@ fn generate_random_scene() -> HitList {
 					// Diffuse
 					let albedo = Color::rand() * Color::rand();
 
-					sphere_material = Rc::new(Lambertian::new(&albedo));
+					sphere_material = Rc::new(Lambertian::new(albedo));
 
 				} else if choose_material < 0.95 {
 					// Metal
 					let albedo = Color::rand_between(0.5, 1.0);
 					let fuzz = rand_between(0.0, 0.5);
 
-					sphere_material = Rc::new(Metal::new(&albedo, fuzz));
+					sphere_material = Rc::new(Metal::new(albedo, fuzz));
 
 				} else {
 					// Glass
@@ -117,8 +97,8 @@ fn generate_random_scene() -> HitList {
 	}
 
 	let material1 = Rc::new(Dielectric::new(1.5));
-	let material2 = Rc::new(Lambertian::new(&Color(0.4, 0.4, 0.1)));
-	let material3 = Rc::new(Metal::new(&Color(0.7, 0.6, 0.5), 0.0));
+	let material2 = Rc::new(Lambertian::new(Color(0.4, 0.4, 0.1)));
+	let material3 = Rc::new(Metal::new(Color(0.7, 0.6, 0.5), 0.0));
 
 	world.add(Box::new(Sphere {
 		center: Point3(0.0, 1.0, 0.0),
@@ -136,51 +116,6 @@ fn generate_random_scene() -> HitList {
 		center: Point3(4.0, 1.0, 0.0),
 		radius: 1.0,
 		material: material3,
-	}));
-
-	world
-}
-
-
-fn generate_world() -> HitList {
-	let mut world = HitList::new();
-
-	let material_ground = Rc::new(Lambertian::new(&Color(0.8, 0.8, 0.0)));
-	let material_center = Rc::new(Lambertian::new(&Color(0.1, 0.2, 0.5)));
-	let material_left = Rc::new(Dielectric::new(1.5));
-	let material_right = Rc::new(Metal::new(&Color(0.8, 0.6, 0.2), 0.0));
-
-	world.add(Box::new(Sphere {
-		center: Point3(0.0, -100.5, -1.0),
-		radius: 100.0,
-		material: material_ground.clone(),
-	}));
-
-	world.add(Box::new(Sphere {
-		center: Point3(0.0, 0.0, -1.0),
-		radius: 0.5,
-		material: material_center.clone(),
-	}));
-
-	world.add(Box::new(Sphere {
-		center: Point3(-1.0, 0.0, -1.0),
-		radius: 0.5,
-		material: material_left.clone(),
-	}));
-
-	// Yes, the radius is negative
-	// Its don`t affect the geometry, but invert the normals
-	// making the faces point to inside
-	world.add(Box::new(Sphere {
-		center: Point3(-1.0, 0.0, -1.0),
-		radius: -0.45,
-		material: material_left.clone(),
-	}));
-
-	world.add(Box::new(Sphere {
-		center: Point3(1.0, 0.0, -1.0),
-		radius: 0.5,
-		material: material_right.clone(),
 	}));
 
 	world
@@ -221,16 +156,16 @@ fn main() {
 		for column in 0..image_width {
 			let mut pixel_color = Color(0.0, 0.0, 0.0);
 
-			for sample in 0..samples_per_pixel {
+			for _sample in 0..samples_per_pixel {
 				let u = (column as f64 + rand()) / (image_width - 1) as f64;
 				let v = (line as f64 + rand()) / (image_height - 1) as f64;
 
 				let ray = camera.ray(u, v);
 
-				pixel_color += ray_color(&ray, &world, max_depth);
+				pixel_color += ray_color(ray, &world, max_depth);
 			}
 
-			write_color(&mut stdout(), &pixel_color, samples_per_pixel);
+			write_color(&mut stdout(), pixel_color, samples_per_pixel);
 		}
 	}
 

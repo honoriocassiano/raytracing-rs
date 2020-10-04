@@ -1,6 +1,5 @@
-use crate::core::{Color, Vec3, Ray, dot};
-use crate::util::{rand_unit_vector};
-use crate::hitrecord::BasicHitRecord;
+use crate::core::{Color, Vec3, Ray};
+use crate::hit::BasicHitRecord;
 use crate::util::rand;
 
 use super::material::{Material, ScatterRecord, schlick};
@@ -17,6 +16,7 @@ impl Dielectric {
 		}
 	}
 
+	#[allow(dead_code)]
 	pub fn refractive_index(&self) -> f64 {
 		self.refractive_index
 	}
@@ -32,12 +32,12 @@ impl Dielectric {
 		};
 
 		if (eta_in_over_eta_out * sin_theta) > 1.0 {
-			Some(unit_direction.reflect(&hit.normal()))
+			Some(unit_direction.reflect(hit.normal()))
 		} else {
 			let reflection_prob = schlick(cos_theta, eta_in_over_eta_out);
 
 			if rand() < reflection_prob {
-				Some(unit_direction.reflect(&hit.normal()))
+				Some(unit_direction.reflect(hit.normal()))
 			} else {
 				None
 			}
@@ -47,7 +47,7 @@ impl Dielectric {
 
 
 impl Material for Dielectric {
-	fn scatter(&self, in_ray: &Ray, hit: &BasicHitRecord) -> Option<ScatterRecord> {
+	fn scatter(&self, in_ray: Ray, hit: BasicHitRecord) -> Option<ScatterRecord> {
 		let eta_in_over_eta_out = {
 			if hit.front_face() {
 				1.0 / self.refractive_index
@@ -58,16 +58,16 @@ impl Material for Dielectric {
 
 		let unit_direction = in_ray.direction.normalized();
 
-		let cos_theta = dot(&(-unit_direction), &hit.normal()).min(1.0);
+		let cos_theta = (-unit_direction).dot(hit.normal()).min(1.0);
 		let sin_theta = (1.0 - cos_theta * cos_theta).sqrt();
 
 		let scatter_direction: Vec3 = {
-			match self.is_reflection(&unit_direction, hit, cos_theta, sin_theta) {
+			match self.is_reflection(&unit_direction, &hit, cos_theta, sin_theta) {
 				Some(reflected) => {
 					reflected
 				}
 				None => {
-					unit_direction.refract(&hit.normal(), eta_in_over_eta_out)
+					unit_direction.refract(hit.normal(), eta_in_over_eta_out)
 				}
 			}
 		};

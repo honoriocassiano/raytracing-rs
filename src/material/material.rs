@@ -1,6 +1,6 @@
 use crate::core::Color;
 use crate::core::Ray;
-use crate::hitrecord::BasicHitRecord;
+use crate::hit::BasicHitRecord;
 
 
 pub struct ScatterRecord {
@@ -10,7 +10,7 @@ pub struct ScatterRecord {
 
 
 pub trait Material {
-	fn scatter(&self, in_ray: &Ray, hit: &BasicHitRecord) -> Option<ScatterRecord>;
+	fn scatter(&self, in_ray: Ray, hit: BasicHitRecord) -> Option<ScatterRecord>;
 }
 
 

@@ -1,7 +1,8 @@
 use crate::core::Ray;
 use crate::core::Vec3;
-use crate::hitrecord::BasicHitRecord;
 use crate::material::Material;
+
+use super::hitrecord::BasicHitRecord;
 
 
 use std::rc::Rc;
@@ -16,9 +17,10 @@ pub struct MaterialHitRecord {
 }
 
 
+#[allow(dead_code)]
 impl MaterialHitRecord {
 
-	pub fn new(point: &Point3, t: f64, ray: &Ray, outward_normal: &Vec3, material: Rc<dyn Material>) -> Self {
+	pub fn new(point: Point3, t: f64, ray: Ray, outward_normal: Vec3, material: Rc<dyn Material>) -> Self {
 		Self {
 			hit: BasicHitRecord::new(point, t, ray, outward_normal),
 			material
@@ -32,8 +34,8 @@ impl MaterialHitRecord {
 		}
 	}
 
-	pub fn hit(&self) -> &BasicHitRecord {
-		&self.hit
+	pub fn hit(&self) -> BasicHitRecord {
+		self.hit
 	}
 
 	pub fn point(&self) -> Point3 {
@@ -59,7 +61,7 @@ impl MaterialHitRecord {
 
 
 pub trait Hit {
-	fn hit(&self, ray: &Ray, t_min: f64, t_max: f64) -> Option<MaterialHitRecord>;
+	fn hit(&self, ray: Ray, t_min: f64, t_max: f64) -> Option<MaterialHitRecord>;
 }
 
 
@@ -74,10 +76,12 @@ impl HitList {
 		Self { objects: Vec::new() }
 	}
 
+	#[allow(dead_code)]
 	pub fn with(object: Box<dyn Hit>) -> Self {
 		Self { objects: vec!(object) }
 	}
 
+	#[allow(dead_code)]
 	pub fn clear(&mut self) {
 		self.objects.clear();
 	}
@@ -89,7 +93,7 @@ impl HitList {
 
 
 impl Hit for HitList {
-	fn hit(&self, ray: &Ray, t_min: f64, t_max: f64) -> Option<MaterialHitRecord> {
+	fn hit(&self, ray: Ray, t_min: f64, t_max: f64) -> Option<MaterialHitRecord> {
 		let mut last_hit: Option<MaterialHitRecord> = None;
 		let mut closest_so_far = t_max;
 

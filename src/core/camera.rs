@@ -1,8 +1,9 @@
-use crate::core::{Vec3, cross};
-use crate::core::{Ray, Point3};
+use super::Vec3;
+use super::{Ray, Point3};
 use crate::util::{degrees_to_radians, rand_in_unit_disk};
 
 
+#[allow(dead_code)]
 pub struct Camera {
 	position: Point3,
 	lower_left_corner: Point3,
@@ -28,8 +29,8 @@ impl Camera {
 		let viewport_width: f64 = aspect_ratio * viewport_height;
 
 		let w = (position - look_at).normalized();
-		let u = cross(&up, &w).normalized();
-		let v = cross(&w, &u);
+		let u = up.cross(w).normalized();
+		let v = w.cross(u);
 
 		let horizontal = focus_distance * viewport_width * u;
 		let vertical = focus_distance * viewport_height * v;

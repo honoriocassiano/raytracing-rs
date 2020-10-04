@@ -60,15 +60,27 @@ impl Vec3 {
 		Self (self.0 / norm, self.1 / norm, self.2 / norm)
 	}
 
-	pub fn reflect(&self, normal: &Self) -> Self {
-		*self - 2.0*dot(self, normal) * (*normal)
+	pub fn dot(&self, v: Self) -> Scalar {
+		(self.0 * v.0) + (self.1 * v.1) + (self.2 * v.2)
 	}
 
-	pub fn refract(&self, normal: &Self, eta_in_over_eta_out: Scalar) -> Vec3 {
-		let cos_theta: f64 = dot(&(-(*self)), normal);
+	pub fn cross(&self, v: Self) -> Self {
+		Self (
+			(self.1 * v.2) - (self.2 * v.1),
+			(self.2 * v.0) - (self.0 * v.2),
+			(self.0 * v.1) - (self.1 * v.0)
+		)
+	}
 
-		let vec_out_perp: Self = eta_in_over_eta_out * ((*self) + cos_theta * (*normal));
-		let vec_out_par: Self = -(1.0 - vec_out_perp.sq_length()).abs().sqrt() * (*normal);
+	pub fn reflect(&self, normal: Self) -> Self {
+		*self - 2.0 * self.dot(normal) * (normal)
+	}
+
+	pub fn refract(&self, normal: Self, eta_in_over_eta_out: Scalar) -> Vec3 {
+		let cos_theta: f64 = (-(*self)).dot(normal);
+
+		let vec_out_perp: Self = eta_in_over_eta_out * ((*self) + cos_theta * normal);
+		let vec_out_par: Self = -(1.0 - vec_out_perp.sq_length()).abs().sqrt() * normal;
 
 		vec_out_perp + vec_out_par
 	}
@@ -265,19 +277,4 @@ impl fmt::Display for Vec3 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "({}, {}, {})", self.0, self.1, self.2)
     }
-}
-
-
-// Utilitary functions
-pub fn dot(u: &Vec3, v: &Vec3) -> Scalar {
-	(u.0 * v.0) + (u.1 * v.1) + (u.2 * v.2)
-}
-
-
-pub fn cross(u: &Vec3, v: &Vec3) -> Vec3 {
-	Vec3 (
-		(u.1 * v.2) - (u.2 * v.1),
-		(u.2 * v.0) - (u.0 * v.2),
-		(u.0 * v.1) - (u.1 * v.0)
-	)
 }

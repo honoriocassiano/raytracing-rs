@@ -1,4 +1,3 @@
-use crate::core::{dot};
 use crate::core::{Point3, Ray};
 use crate::material::Material;
 use crate::hit::{Hit, MaterialHitRecord};
@@ -15,12 +14,12 @@ pub struct Sphere {
 
 
 impl Hit for Sphere {
-	fn hit(&self, ray: &Ray, t_min: f64, t_max: f64) -> Option<MaterialHitRecord> {
+	fn hit(&self, ray: Ray, t_min: f64, t_max: f64) -> Option<MaterialHitRecord> {
 
 		let oc = ray.origin - self.center;
 
 		let a: f64 = ray.direction.sq_length();
-		let half_b: f64 = dot(&oc, &ray.direction);
+		let half_b: f64 = oc.dot(ray.direction);
 		let c: f64 = oc.sq_length() - self.radius * self.radius;
 
 		let discriminant: f64 = half_b*half_b - a*c;
@@ -37,7 +36,7 @@ impl Hit for Sphere {
 
 				let outward_normal = (point - self.center) / self.radius;
 
-				return Some(MaterialHitRecord::new(&point, t, ray, &outward_normal, self.material.clone()));
+				return Some(MaterialHitRecord::new(point, t, ray, outward_normal, self.material.clone()));
 			}
 
 			temp = (-half_b + root) / a;
@@ -48,7 +47,7 @@ impl Hit for Sphere {
 
 				let outward_normal = (point - self.center) / self.radius;
 
-				return Some(MaterialHitRecord::new(&point, t, ray, &outward_normal, self.material.clone()));
+				return Some(MaterialHitRecord::new(point, t, ray, outward_normal, self.material.clone()));
 			}
 		}
 
