@@ -1,7 +1,8 @@
 use crate::core::Ray;
 use crate::core::Vec3;
-use crate::hitrecord::BasicHitRecord;
 use crate::material::Material;
+
+use super::hitrecord::BasicHitRecord;
 
 
 use std::rc::Rc;

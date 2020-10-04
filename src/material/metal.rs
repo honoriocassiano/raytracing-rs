@@ -1,6 +1,6 @@
 use crate::core::{Color, Ray};
 use crate::util::rand_unit_vector;
-use crate::hitrecord::BasicHitRecord;
+use crate::hit::BasicHitRecord;
 
 use super::material::{Material, ScatterRecord};
 

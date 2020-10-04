@@ -1,5 +1,5 @@
 use crate::core::{Color, Vec3, Ray};
-use crate::hitrecord::BasicHitRecord;
+use crate::hit::BasicHitRecord;
 use crate::util::rand;
 
 use super::material::{Material, ScatterRecord, schlick};

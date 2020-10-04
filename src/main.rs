@@ -5,7 +5,6 @@ use std::rc::Rc;
 mod core;
 mod material;
 mod hit;
-mod hitrecord;
 mod sphere;
 mod util;
 mod camera;

@@ -1,6 +1,6 @@
 use crate::core::Color;
 use crate::core::Ray;
-use crate::hitrecord::BasicHitRecord;
+use crate::hit::BasicHitRecord;
 
 
 pub struct ScatterRecord {
