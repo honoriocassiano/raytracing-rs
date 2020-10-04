@@ -16,13 +16,13 @@ pub struct BasicHitRecord {
 
 impl BasicHitRecord {
 
-	pub fn new(point: &Point3, t: f64, ray: &Ray, outward_normal: &Vec3) -> Self {
+	pub fn new(point: Point3, t: f64, ray: Ray, outward_normal: Vec3) -> Self {
 
-		let front_face = ray.direction.dot(*outward_normal) < 0.0;
-		let normal = if front_face {*outward_normal} else {-*outward_normal};
+		let front_face = ray.direction.dot(outward_normal) < 0.0;
+		let normal = if front_face {outward_normal} else {-outward_normal};
 
 		Self {
-			point: *point,
+			point,
 			normal,
 			front_face,
 			t

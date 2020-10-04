@@ -18,7 +18,7 @@ pub struct MaterialHitRecord {
 
 impl MaterialHitRecord {
 
-	pub fn new(point: &Point3, t: f64, ray: &Ray, outward_normal: &Vec3, material: Rc<dyn Material>) -> Self {
+	pub fn new(point: Point3, t: f64, ray: Ray, outward_normal: Vec3, material: Rc<dyn Material>) -> Self {
 		Self {
 			hit: BasicHitRecord::new(point, t, ray, outward_normal),
 			material

@@ -36,7 +36,7 @@ impl Hit for Sphere {
 
 				let outward_normal = (point - self.center) / self.radius;
 
-				return Some(MaterialHitRecord::new(&point, t, ray, &outward_normal, self.material.clone()));
+				return Some(MaterialHitRecord::new(point, t, *ray, outward_normal, self.material.clone()));
 			}
 
 			temp = (-half_b + root) / a;
@@ -47,7 +47,7 @@ impl Hit for Sphere {
 
 				let outward_normal = (point - self.center) / self.radius;
 
-				return Some(MaterialHitRecord::new(&point, t, ray, &outward_normal, self.material.clone()));
+				return Some(MaterialHitRecord::new(point, t, *ray, outward_normal, self.material.clone()));
 			}
 		}
 
