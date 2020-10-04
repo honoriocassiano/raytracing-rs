@@ -29,26 +29,24 @@ fn ray_color(ray: &Ray, world: &HitList, depth: i32) -> Color {
 
 	match world.hit(ray, 0.001, INFINITY) {
 		Some(material_hit) => {
-
 			match material_hit.material().scatter(ray, material_hit.hit()) {
 				Some(scatter_record) => {
-					scatter_record.attenuation * ray_color(&scatter_record.ray, world, depth -1)
-				},
+					scatter_record.attenuation * ray_color(&scatter_record.ray, world, depth - 1)
+				}
 				None => {
 					Color(0.0, 0.0, 0.0)
 				}
 			}
-		},
+		}
 		None => {
 			let unit: Vec3 = ray.direction.normalized();
 
 			let t: f64 = 0.5 * (unit.y() + 1.0);
 
-			((1.0-t) * Color(1.0, 1.0, 1.0)) + (t * Color(0.5, 0.7, 1.0))
-		},
+			((1.0 - t) * Color(1.0, 1.0, 1.0)) + (t * Color(0.5, 0.7, 1.0))
+		}
 	}
 }
-
 
 
 fn hit_sphere(ray: &Ray, center: &Point3, radius: f64) -> f64 {
@@ -58,7 +56,7 @@ fn hit_sphere(ray: &Ray, center: &Point3, radius: f64) -> f64 {
 	let half_b: f64 = dot(&oc, &ray.direction);
 	let c: f64 = oc.sq_length() - radius * radius;
 
-	let discriminant: f64 = half_b*half_b - a*c;
+	let discriminant: f64 = half_b * half_b - a * c;
 
 	if discriminant < 0.0 {
 		-1.0
@@ -218,11 +216,9 @@ fn main() {
 	println!("P3\n{} {}\n255", image_width, image_height);
 
 	for line in (0..image_height).rev() {
-
 		eprint!("\rScanlines remaining: {} ", line);
 
 		for column in 0..image_width {
-
 			let mut pixel_color = Color(0.0, 0.0, 0.0);
 
 			for sample in 0..samples_per_pixel {
