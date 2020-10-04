@@ -158,7 +158,7 @@ fn main() {
 		for column in 0..image_width {
 			let mut pixel_color = Color(0.0, 0.0, 0.0);
 
-			for sample in 0..samples_per_pixel {
+			for _sample in 0..samples_per_pixel {
 				let u = (column as f64 + rand()) / (image_width - 1) as f64;
 				let v = (line as f64 + rand()) / (image_height - 1) as f64;
 
