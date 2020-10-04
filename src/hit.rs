@@ -16,6 +16,7 @@ pub struct MaterialHitRecord {
 }
 
 
+#[allow(dead_code)]
 impl MaterialHitRecord {
 
 	pub fn new(point: Point3, t: f64, ray: Ray, outward_normal: Vec3, material: Rc<dyn Material>) -> Self {
@@ -74,10 +75,12 @@ impl HitList {
 		Self { objects: Vec::new() }
 	}
 
+	#[allow(dead_code)]
 	pub fn with(object: Box<dyn Hit>) -> Self {
 		Self { objects: vec!(object) }
 	}
 
+	#[allow(dead_code)]
 	pub fn clear(&mut self) {
 		self.objects.clear();
 	}

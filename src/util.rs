@@ -47,6 +47,7 @@ pub fn rand_unit_vector() -> Vec3 {
 }
 
 
+#[allow(dead_code)]
 pub fn rand_in_hemisphere(normal: Vec3) -> Vec3 {
 	let unit_in_shpere = rand_unit_vector();
 

@@ -10,6 +10,7 @@ pub struct Metal {
 	fuzz: f64
 }
 
+#[allow(dead_code)]
 impl Metal {
 	pub fn new(color: Color, fuzz: f64) -> Self {
 		Self {

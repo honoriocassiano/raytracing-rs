@@ -3,6 +3,7 @@ use crate::core::{Ray, Point3};
 use crate::util::{degrees_to_radians, rand_in_unit_disk};
 
 
+#[allow(dead_code)]
 pub struct Camera {
 	position: Point3,
 	lower_left_corner: Point3,

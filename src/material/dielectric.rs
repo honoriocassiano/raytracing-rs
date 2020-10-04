@@ -16,6 +16,7 @@ impl Dielectric {
 		}
 	}
 
+	#[allow(dead_code)]
 	pub fn refractive_index(&self) -> f64 {
 		self.refractive_index
 	}

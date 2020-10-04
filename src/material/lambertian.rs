@@ -9,6 +9,8 @@ pub struct Lambertian {
 	albedo: Color
 }
 
+
+#[allow(dead_code)]
 impl Lambertian {
 	pub fn new(color: Color) -> Self {
 		Self {
