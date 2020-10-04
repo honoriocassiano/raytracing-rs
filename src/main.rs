@@ -14,10 +14,10 @@ mod camera;
 use crate::core::*;
 use crate::hit::{Hit, HitList};
 use crate::sphere::{Sphere};
-use crate::util::{PI, INFINITY};
+use crate::util::{PI, INFINITY, rand_between};
 use crate::util::{degrees_to_radians, rand, rand_unit_vector, rand_in_hemisphere};
 use crate::camera::Camera;
-use crate::material::{Lambertian, Metal, Dielectric};
+use crate::material::{Lambertian, Metal, Dielectric, Material};
 
 
 fn ray_color(ray: &Ray, world: &HitList, depth: i32) -> Color {
@@ -29,26 +29,24 @@ fn ray_color(ray: &Ray, world: &HitList, depth: i32) -> Color {
 
 	match world.hit(ray, 0.001, INFINITY) {
 		Some(material_hit) => {
-
 			match material_hit.material().scatter(ray, material_hit.hit()) {
 				Some(scatter_record) => {
-					scatter_record.attenuation * ray_color(&scatter_record.ray, world, depth -1)
-				},
+					scatter_record.attenuation * ray_color(&scatter_record.ray, world, depth - 1)
+				}
 				None => {
 					Color(0.0, 0.0, 0.0)
 				}
 			}
-		},
+		}
 		None => {
 			let unit: Vec3 = ray.direction.normalized();
 
 			let t: f64 = 0.5 * (unit.y() + 1.0);
 
-			((1.0-t) * Color(1.0, 1.0, 1.0)) + (t * Color(0.5, 0.7, 1.0))
-		},
+			((1.0 - t) * Color(1.0, 1.0, 1.0)) + (t * Color(0.5, 0.7, 1.0))
+		}
 	}
 }
-
 
 
 fn hit_sphere(ray: &Ray, center: &Point3, radius: f64) -> f64 {
@@ -58,13 +56,89 @@ fn hit_sphere(ray: &Ray, center: &Point3, radius: f64) -> f64 {
 	let half_b: f64 = dot(&oc, &ray.direction);
 	let c: f64 = oc.sq_length() - radius * radius;
 
-	let discriminant: f64 = half_b*half_b - a*c;
+	let discriminant: f64 = half_b * half_b - a * c;
 
 	if discriminant < 0.0 {
 		-1.0
 	} else {
 		(-half_b - discriminant.sqrt()) / a
 	}
+}
+
+
+fn generate_random_scene() -> HitList {
+	let mut world = HitList::new();
+
+	let ground_material = Rc::new(Lambertian::new(&Color(0.5, 0.5, 0.5)));
+
+	world.add(Box::new(Sphere {
+		center: Point3(0.0, -1000.0, 0.0),
+		radius: 1000.0,
+		material: ground_material,
+	}));
+
+	for a in -11..11 {
+		for b in -11..11 {
+			let choose_material = rand();
+
+			let center = Point3(
+				(a as f64) + (0.9 * rand()),
+				0.2,
+				(b as f64) + (0.9 * rand()));
+
+			if (center - Point3(4.0, 0.2, 0.0)).length() > 0.9 {
+				let sphere_material: Rc<dyn Material>;
+
+				if choose_material < 0.8 {
+					// Diffuse
+					let albedo = Color::rand() * Color::rand();
+
+					sphere_material = Rc::new(Lambertian::new(&albedo));
+
+				} else if choose_material < 0.95 {
+					// Metal
+					let albedo = Color::rand_between(0.5, 1.0);
+					let fuzz = rand_between(0.0, 0.5);
+
+					sphere_material = Rc::new(Metal::new(&albedo, fuzz));
+
+				} else {
+					// Glass
+					sphere_material = Rc::new(Dielectric::new(1.5));
+				}
+
+				world.add(Box::new(Sphere {
+					center,
+					radius: 0.2,
+					material: sphere_material,
+				}));
+			}
+		}
+	}
+
+	let material1 = Rc::new(Dielectric::new(1.5));
+	let material2 = Rc::new(Lambertian::new(&Color(0.4, 0.4, 0.1)));
+	let material3 = Rc::new(Metal::new(&Color(0.7, 0.6, 0.5), 0.0));
+
+	world.add(Box::new(Sphere {
+		center: Point3(0.0, 1.0, 0.0),
+		radius: 1.0,
+		material: material1,
+	}));
+
+	world.add(Box::new(Sphere {
+		center: Point3(-4.0, 1.0, 0.0),
+		radius: 1.0,
+		material: material2,
+	}));
+
+	world.add(Box::new(Sphere {
+		center: Point3(4.0, 1.0, 0.0),
+		radius: 1.0,
+		material: material3,
+	}));
+
+	world
 }
 
 
@@ -117,20 +191,22 @@ fn main() {
 
 	let aspect_ratio: f64 = 16.0 / 9.0;
 
-	let image_width: i32 = 400;
+	// let image_width: i32 = 400;
+	let image_width: i32 = 1280;
 	let image_height: i32 = ((image_width as f64) / aspect_ratio) as i32;
 
 	let max_depth = 50;
-	let samples_per_pixel: i32 = 100;
+	// let samples_per_pixel: i32 = 100;
+	let samples_per_pixel: i32 = 500;
 
-	let world = generate_world();
+	let world = generate_random_scene();
 
-	let position = Point3(3.0, 3.0, 2.0);
-	let look_at = Point3(0.0, 0.0, -1.0);
+	let position = Point3(13.0, 2.0, 3.0);
+	let look_at = Point3(0.0, 0.0, 0.0);
 	let up = Point3(0.0, 1.0, 0.0);
 
-	let distance_to_focus = (position - look_at).length();
-	let aperture = 2.0;
+	let distance_to_focus = 10.0;
+	let aperture = 0.1;
 
 	let camera = Camera::new(
 		position,
@@ -140,11 +216,9 @@ fn main() {
 	println!("P3\n{} {}\n255", image_width, image_height);
 
 	for line in (0..image_height).rev() {
-
 		eprint!("\rScanlines remaining: {} ", line);
 
 		for column in 0..image_width {
-
 			let mut pixel_color = Color(0.0, 0.0, 0.0);
 
 			for sample in 0..samples_per_pixel {
