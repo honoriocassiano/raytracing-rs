@@ -32,8 +32,8 @@ impl MaterialHitRecord {
 		}
 	}
 
-	pub fn hit(&self) -> &BasicHitRecord {
-		&self.hit
+	pub fn hit(&self) -> BasicHitRecord {
+		self.hit
 	}
 
 	pub fn point(&self) -> Point3 {
