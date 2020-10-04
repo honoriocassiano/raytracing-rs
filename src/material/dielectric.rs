@@ -67,7 +67,7 @@ impl Material for Dielectric {
 					reflected
 				}
 				None => {
-					unit_direction.refract(&hit.normal(), eta_in_over_eta_out)
+					unit_direction.refract(hit.normal(), eta_in_over_eta_out)
 				}
 			}
 		};

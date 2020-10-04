@@ -76,11 +76,11 @@ impl Vec3 {
 		*self - 2.0 * self.dot(normal) * (normal)
 	}
 
-	pub fn refract(&self, normal: &Self, eta_in_over_eta_out: Scalar) -> Vec3 {
-		let cos_theta: f64 = (-(*self)).dot(*normal);
+	pub fn refract(&self, normal: Self, eta_in_over_eta_out: Scalar) -> Vec3 {
+		let cos_theta: f64 = (-(*self)).dot(normal);
 
-		let vec_out_perp: Self = eta_in_over_eta_out * ((*self) + cos_theta * (*normal));
-		let vec_out_par: Self = -(1.0 - vec_out_perp.sq_length()).abs().sqrt() * (*normal);
+		let vec_out_perp: Self = eta_in_over_eta_out * ((*self) + cos_theta * normal);
+		let vec_out_par: Self = -(1.0 - vec_out_perp.sq_length()).abs().sqrt() * normal;
 
 		vec_out_perp + vec_out_par
 	}
