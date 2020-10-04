@@ -1,5 +1,5 @@
 use rand::prelude::*;
-use crate::core::{Vec3, dot};
+use crate::core::{Vec3};
 
 
 pub const INFINITY: f64 = std::f64::INFINITY;
@@ -50,7 +50,7 @@ pub fn rand_unit_vector() -> Vec3 {
 pub fn rand_in_hemisphere(normal: &Vec3) -> Vec3 {
 	let unit_in_shpere = rand_unit_vector();
 
-	let same_hemispherial = dot(&unit_in_shpere, normal) > 0.0;
+	let same_hemispherial = unit_in_shpere.dot(*normal) > 0.0;
 
 	match same_hemispherial {
 		true => unit_in_shpere,

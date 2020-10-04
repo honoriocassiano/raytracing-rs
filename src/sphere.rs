@@ -1,4 +1,3 @@
-use crate::core::{dot};
 use crate::core::{Point3, Ray};
 use crate::material::Material;
 use crate::hit::{Hit, MaterialHitRecord};
@@ -20,7 +19,7 @@ impl Hit for Sphere {
 		let oc = ray.origin - self.center;
 
 		let a: f64 = ray.direction.sq_length();
-		let half_b: f64 = dot(&oc, &ray.direction);
+		let half_b: f64 = oc.dot(ray.direction);
 		let c: f64 = oc.sq_length() - self.radius * self.radius;
 
 		let discriminant: f64 = half_b*half_b - a*c;

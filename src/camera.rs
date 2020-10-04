@@ -1,4 +1,4 @@
-use crate::core::{Vec3, cross};
+use crate::core::{Vec3};
 use crate::core::{Ray, Point3};
 use crate::util::{degrees_to_radians, rand_in_unit_disk};
 
@@ -28,8 +28,8 @@ impl Camera {
 		let viewport_width: f64 = aspect_ratio * viewport_height;
 
 		let w = (position - look_at).normalized();
-		let u = cross(&up, &w).normalized();
-		let v = cross(&w, &u);
+		let u = up.cross(w).normalized();
+		let v = w.cross(u);
 
 		let horizontal = focus_distance * viewport_width * u;
 		let vertical = focus_distance * viewport_height * v;

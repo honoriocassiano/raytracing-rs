@@ -1,4 +1,4 @@
-use crate::core::{Color, Vec3, Ray, dot};
+use crate::core::{Color, Vec3, Ray};
 use crate::util::{rand_unit_vector};
 use crate::hitrecord::BasicHitRecord;
 use crate::util::rand;
@@ -58,7 +58,7 @@ impl Material for Dielectric {
 
 		let unit_direction = in_ray.direction.normalized();
 
-		let cos_theta = dot(&(-unit_direction), &hit.normal()).min(1.0);
+		let cos_theta = (-unit_direction).dot(hit.normal()).min(1.0);
 		let sin_theta = (1.0 - cos_theta * cos_theta).sqrt();
 
 		let scatter_direction: Vec3 = {

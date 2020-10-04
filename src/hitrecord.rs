@@ -1,5 +1,5 @@
 use crate::core::Ray;
-use crate::core::{Vec3, dot};
+use crate::core::{Vec3};
 
 
 type Point3 = Vec3;
@@ -18,7 +18,7 @@ impl BasicHitRecord {
 
 	pub fn new(point: &Point3, t: f64, ray: &Ray, outward_normal: &Vec3) -> Self {
 
-		let front_face = dot(&ray.direction, &outward_normal) < 0.0;
+		let front_face = ray.direction.dot(*outward_normal) < 0.0;
 		let normal = if front_face {*outward_normal} else {-*outward_normal};
 
 		Self {

@@ -53,7 +53,7 @@ fn hit_sphere(ray: &Ray, center: &Point3, radius: f64) -> f64 {
 	let oc = ray.origin - *center;
 
 	let a: f64 = ray.direction.sq_length();
-	let half_b: f64 = dot(&oc, &ray.direction);
+	let half_b: f64 = oc.dot(ray.direction);
 	let c: f64 = oc.sq_length() - radius * radius;
 
 	let discriminant: f64 = half_b * half_b - a * c;

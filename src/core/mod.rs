@@ -3,8 +3,6 @@ mod color;
 mod ray;
 
 pub use vec::Vec3;
-pub use vec::dot;
-pub use vec::cross;
 
 pub use vec::Vec3 as Point3;
 
