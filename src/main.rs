@@ -14,10 +14,10 @@ mod camera;
 use crate::core::*;
 use crate::hit::{Hit, HitList};
 use crate::sphere::{Sphere};
-use crate::util::{PI, INFINITY};
+use crate::util::{PI, INFINITY, rand_between};
 use crate::util::{degrees_to_radians, rand, rand_unit_vector, rand_in_hemisphere};
 use crate::camera::Camera;
-use crate::material::{Lambertian, Metal, Dielectric};
+use crate::material::{Lambertian, Metal, Dielectric, Material};
 
 
 fn ray_color(ray: &Ray, world: &HitList, depth: i32) -> Color {
@@ -193,20 +193,22 @@ fn main() {
 
 	let aspect_ratio: f64 = 16.0 / 9.0;
 
-	let image_width: i32 = 400;
+	// let image_width: i32 = 400;
+	let image_width: i32 = 1280;
 	let image_height: i32 = ((image_width as f64) / aspect_ratio) as i32;
 
 	let max_depth = 50;
-	let samples_per_pixel: i32 = 100;
+	// let samples_per_pixel: i32 = 100;
+	let samples_per_pixel: i32 = 500;
 
-	let world = generate_world();
+	let world = generate_random_scene();
 
-	let position = Point3(3.0, 3.0, 2.0);
-	let look_at = Point3(0.0, 0.0, -1.0);
+	let position = Point3(13.0, 2.0, 3.0);
+	let look_at = Point3(0.0, 0.0, 0.0);
 	let up = Point3(0.0, 1.0, 0.0);
 
-	let distance_to_focus = (position - look_at).length();
-	let aperture = 2.0;
+	let distance_to_focus = 10.0;
+	let aperture = 0.1;
 
 	let camera = Camera::new(
 		position,
