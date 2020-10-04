@@ -1,5 +1,4 @@
 use crate::core::{Color, Vec3, Ray};
-use crate::util::{rand_unit_vector};
 use crate::hitrecord::BasicHitRecord;
 use crate::util::rand;
 

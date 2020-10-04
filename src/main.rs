@@ -14,8 +14,7 @@ mod camera;
 use crate::core::*;
 use crate::hit::{Hit, HitList};
 use crate::sphere::{Sphere};
-use crate::util::{PI, INFINITY, rand_between};
-use crate::util::{degrees_to_radians, rand, rand_unit_vector, rand_in_hemisphere};
+use crate::util::{INFINITY, rand_between, rand};
 use crate::camera::Camera;
 use crate::material::{Lambertian, Metal, Dielectric, Material};
 
