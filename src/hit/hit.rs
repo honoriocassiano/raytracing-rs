@@ -98,12 +98,9 @@ impl Hit for HitList {
 		let mut closest_so_far = t_max;
 
 		for object in &self.objects {
-			match object.hit(ray, t_min, closest_so_far) {
-				Some(value) => {
-					closest_so_far = value.t();
-					last_hit = Some(value);
-				}
-				None => {}
+			if let Some(value) = object.hit(ray, t_min, closest_so_far) {
+				closest_so_far = value.t();
+				last_hit = Some(value);
 			}
 		}
 
