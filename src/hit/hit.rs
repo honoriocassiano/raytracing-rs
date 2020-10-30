@@ -55,7 +55,7 @@ impl MaterialHitRecord {
 	}
 
 	pub fn material(&self) -> Rc<dyn Material> {
-		return self.material.clone()
+		self.material.clone()
 	}
 }
 
