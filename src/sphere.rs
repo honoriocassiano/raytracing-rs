@@ -1,6 +1,6 @@
 use crate::core::{Point3, Ray};
-use crate::material::Material;
-use crate::hit::{Hit, MaterialHitRecord};
+use crate::materials::Material;
+use crate::scene::{Hit, MaterialHitRecord};
 
 
 use std::rc::Rc;

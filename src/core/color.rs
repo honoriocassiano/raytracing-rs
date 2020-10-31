@@ -17,5 +17,5 @@ pub fn write_color<T: Write>(out: &mut T, pixel_color: Color, samples_per_pixel:
 	let ig = (255.999 * clamp(g, 0.0, 0.999)) as i32;
 	let ib = (255.999 * clamp(b, 0.0, 0.999)) as i32;
 
-	out.write(format!("{} {} {}\n", ir, ig, ib).as_bytes()).unwrap();
+	out.write_all(format!("{} {} {}\n", ir, ig, ib).as_bytes()).unwrap();
 }

@@ -1,6 +1,6 @@
 use crate::core::Ray;
 use crate::core::Vec3;
-use crate::material::Material;
+use crate::materials::Material;
 
 use super::hitrecord::BasicHitRecord;
 
@@ -55,7 +55,7 @@ impl MaterialHitRecord {
 	}
 
 	pub fn material(&self) -> Rc<dyn Material> {
-		return self.material.clone()
+		self.material.clone()
 	}
 }
 
@@ -98,12 +98,9 @@ impl Hit for HitList {
 		let mut closest_so_far = t_max;
 
 		for object in &self.objects {
-			match object.hit(ray, t_min, closest_so_far) {
-				Some(value) => {
-					closest_so_far = value.t();
-					last_hit = Some(value);
-				}
-				None => {}
+			if let Some(value) = object.hit(ray, t_min, closest_so_far) {
+				closest_so_far = value.t();
+				last_hit = Some(value);
 			}
 		}
 
