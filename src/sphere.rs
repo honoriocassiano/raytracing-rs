@@ -1,5 +1,5 @@
 use crate::core::{Point3, Ray};
-use crate::material::Material;
+use crate::materials::Material;
 use crate::hit::{Hit, MaterialHitRecord};
 
 

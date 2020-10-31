@@ -1,6 +1,6 @@
 use crate::core::Ray;
 use crate::core::Vec3;
-use crate::material::Material;
+use crate::materials::Material;
 
 use super::hitrecord::BasicHitRecord;
 

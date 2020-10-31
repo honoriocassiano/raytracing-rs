@@ -3,7 +3,7 @@ use std::rc::Rc;
 
 
 mod core;
-mod material;
+mod materials;
 mod hit;
 mod sphere;
 mod util;
@@ -14,7 +14,7 @@ use crate::hit::{Hit, HitList};
 use crate::sphere::{Sphere};
 use crate::util::{INFINITY, rand_between, rand};
 use crate::core::Camera;
-use crate::material::{Lambertian, Metal, Dielectric, Material};
+use crate::materials::{Lambertian, Metal, Dielectric, Material};
 
 
 fn ray_color(ray: Ray, world: &HitList, depth: i32) -> Color {
