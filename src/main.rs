@@ -4,13 +4,13 @@ use std::rc::Rc;
 
 mod core;
 mod materials;
-mod hit;
+mod scene;
 mod sphere;
 mod util;
 
 
 use crate::core::*;
-use crate::hit::{Hit, HitList};
+use crate::scene::{Hit, HitList};
 use crate::sphere::{Sphere};
 use crate::util::{INFINITY, rand_between, rand};
 use crate::core::Camera;
