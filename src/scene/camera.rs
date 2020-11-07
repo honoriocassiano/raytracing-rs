@@ -63,7 +63,7 @@ impl Camera {
         }
     }
 
-    pub fn ray(&self, s: f64, t: f64) -> Ray3 {
+    pub fn ray(&self, s: f64, t: f64) -> TimeRay3 {
         let rd: Vec3 = self.lens_radius * rand_in_unit_disk();
         let offset: Vec3 = (self.u * rd.x()) + (self.v * rd.y());
 
@@ -71,12 +71,8 @@ impl Camera {
         let direction = self.lower_left_corner + (s * self.horizontal) + (t * self.vertical)
             - self.position
             - offset;
+        let time = rand_between(self.time_interval.start(), self.time_interval.end());
 
-        Ray3::new(origin, direction)
-
-        // Ray {
-        // 	origin: self.position,
-        // 	direction: self.lower_left_corner + (s * self.horizontal) + (t * self.vertical) - self.position,
-        // }
+        TimeRay3::new(origin, direction, time)
     }
 }

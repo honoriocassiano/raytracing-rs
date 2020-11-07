@@ -156,7 +156,8 @@ fn main() {
                 let u = (column as f64 + rand()) / (image_width - 1) as f64;
                 let v = (line as f64 + rand()) / (image_height - 1) as f64;
 
-                let ray = camera.ray(u, v);
+                // FIXME Remove this cast
+                let ray = camera.ray(u, v).to_ray();
 
                 pixel_color += ray_color(ray, &world, max_depth);
             }
