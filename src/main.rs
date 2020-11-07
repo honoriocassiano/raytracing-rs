@@ -10,6 +10,7 @@ use crate::core::color::write_color;
 use crate::core::color::Color;
 use crate::core::geometry::{Point3, Ray, Ray3, Vec3, Vector};
 use crate::core::math::rand::{rand, rand_between};
+use crate::core::time::Interval;
 use crate::materials::{Dielectric, Lambertian, Material, Metal};
 use crate::scene::{Hit, HitList};
 use scene::camera::Camera;
@@ -140,6 +141,7 @@ fn main() {
         aspect_ratio,
         aperture,
         distance_to_focus,
+        Interval::new(0.0, 1.0),
     );
 
     println!("P3\n{} {}\n255", image_width, image_height);
