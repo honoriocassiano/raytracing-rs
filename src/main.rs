@@ -8,7 +8,7 @@ mod scene;
 use self::core::math::constants::INFINITY;
 use crate::core::color::write_color;
 use crate::core::color::Color;
-use crate::core::geometry::{Point3, Ray, Ray3, Vec3, Vector};
+use crate::core::geometry::{Point3, Ray, Vec3, Vector};
 use crate::core::math::rand::{rand, rand_between};
 use crate::core::time::{Interval, TimeRay3};
 use crate::materials::{Dielectric, Lambertian, Material, Metal};

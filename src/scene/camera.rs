@@ -1,4 +1,4 @@
-use crate::core::geometry::{Point3, Ray3, Vec3, Vector};
+use crate::core::geometry::{Point3, Vec3, Vector};
 use crate::core::math::geometry::degrees_to_radians;
 use crate::core::math::rand::{rand_between, rand_in_unit_disk};
 use crate::core::time::{Interval, TimeRay3};

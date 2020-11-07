@@ -1,5 +1,4 @@
 use crate::core::color::Color;
-use crate::core::geometry::Ray3;
 use crate::core::time::TimeRay3;
 use crate::scene::BasicHitRecord;
 

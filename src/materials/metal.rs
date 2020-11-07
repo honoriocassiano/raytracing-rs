@@ -1,5 +1,5 @@
 use crate::core::color::Color;
-use crate::core::geometry::{Ray, Ray3, Vector};
+use crate::core::geometry::{Ray, Vector};
 use crate::core::optic::Reflect;
 
 use crate::core::math::rand::rand_unit_vector;
