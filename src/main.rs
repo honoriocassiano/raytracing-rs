@@ -22,12 +22,11 @@ fn ray_color(ray: Ray3, world: &HitList, depth: i32) -> Color {
         return Color(0.0, 0.0, 0.0);
     }
 
-    match world.hit(ray, 0.001, INFINITY) {
-        Some(material_hit) => match material_hit
-            .material()
-            // FIXME Pass TimeRay3 as argument and use here
-            .scatter(TimeRay3::from_ray(ray), material_hit.hit())
-        {
+    // FIXME Pass TimeRay3 as argument and use here
+    let tray = TimeRay3::from_ray(ray);
+
+    match world.hit(tray, 0.001, INFINITY) {
+        Some(material_hit) => match material_hit.material().scatter(tray, material_hit.hit()) {
             Some(scatter_record) => {
                 scatter_record.attenuation * ray_color(scatter_record.ray, world, depth - 1)
             }

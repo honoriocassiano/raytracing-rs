@@ -2,7 +2,7 @@ use crate::core::geometry::{Point3, Ray, Ray3, Vector};
 use crate::materials::Material;
 use crate::scene::{Hit, MaterialHitRecord};
 
-use crate::core::time::{Interval, Timestamp};
+use crate::core::time::{Interval, TimeRay3, Timestamp};
 use crate::scene::object::sphere::Sphere;
 use std::rc::Rc;
 
@@ -45,9 +45,8 @@ impl MovingSphere {
 }
 
 impl Hit for MovingSphere {
-    fn hit(&self, ray: Ray3, t_min: f64, t_max: f64) -> Option<MaterialHitRecord> {
-        // FIXME Change argument ray to TimeRay3 and use .time() as parameter
-        let oc = ray.origin() - self.center(0.0);
+    fn hit(&self, ray: TimeRay3, t_min: f64, t_max: f64) -> Option<MaterialHitRecord> {
+        let oc = ray.origin() - self.center(ray.time());
 
         let a: f64 = ray.direction().sq_length();
         let half_b: f64 = oc.dot(ray.direction());
@@ -63,13 +62,13 @@ impl Hit for MovingSphere {
                     let t = val;
                     let point = ray.at(val);
 
-                    // FIXME Change argument ray to TimeRay3 and use .time() as parameter
-                    let outward_normal = (point - self.center(0.0)) / self.radius;
+                    let outward_normal = (point - self.center(ray.time())) / self.radius;
 
                     return Some(MaterialHitRecord::new(
                         point,
                         t,
-                        ray,
+                        // FIXME Use TimeRay3 here
+                        ray.to_ray(),
                         outward_normal,
                         self.material.clone(),
                     ));

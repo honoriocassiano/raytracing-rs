@@ -2,6 +2,7 @@ use crate::core::geometry::{Point3, Ray, Ray3, Vector};
 use crate::materials::Material;
 use crate::scene::{Hit, MaterialHitRecord};
 
+use crate::core::time::TimeRay3;
 use std::rc::Rc;
 
 pub struct Sphere {
@@ -11,7 +12,7 @@ pub struct Sphere {
 }
 
 impl Hit for Sphere {
-    fn hit(&self, ray: Ray3, t_min: f64, t_max: f64) -> Option<MaterialHitRecord> {
+    fn hit(&self, ray: TimeRay3, t_min: f64, t_max: f64) -> Option<MaterialHitRecord> {
         let oc = ray.origin() - self.center;
 
         let a: f64 = ray.direction().sq_length();
@@ -33,7 +34,8 @@ impl Hit for Sphere {
                     return Some(MaterialHitRecord::new(
                         point,
                         t,
-                        ray,
+                        // FIXME Use TimeRay3 here
+                        ray.to_ray(),
                         outward_normal,
                         self.material.clone(),
                     ));
