@@ -1,19 +1,17 @@
+pub trait Vector: Copy {
+    type Scalar;
 
-pub trait Vector : Copy {
+    fn zero() -> Self;
 
-	type Scalar;
+    fn length(&self) -> Self::Scalar;
 
-	fn zero() -> Self;
+    fn sq_length(&self) -> Self::Scalar;
 
-	fn length(&self) -> Self::Scalar;
+    fn normalize(&mut self) -> &mut Self;
 
-	fn sq_length(&self) -> Self::Scalar;
+    fn normalized(&self) -> Self;
 
-	fn normalize(&mut self) -> &mut Self;
+    fn dot(&self, v: Self) -> Self::Scalar;
 
-	fn normalized(&self) -> Self;
-
-	fn dot(&self, v: Self) -> Self::Scalar;
-
-	fn cross(&self, v: Self) -> Self;
+    fn cross(&self, v: Self) -> Self;
 }

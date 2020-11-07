@@ -1,6 +1,6 @@
+mod ray;
 mod vec3;
 mod vector;
-mod ray;
 
 pub use vec3::Vec3;
 

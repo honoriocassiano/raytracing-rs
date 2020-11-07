@@ -3,55 +3,62 @@ use crate::core::geometry::{Point3, Ray, Vector};
 use crate::materials::Material;
 use crate::scene::{Hit, MaterialHitRecord};
 
-
 use std::rc::Rc;
 
-
 pub struct Sphere {
-	pub center: Point3,
-	pub radius: f64,
-	pub material: Rc<dyn Material>
+    pub center: Point3,
+    pub radius: f64,
+    pub material: Rc<dyn Material>,
 }
 
-
 impl Hit for Sphere {
-	fn hit(&self, ray: Ray, t_min: f64, t_max: f64) -> Option<MaterialHitRecord> {
+    fn hit(&self, ray: Ray, t_min: f64, t_max: f64) -> Option<MaterialHitRecord> {
+        let oc = ray.origin - self.center;
 
-		let oc = ray.origin - self.center;
+        let a: f64 = ray.direction.sq_length();
+        let half_b: f64 = oc.dot(ray.direction);
+        let c: f64 = oc.sq_length() - self.radius * self.radius;
 
-		let a: f64 = ray.direction.sq_length();
-		let half_b: f64 = oc.dot(ray.direction);
-		let c: f64 = oc.sq_length() - self.radius * self.radius;
+        let discriminant: f64 = half_b * half_b - a * c;
 
-		let discriminant: f64 = half_b*half_b - a*c;
+        if discriminant > 0.0 {
+            let root: f64 = discriminant.sqrt();
 
-		if discriminant > 0.0 {
-			let root: f64 = discriminant.sqrt();
+            let mut temp: f64 = (-half_b - root) / a;
 
-			let mut temp: f64 = (-half_b - root) / a;
+            if (t_min < temp) && (temp < t_max) {
+                let t = temp;
+                let point = ray.at(temp);
 
-			if (t_min < temp) && (temp < t_max) {
+                let outward_normal = (point - self.center) / self.radius;
 
-				let t = temp;
-				let point = ray.at(temp);
+                return Some(MaterialHitRecord::new(
+                    point,
+                    t,
+                    ray,
+                    outward_normal,
+                    self.material.clone(),
+                ));
+            }
 
-				let outward_normal = (point - self.center) / self.radius;
+            temp = (-half_b + root) / a;
 
-				return Some(MaterialHitRecord::new(point, t, ray, outward_normal, self.material.clone()));
-			}
+            if (t_min < temp) && (temp < t_max) {
+                let t = temp;
+                let point = ray.at(temp);
 
-			temp = (-half_b + root) / a;
+                let outward_normal = (point - self.center) / self.radius;
 
-			if (t_min < temp) && (temp < t_max) {
-				let t = temp;
-				let point = ray.at(temp);
+                return Some(MaterialHitRecord::new(
+                    point,
+                    t,
+                    ray,
+                    outward_normal,
+                    self.material.clone(),
+                ));
+            }
+        }
 
-				let outward_normal = (point - self.center) / self.radius;
-
-				return Some(MaterialHitRecord::new(point, t, ray, outward_normal, self.material.clone()));
-			}
-		}
-
-		None
-	}
+        None
+    }
 }
