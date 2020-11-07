@@ -1,4 +1,4 @@
-use crate::util::clamp;
+use crate::core::math::numeric::clamp;
 use std::io::Write;
 
 pub use crate::core::geometry::Vec3 as Color;
