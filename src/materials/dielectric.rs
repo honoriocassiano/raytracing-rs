@@ -76,7 +76,7 @@ impl Material for Dielectric {
         };
 
         let scatter_record = ScatterRecord {
-            ray: Ray3::new(hit.point(), scatter_direction),
+            ray: TimeRay3::new(hit.point(), scatter_direction, in_ray.time()),
             attenuation: Color(1.0, 1.0, 1.0),
         };
 

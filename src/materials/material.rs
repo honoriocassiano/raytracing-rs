@@ -5,7 +5,7 @@ use crate::scene::BasicHitRecord;
 
 pub struct ScatterRecord {
     pub attenuation: Color,
-    pub ray: Ray3,
+    pub ray: TimeRay3,
 }
 
 pub trait Material {

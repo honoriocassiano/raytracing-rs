@@ -36,7 +36,11 @@ impl Material for Metal {
         let reflected = in_ray.direction().normalized().reflect(hit.normal());
 
         let scatter_record = ScatterRecord {
-            ray: Ray3::new(hit.point(), reflected + self.fuzz * rand_unit_vector()),
+            ray: TimeRay3::new(
+                hit.point(),
+                reflected + self.fuzz * rand_unit_vector(),
+                in_ray.time(),
+            ),
             attenuation: self.albedo,
         };
 
