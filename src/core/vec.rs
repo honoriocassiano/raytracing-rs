@@ -1,5 +1,8 @@
-use std::ops;
 use std::fmt;
+use std::ops;
+
+use super::optic::{Reflect, Refract};
+use super::Vector;
 use crate::util::{rand, rand_between};
 
 type Scalar = f64;
@@ -10,10 +13,6 @@ pub struct Vec3 (pub Scalar, pub Scalar, pub Scalar);
 
 
 impl Vec3 {
-
-	pub fn zero() -> Self {
-		Self(0.0, 0.0, 0.0)
-	}
 
 	pub fn rand() -> Self {
 		Self(rand(), rand(), rand())
@@ -34,16 +33,26 @@ impl Vec3 {
 	pub fn z(&self) -> Scalar {
 		self.2
 	}
+}
 
-	pub fn length(&self) -> Scalar {
+
+impl Vector for Vec3 {
+
+	type Scalar = Scalar;
+
+	fn zero() -> Self {
+		Self(0.0, 0.0, 0.0)
+	}
+
+	fn length(&self) -> Self::Scalar {
 		self.sq_length().sqrt()
 	}
 
-	pub fn sq_length(&self) -> Scalar {
+	fn sq_length(&self) -> Self::Scalar {
 		(self.0 * self.0) + (self.1 * self.1) + (self.2 * self.2)
 	}
 
-	pub fn normalize(&mut self) -> &mut Self {
+	fn normalize(&mut self) -> &mut Self {
 		let norm = self.length();
 		*self = Self (
 			self.0 / norm,
@@ -54,29 +63,37 @@ impl Vec3 {
 		self
 	}
 
-	pub fn normalized(&self) -> Self {
+	fn normalized(&self) -> Self {
 		let norm = self.length();
 
 		Self (self.0 / norm, self.1 / norm, self.2 / norm)
 	}
 
-	pub fn dot(&self, v: Self) -> Scalar {
+	fn dot(&self, v: Self) -> Self::Scalar {
 		(self.0 * v.0) + (self.1 * v.1) + (self.2 * v.2)
 	}
 
-	pub fn cross(&self, v: Self) -> Self {
+	fn cross(&self, v: Self) -> Self {
 		Self (
 			(self.1 * v.2) - (self.2 * v.1),
 			(self.2 * v.0) - (self.0 * v.2),
 			(self.0 * v.1) - (self.1 * v.0)
 		)
 	}
+}
 
-	pub fn reflect(&self, normal: Self) -> Self {
+
+impl Reflect for Vec3 {
+	fn reflect(&self, normal: Self) -> Self {
 		*self - 2.0 * self.dot(normal) * (normal)
 	}
+}
 
-	pub fn refract(&self, normal: Self, eta_in_over_eta_out: Scalar) -> Vec3 {
+
+impl Refract for Vec3 {
+	type Scalar = Scalar;
+
+	fn refract(&self, normal: Self, eta_in_over_eta_out: Self::Scalar) -> Vec3 {
 		let cos_theta: f64 = (-(*self)).dot(normal);
 
 		let vec_out_perp: Self = eta_in_over_eta_out * ((*self) + cos_theta * normal);

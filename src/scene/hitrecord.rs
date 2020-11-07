@@ -1,4 +1,4 @@
-use crate::core::Ray;
+use crate::core::{Ray, Vector};
 use crate::core::Vec3;
 
 

@@ -1,4 +1,4 @@
-use crate::core::{Color, Ray};
+use crate::core::{Color, Ray, Vector, Reflect};
 use crate::util::rand_unit_vector;
 use crate::scene::BasicHitRecord;
 

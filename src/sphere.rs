@@ -1,4 +1,4 @@
-use crate::core::{Point3, Ray};
+use crate::core::{Point3, Ray, Vector};
 use crate::materials::Material;
 use crate::scene::{Hit, MaterialHitRecord};
 

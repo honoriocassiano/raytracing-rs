@@ -1,4 +1,5 @@
 use super::Vec3;
+use super::Vector;
 use super::{Ray, Point3};
 use crate::util::{degrees_to_radians, rand_in_unit_disk};
 
