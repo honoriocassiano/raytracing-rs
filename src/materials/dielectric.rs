@@ -1,5 +1,5 @@
 use crate::core::color::Color;
-use crate::core::geometry::{Ray, Vec3, Vector};
+use crate::core::geometry::{Ray, Ray3, Vec3, Vector};
 use crate::core::math::optic::schlick;
 use crate::core::optic::{Reflect, Refract};
 
@@ -53,7 +53,7 @@ impl Dielectric {
 }
 
 impl Material for Dielectric {
-    fn scatter(&self, in_ray: Ray, hit: BasicHitRecord) -> Option<ScatterRecord> {
+    fn scatter(&self, in_ray: Ray3, hit: BasicHitRecord) -> Option<ScatterRecord> {
         let eta_in_over_eta_out = {
             if hit.front_face() {
                 1.0 / self.refractive_index
@@ -62,7 +62,7 @@ impl Material for Dielectric {
             }
         };
 
-        let unit_direction = in_ray.direction.normalized();
+        let unit_direction = in_ray.direction().normalized();
 
         let cos_theta = (-unit_direction).dot(hit.normal()).min(1.0);
         let sin_theta = (1.0 - cos_theta * cos_theta).sqrt();
@@ -75,10 +75,7 @@ impl Material for Dielectric {
         };
 
         let scatter_record = ScatterRecord {
-            ray: Ray {
-                origin: hit.point(),
-                direction: scatter_direction,
-            },
+            ray: Ray3::new(hit.point(), scatter_direction),
             attenuation: Color(1.0, 1.0, 1.0),
         };
 

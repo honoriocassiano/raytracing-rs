@@ -1,5 +1,5 @@
 use crate::core::color::Color;
-use crate::core::geometry::Ray;
+use crate::core::geometry::Ray3;
 use crate::core::math::rand::rand_unit_vector;
 use crate::scene::BasicHitRecord;
 
@@ -21,14 +21,11 @@ impl Lambertian {
 }
 
 impl Material for Lambertian {
-    fn scatter(&self, _in_ray: Ray, hit: BasicHitRecord) -> Option<ScatterRecord> {
+    fn scatter(&self, _in_ray: Ray3, hit: BasicHitRecord) -> Option<ScatterRecord> {
         let scatter_direction = hit.normal() + rand_unit_vector();
 
         let scatter_record = ScatterRecord {
-            ray: Ray {
-                origin: hit.point(),
-                direction: scatter_direction,
-            },
+            ray: Ray3::new(hit.point(), scatter_direction),
             attenuation: self.albedo,
         };
 

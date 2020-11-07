@@ -1,4 +1,4 @@
-use crate::core::geometry::{Point3, Ray, Vector};
+use crate::core::geometry::{Point3, Ray, Ray3, Vector};
 use crate::materials::Material;
 use crate::scene::{Hit, MaterialHitRecord};
 
@@ -11,11 +11,11 @@ pub struct Sphere {
 }
 
 impl Hit for Sphere {
-    fn hit(&self, ray: Ray, t_min: f64, t_max: f64) -> Option<MaterialHitRecord> {
-        let oc = ray.origin - self.center;
+    fn hit(&self, ray: Ray3, t_min: f64, t_max: f64) -> Option<MaterialHitRecord> {
+        let oc = ray.origin() - self.center;
 
-        let a: f64 = ray.direction.sq_length();
-        let half_b: f64 = oc.dot(ray.direction);
+        let a: f64 = ray.direction().sq_length();
+        let half_b: f64 = oc.dot(ray.direction());
         let c: f64 = oc.sq_length() - self.radius * self.radius;
 
         let discriminant: f64 = half_b * half_b - a * c;

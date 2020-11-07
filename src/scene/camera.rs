@@ -1,4 +1,4 @@
-use crate::core::geometry::{Point3, Ray, Vec3, Vector};
+use crate::core::geometry::{Point3, Ray3, Vec3, Vector};
 use crate::core::math::geometry::degrees_to_radians;
 use crate::core::math::rand::rand_in_unit_disk;
 
@@ -58,16 +58,16 @@ impl Camera {
         }
     }
 
-    pub fn ray(&self, s: f64, t: f64) -> Ray {
+    pub fn ray(&self, s: f64, t: f64) -> Ray3 {
         let rd: Vec3 = self.lens_radius * rand_in_unit_disk();
         let offset: Vec3 = (self.u * rd.x()) + (self.v * rd.y());
 
-        Ray {
-            origin: self.position + offset,
-            direction: self.lower_left_corner + (s * self.horizontal) + (t * self.vertical)
-                - self.position
-                - offset,
-        }
+        let origin = self.position + offset;
+        let direction = self.lower_left_corner + (s * self.horizontal) + (t * self.vertical)
+            - self.position
+            - offset;
+
+        Ray3::new(origin, direction)
 
         // Ray {
         // 	origin: self.position,

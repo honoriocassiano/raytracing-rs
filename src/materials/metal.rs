@@ -1,5 +1,5 @@
 use crate::core::color::Color;
-use crate::core::geometry::{Ray, Vector};
+use crate::core::geometry::{Ray, Ray3, Vector};
 use crate::core::optic::Reflect;
 
 use crate::core::math::rand::rand_unit_vector;
@@ -31,14 +31,11 @@ impl Metal {
 }
 
 impl Material for Metal {
-    fn scatter(&self, in_ray: Ray, hit: BasicHitRecord) -> Option<ScatterRecord> {
-        let reflected = in_ray.direction.normalized().reflect(hit.normal());
+    fn scatter(&self, in_ray: Ray3, hit: BasicHitRecord) -> Option<ScatterRecord> {
+        let reflected = in_ray.direction().normalized().reflect(hit.normal());
 
         let scatter_record = ScatterRecord {
-            ray: Ray {
-                origin: hit.point(),
-                direction: reflected + self.fuzz * rand_unit_vector(),
-            },
+            ray: Ray3::new(hit.point(), reflected + self.fuzz * rand_unit_vector()),
             attenuation: self.albedo,
         };
 

@@ -8,14 +8,14 @@ mod scene;
 use self::core::math::constants::INFINITY;
 use crate::core::color::write_color;
 use crate::core::color::Color;
-use crate::core::geometry::{Point3, Ray, Vec3, Vector};
+use crate::core::geometry::{Point3, Ray, Ray3, Vec3, Vector};
 use crate::core::math::rand::{rand, rand_between};
 use crate::materials::{Dielectric, Lambertian, Material, Metal};
 use crate::scene::{Hit, HitList};
 use scene::camera::Camera;
 use scene::object::sphere::Sphere;
 
-fn ray_color(ray: Ray, world: &HitList, depth: i32) -> Color {
+fn ray_color(ray: Ray3, world: &HitList, depth: i32) -> Color {
     // Stop recursion at ray bounce limit
     if depth <= 0 {
         return Color(0.0, 0.0, 0.0);
@@ -29,7 +29,7 @@ fn ray_color(ray: Ray, world: &HitList, depth: i32) -> Color {
             None => Color(0.0, 0.0, 0.0),
         },
         None => {
-            let unit: Vec3 = ray.direction.normalized();
+            let unit: Vec3 = ray.direction().normalized();
 
             let t: f64 = 0.5 * (unit.y() + 1.0);
 
