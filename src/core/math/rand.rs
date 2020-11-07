@@ -1,7 +1,7 @@
 use rand::prelude::*;
 
 use crate::core::geometry::{Vec3, Vector};
-use crate::util::PI;
+use crate::core::math::constants::PI;
 
 pub fn rand() -> f64 {
     let mut rng = rand::thread_rng();

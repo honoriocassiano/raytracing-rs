@@ -7,6 +7,7 @@ mod scene;
 mod sphere;
 mod util;
 
+use self::core::math::constants::INFINITY;
 use crate::core::camera::Camera;
 use crate::core::color::write_color;
 use crate::core::color::Color;
@@ -15,7 +16,6 @@ use crate::core::math::rand::{rand, rand_between};
 use crate::materials::{Dielectric, Lambertian, Material, Metal};
 use crate::scene::{Hit, HitList};
 use crate::sphere::Sphere;
-use crate::util::INFINITY;
 
 fn ray_color(ray: Ray, world: &HitList, depth: i32) -> Color {
     // Stop recursion at ray bounce limit
