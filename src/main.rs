@@ -13,6 +13,7 @@ use crate::core::math::rand::{rand, rand_between};
 use crate::core::time::{Interval, TimeRay3};
 use crate::materials::{Dielectric, Lambertian, Material, Metal};
 use crate::scene::camera::Options;
+use crate::scene::object::movingsphere::MovingSphere;
 use crate::scene::{Hit, HitList};
 use scene::camera::Camera;
 use scene::object::sphere::Sphere;
@@ -64,6 +65,8 @@ fn generate_random_scene() -> HitList {
                 (b as f64) + (0.9 * rand()),
             );
 
+            let object: Box<dyn Hit>;
+
             if (center - Point3(4.0, 0.2, 0.0)).length() > 0.9 {
                 let sphere_material: Rc<dyn Material>;
 
@@ -72,22 +75,39 @@ fn generate_random_scene() -> HitList {
                     let albedo = Color::rand() * Color::rand();
 
                     sphere_material = Rc::new(Lambertian::new(albedo));
+
+                    let center2 = center + Vec3(0.0, rand_between(0.0, 0.5), 0.0);
+                    object = Box::new(MovingSphere::new(
+                        center,
+                        center2,
+                        Interval::new(0.0, 1.0),
+                        0.2,
+                        sphere_material,
+                    ));
                 } else if choose_material < 0.95 {
                     // Metal
                     let albedo = Color::rand_between(0.5, 1.0);
                     let fuzz = rand_between(0.0, 0.5);
 
                     sphere_material = Rc::new(Metal::new(albedo, fuzz));
+
+                    object = Box::new(Sphere {
+                        center,
+                        radius: 0.2,
+                        material: sphere_material,
+                    });
                 } else {
                     // Glass
                     sphere_material = Rc::new(Dielectric::new(1.5));
+
+                    object = Box::new(Sphere {
+                        center,
+                        radius: 0.2,
+                        material: sphere_material,
+                    });
                 }
 
-                world.add(Box::new(Sphere {
-                    center,
-                    radius: 0.2,
-                    material: sphere_material,
-                }));
+                world.add(object);
             }
         }
     }
