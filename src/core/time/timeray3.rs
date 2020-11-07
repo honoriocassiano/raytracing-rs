@@ -1,4 +1,4 @@
-use super::{Point3, Ray, Ray3, Vec3};
+use crate::core::geometry::{Point3, Ray, Ray3, Vec3};
 
 #[derive(Copy, Clone)]
 pub struct TimeRay3 {

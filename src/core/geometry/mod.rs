@@ -1,6 +1,5 @@
 mod ray;
 mod ray3;
-mod timeray3;
 mod vec3;
 mod vector;
 
