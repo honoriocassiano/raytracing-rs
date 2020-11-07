@@ -10,11 +10,11 @@ impl Interval {
         Interval { start, end }
     }
 
-    pub fn start(self) -> Timestamp {
+    pub fn start(&self) -> Timestamp {
         self.start
     }
 
-    pub fn end(self) -> Timestamp {
+    pub fn end(&self) -> Timestamp {
         self.end
     }
 }
