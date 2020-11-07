@@ -2,8 +2,8 @@ use std::fmt;
 use std::ops;
 
 use crate::core::geometry::vector::Vector;
+use crate::core::math::rand::{rand, rand_between};
 use crate::core::optic::{Reflect, Refract};
-use crate::util::{rand, rand_between};
 
 type Scalar = f64;
 

@@ -1,11 +1,11 @@
 use crate::core::color::Color;
 use crate::core::geometry::{Ray, Vec3, Vector};
-use crate::core::math::schlick;
+use crate::core::math::optic::schlick;
 use crate::core::optic::{Reflect, Refract};
 
 use crate::scene::BasicHitRecord;
 
-use crate::util::rand;
+use crate::core::math::rand::rand;
 
 use super::material::{Material, ScatterRecord};
 

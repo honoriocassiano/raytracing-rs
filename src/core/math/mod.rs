@@ -1,3 +1,2 @@
-mod optic;
-
-pub use optic::schlick;
+pub mod optic;
+pub mod rand;

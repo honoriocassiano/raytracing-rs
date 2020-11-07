@@ -1,5 +1,6 @@
 use crate::core::geometry::{Point3, Ray, Vec3, Vector};
-use crate::util::{degrees_to_radians, rand_in_unit_disk};
+use crate::core::math::rand::rand_in_unit_disk;
+use crate::util::degrees_to_radians;
 
 #[allow(dead_code)]
 pub struct Camera {

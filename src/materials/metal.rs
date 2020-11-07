@@ -2,8 +2,8 @@ use crate::core::color::Color;
 use crate::core::geometry::{Ray, Vector};
 use crate::core::optic::Reflect;
 
+use crate::core::math::rand::rand_unit_vector;
 use crate::scene::BasicHitRecord;
-use crate::util::rand_unit_vector;
 
 use super::material::{Material, ScatterRecord};
 
