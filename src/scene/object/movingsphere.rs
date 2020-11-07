@@ -37,9 +37,9 @@ impl MovingSphere {
     pub fn center(&self, timestamp: Timestamp) -> Point3 {
         let i = &self.time_interval;
 
-        return self.start_center
+        self.start_center
             + ((timestamp - i.start()) / (i.end() - i.start()))
-                * (self.end_center - self.start_center);
+                * (self.end_center - self.start_center)
     }
 }
 
