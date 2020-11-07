@@ -4,7 +4,6 @@ use std::rc::Rc;
 mod core;
 mod materials;
 mod scene;
-mod sphere;
 
 use self::core::math::constants::INFINITY;
 use crate::core::color::write_color;
@@ -13,8 +12,8 @@ use crate::core::geometry::{Point3, Ray, Vec3, Vector};
 use crate::core::math::rand::{rand, rand_between};
 use crate::materials::{Dielectric, Lambertian, Material, Metal};
 use crate::scene::{Hit, HitList};
-use crate::sphere::Sphere;
 use scene::camera::Camera;
+use scene::object::sphere::Sphere;
 
 fn ray_color(ray: Ray, world: &HitList, depth: i32) -> Color {
     // Stop recursion at ray bounce limit
