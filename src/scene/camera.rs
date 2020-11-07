@@ -20,35 +20,39 @@ pub struct Camera {
     time_interval: Interval,
 }
 
+pub struct Options {
+    pub vertical_fov: f64,
+    pub aspect_ratio: f64,
+    pub aperture: f64,
+    pub focus_distance: f64,
+}
+
 impl Camera {
     pub fn new(
         position: Point3,
         look_at: Point3,
         up: Vec3,
-        vertical_fov: f64,
-        aspect_ratio: f64,
-        aperture: f64,
-        focus_distance: f64,
+        options: Options,
         time_interval: Interval,
     ) -> Self {
-        let theta: f64 = degrees_to_radians(vertical_fov);
+        let theta: f64 = degrees_to_radians(options.vertical_fov);
         let h: f64 = (theta / 2.0).tan();
 
         let viewport_height: f64 = 2.0 * h;
-        let viewport_width: f64 = aspect_ratio * viewport_height;
+        let viewport_width: f64 = options.aspect_ratio * viewport_height;
 
         let w = (position - look_at).normalized();
         let u = up.cross(w).normalized();
         let v = w.cross(u);
 
-        let horizontal = focus_distance * viewport_width * u;
-        let vertical = focus_distance * viewport_height * v;
+        let horizontal = options.focus_distance * viewport_width * u;
+        let vertical = options.focus_distance * viewport_height * v;
 
         // let lower_left_corner = position - horizontal / 2.0 - vertical / 2.0 - w;
         let lower_left_corner =
-            position - (horizontal / 2.0) - (vertical / 2.0) - (focus_distance * w);
+            position - (horizontal / 2.0) - (vertical / 2.0) - (options.focus_distance * w);
 
-        let lens_radius = aperture / 2.0;
+        let lens_radius = options.aperture / 2.0;
 
         Self {
             position,

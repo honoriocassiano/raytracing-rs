@@ -12,6 +12,7 @@ use crate::core::geometry::{Point3, Ray, Vec3, Vector};
 use crate::core::math::rand::{rand, rand_between};
 use crate::core::time::{Interval, TimeRay3};
 use crate::materials::{Dielectric, Lambertian, Material, Metal};
+use crate::scene::camera::Options;
 use crate::scene::{Hit, HitList};
 use scene::camera::Camera;
 use scene::object::sphere::Sphere;
@@ -136,16 +137,14 @@ fn main() {
     let distance_to_focus = 10.0;
     let aperture = 0.1;
 
-    let camera = Camera::new(
-        position,
-        look_at,
-        up,
-        20.0,
+    let options = Options {
+        vertical_fov: 20.0,
         aspect_ratio,
         aperture,
-        distance_to_focus,
-        Interval::new(0.0, 1.0),
-    );
+        focus_distance: distance_to_focus,
+    };
+
+    let camera = Camera::new(position, look_at, up, options, Interval::new(0.0, 1.0));
 
     println!("P3\n{} {}\n255", image_width, image_height);
 
