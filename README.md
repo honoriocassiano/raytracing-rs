@@ -1,4 +1,7 @@
 # raytracing-rs
+
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/honoriocassiano/raytracing-rs/Rust)
+
 Ray Tracing in one weekend, but in rust.
 
 
