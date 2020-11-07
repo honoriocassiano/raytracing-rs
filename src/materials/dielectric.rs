@@ -1,11 +1,13 @@
 use crate::core::color::Color;
 use crate::core::geometry::{Ray, Vec3, Vector};
+use crate::core::math::schlick;
 use crate::core::optic::{Reflect, Refract};
 
 use crate::scene::BasicHitRecord;
+
 use crate::util::rand;
 
-use super::material::{schlick, Material, ScatterRecord};
+use super::material::{Material, ScatterRecord};
 
 pub struct Dielectric {
     refractive_index: f64,
