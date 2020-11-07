@@ -1,9 +1,6 @@
 use crate::core::color::Color;
-use crate::core::geometry::Ray;
-use crate::core::geometry::Vec3;
-use crate::core::geometry::Vector;
-use crate::core::optic::Reflect;
-use crate::core::optic::Refract;
+use crate::core::geometry::{Ray, Vec3, Vector};
+use crate::core::optic::{Reflect, Refract};
 
 use crate::scene::BasicHitRecord;
 use crate::util::rand;

@@ -1,6 +1,4 @@
-use crate::core::geometry::Ray;
-use crate::core::geometry::Vec3;
-use crate::core::geometry::Vector;
+use crate::core::geometry::{Ray, Vec3, Vector};
 
 
 type Point3 = Vec3;

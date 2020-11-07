@@ -4,6 +4,7 @@ use crate::util::clamp;
 pub use crate::core::geometry::Vec3 as Color;
 
 
+// TODO Convert to a trait?
 pub fn write_color<T: Write>(out: &mut T, pixel_color: Color, samples_per_pixel: i32) {
 	let Color(mut r, mut g, mut b) = pixel_color;
 

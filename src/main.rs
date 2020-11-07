@@ -11,14 +11,13 @@ mod util;
 
 use crate::scene::{Hit, HitList};
 use crate::sphere::{Sphere};
-use crate::util::{INFINITY, rand_between, rand};
+use crate::util::INFINITY;
+use crate::util::{rand_between, rand};
 use crate::core::camera::Camera;
 use crate::materials::{Lambertian, Metal, Dielectric, Material};
-use crate::core::color::{Color, write_color};
-use self::core::geometry::Vec3;
-use self::core::geometry::Vector;
-use self::core::geometry::Ray;
-use self::core::geometry::Point3;
+use crate::core::color::Color;
+use crate::core::color::write_color;
+use crate::core::geometry::{Vec3, Vector, Ray, Point3};
 
 
 fn ray_color(ray: Ray, world: &HitList, depth: i32) -> Color {
