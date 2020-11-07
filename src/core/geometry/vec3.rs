@@ -1,7 +1,7 @@
 use std::fmt;
 use std::ops;
 
-use crate::core::geometry::vector::Vector;
+use super::vector::Vector;
 use crate::core::math::rand::{rand, rand_between};
 use crate::core::optic::{Reflect, Refract};
 

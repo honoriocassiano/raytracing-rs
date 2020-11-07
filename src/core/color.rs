@@ -1,7 +1,5 @@
-use crate::core::math::numeric::clamp;
+use super::math::numeric::clamp;
 use std::io::Write;
-
-pub use crate::core::geometry::Vec3 as Color;
 
 // TODO Convert to a trait?
 pub fn write_color<T: Write>(out: &mut T, pixel_color: Color, samples_per_pixel: i32) {
@@ -20,3 +18,5 @@ pub fn write_color<T: Write>(out: &mut T, pixel_color: Color, samples_per_pixel:
     out.write_all(format!("{} {} {}\n", ir, ig, ib).as_bytes())
         .unwrap();
 }
+
+pub use super::geometry::Vec3 as Color;
