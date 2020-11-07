@@ -1,7 +1,9 @@
-use super::Vec3;
-use super::Vector;
-use super::{Ray, Point3};
+use crate::core::geometry::Vec3;
+use crate::core::geometry::Vector;
+use crate::core::geometry::Ray;
+use crate::core::geometry::Point3;
 use crate::util::{degrees_to_radians, rand_in_unit_disk};
+
 
 
 #[allow(dead_code)]

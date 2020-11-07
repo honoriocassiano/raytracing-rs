@@ -1,9 +1,9 @@
-use crate::core::{Color, Ray};
-use crate::util::rand_unit_vector;
+use crate::core::color::Color;
+use crate::core::geometry::Ray;
 use crate::scene::BasicHitRecord;
+use crate::util::rand_unit_vector;
 
 use super::material::{Material, ScatterRecord};
-
 
 pub struct Lambertian {
 	albedo: Color

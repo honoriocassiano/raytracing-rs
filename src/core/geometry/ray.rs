@@ -1,4 +1,4 @@
-pub use super::vec3::Vec3 as Point3;
+pub use crate::core::geometry::vec3::Vec3 as Point3;
 
 type Scalar = f64;
 

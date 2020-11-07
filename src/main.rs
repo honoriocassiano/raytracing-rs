@@ -9,12 +9,16 @@ mod sphere;
 mod util;
 
 
-use crate::core::*;
 use crate::scene::{Hit, HitList};
 use crate::sphere::{Sphere};
 use crate::util::{INFINITY, rand_between, rand};
-use crate::core::Camera;
+use crate::core::camera::Camera;
 use crate::materials::{Lambertian, Metal, Dielectric, Material};
+use crate::core::color::{Color, write_color};
+use self::core::geometry::Vec3;
+use self::core::geometry::Vector;
+use self::core::geometry::Ray;
+use self::core::geometry::Point3;
 
 
 fn ray_color(ray: Ray, world: &HitList, depth: i32) -> Color {

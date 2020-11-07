@@ -1,5 +1,6 @@
 use rand::prelude::*;
-use crate::core::{Vec3, Vector};
+use crate::core::geometry::Vec3;
+use crate::core::geometry::Vector;
 
 
 pub const INFINITY: f64 = std::f64::INFINITY;

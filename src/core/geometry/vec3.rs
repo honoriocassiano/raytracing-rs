@@ -1,8 +1,8 @@
 use std::fmt;
 use std::ops;
 
-use super::optic::{Reflect, Refract};
-use super::Vector;
+use crate::core::optic::{Reflect, Refract};
+use crate::core::geometry::vector::Vector;
 use crate::util::{rand, rand_between};
 
 type Scalar = f64;

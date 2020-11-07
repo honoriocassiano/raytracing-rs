@@ -1,7 +1,7 @@
 use std::io::Write;
 use crate::util::clamp;
 
-pub use super::vec3::Vec3 as Color;
+pub use crate::core::geometry::Vec3 as Color;
 
 
 pub fn write_color<T: Write>(out: &mut T, pixel_color: Color, samples_per_pixel: i32) {

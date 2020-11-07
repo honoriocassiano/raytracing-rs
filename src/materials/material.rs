@@ -1,5 +1,5 @@
-use crate::core::Color;
-use crate::core::Ray;
+use crate::core::geometry::Ray;
+use crate::core::color::Color;
 use crate::scene::BasicHitRecord;
 
 
