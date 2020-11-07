@@ -213,3 +213,5 @@ impl fmt::Display for Vec3 {
         write!(f, "({}, {}, {})", self.0, self.1, self.2)
     }
 }
+
+pub use Vec3 as Point3;

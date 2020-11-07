@@ -1,6 +1,4 @@
-use crate::core::geometry::{Ray, Vec3, Vector};
-
-type Point3 = Vec3;
+use crate::core::geometry::{Point3, Ray, Vec3, Vector};
 
 #[derive(Copy, Clone)]
 pub struct BasicHitRecord {
