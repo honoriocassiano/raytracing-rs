@@ -237,6 +237,7 @@ mod tests {
 
     // Tests for getters
     #[test]
+    #[allow(clippy::float_cmp)]
     fn must_set_coordinates() {
         let expected_x = 0.597;
         let expected_y = 1.47856;
@@ -319,6 +320,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::float_cmp)]
     fn must_return_coordinate() {
         let expected_0 = 1.0;
         let expected_1 = 5.48;
@@ -333,6 +335,7 @@ mod tests {
 
     #[test]
     #[should_panic(expected = "Index 3 is not in Vec3")]
+    #[allow(clippy::no_effect)]
     fn must_panic_on_invalid_index() {
         let vec = Vec3::zero();
 

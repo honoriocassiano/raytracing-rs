@@ -13,6 +13,7 @@ mod tests {
     use crate::core::math::numeric::clamp;
 
     #[test]
+    #[allow(clippy::float_cmp)]
     fn must_clamp_to_max() {
         let min = 0.45;
         let max = 1.50874;
@@ -25,6 +26,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::float_cmp)]
     fn must_clamp_to_min() {
         let min = -14.3756;
         let max = 67.903746;
@@ -37,6 +39,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::float_cmp)]
     fn must_not_clamp() {
         let min = -8.5763;
         let max = 7.4957;
