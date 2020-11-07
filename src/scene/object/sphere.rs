@@ -23,39 +23,29 @@ impl Hit for Sphere {
         if discriminant > 0.0 {
             let root: f64 = discriminant.sqrt();
 
-            let mut temp: f64 = (-half_b - root) / a;
+            let check_hit = |val: f64| -> Option<MaterialHitRecord> {
+                if (t_min < val) && (val < t_max) {
+                    let t = val;
+                    let point = ray.at(val);
 
-            if (t_min < temp) && (temp < t_max) {
-                let t = temp;
-                let point = ray.at(temp);
+                    let outward_normal = (point - self.center) / self.radius;
 
-                let outward_normal = (point - self.center) / self.radius;
+                    return Some(MaterialHitRecord::new(
+                        point,
+                        t,
+                        ray,
+                        outward_normal,
+                        self.material.clone(),
+                    ));
+                }
 
-                return Some(MaterialHitRecord::new(
-                    point,
-                    t,
-                    ray,
-                    outward_normal,
-                    self.material.clone(),
-                ));
-            }
+                None
+            };
 
-            temp = (-half_b + root) / a;
-
-            if (t_min < temp) && (temp < t_max) {
-                let t = temp;
-                let point = ray.at(temp);
-
-                let outward_normal = (point - self.center) / self.radius;
-
-                return Some(MaterialHitRecord::new(
-                    point,
-                    t,
-                    ray,
-                    outward_normal,
-                    self.material.clone(),
-                ));
-            }
+            return match check_hit((-half_b - root) / a) {
+                Some(val) => Some(val),
+                None => check_hit((-half_b + root) / a),
+            };
         }
 
         None
