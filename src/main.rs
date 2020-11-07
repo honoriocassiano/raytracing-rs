@@ -10,7 +10,7 @@ use crate::core::color::write_color;
 use crate::core::color::Color;
 use crate::core::geometry::{Point3, Ray, Ray3, Vec3, Vector};
 use crate::core::math::rand::{rand, rand_between};
-use crate::core::time::Interval;
+use crate::core::time::{Interval, TimeRay3};
 use crate::materials::{Dielectric, Lambertian, Material, Metal};
 use crate::scene::{Hit, HitList};
 use scene::camera::Camera;
@@ -23,7 +23,11 @@ fn ray_color(ray: Ray3, world: &HitList, depth: i32) -> Color {
     }
 
     match world.hit(ray, 0.001, INFINITY) {
-        Some(material_hit) => match material_hit.material().scatter(ray, material_hit.hit()) {
+        Some(material_hit) => match material_hit
+            .material()
+            // FIXME Pass TimeRay3 as argument and use here
+            .scatter(TimeRay3::from_ray(ray), material_hit.hit())
+        {
             Some(scatter_record) => {
                 scatter_record.attenuation * ray_color(scatter_record.ray, world, depth - 1)
             }

@@ -4,6 +4,7 @@ use crate::core::math::rand::rand_unit_vector;
 use crate::scene::BasicHitRecord;
 
 use super::material::{Material, ScatterRecord};
+use crate::core::time::TimeRay3;
 
 pub struct Lambertian {
     albedo: Color,
@@ -21,7 +22,7 @@ impl Lambertian {
 }
 
 impl Material for Lambertian {
-    fn scatter(&self, _in_ray: Ray3, hit: BasicHitRecord) -> Option<ScatterRecord> {
+    fn scatter(&self, _in_ray: TimeRay3, hit: BasicHitRecord) -> Option<ScatterRecord> {
         let scatter_direction = hit.normal() + rand_unit_vector();
 
         let scatter_record = ScatterRecord {
