@@ -2,18 +2,51 @@ use crate::core::geometry::{Point3, Ray, Vector};
 use crate::materials::Material;
 use crate::scene::{Hit, MaterialHitRecord};
 
-use crate::core::time::TimeRay3;
+use crate::core::time::{Interval, TimeRay3, Timestamp};
 use std::rc::Rc;
 
-pub struct Sphere {
-    pub center: Point3,
-    pub radius: f64,
-    pub material: Rc<dyn Material>,
+pub struct MovingSphere {
+    start_center: Point3,
+    end_center: Point3,
+    time_interval: Interval,
+    radius: f64,
+    material: Rc<dyn Material>,
 }
 
-impl Hit for Sphere {
+#[allow(dead_code)]
+impl MovingSphere {
+    pub fn new(
+        start_center: Point3,
+        end_center: Point3,
+        time_interval: Interval,
+        radius: f64,
+        material: Rc<dyn Material>,
+    ) -> MovingSphere {
+        MovingSphere {
+            start_center,
+            end_center,
+            time_interval,
+            radius,
+            material,
+        }
+    }
+
+    pub fn radius(&self) -> f64 {
+        self.radius
+    }
+
+    pub fn center(&self, timestamp: Timestamp) -> Point3 {
+        let i = &self.time_interval;
+
+        self.start_center
+            + ((timestamp - i.start()) / (i.end() - i.start()))
+                * (self.end_center - self.start_center)
+    }
+}
+
+impl Hit for MovingSphere {
     fn hit(&self, ray: TimeRay3, t_min: f64, t_max: f64) -> Option<MaterialHitRecord> {
-        let oc = ray.origin() - self.center;
+        let oc = ray.origin() - self.center(ray.time());
 
         let a: f64 = ray.direction().sq_length();
         let half_b: f64 = oc.dot(ray.direction());
@@ -29,7 +62,7 @@ impl Hit for Sphere {
                     let t = val;
                     let point = ray.at(val);
 
-                    let outward_normal = (point - self.center) / self.radius;
+                    let outward_normal = (point - self.center(ray.time())) / self.radius;
 
                     return Some(MaterialHitRecord::new(
                         point,

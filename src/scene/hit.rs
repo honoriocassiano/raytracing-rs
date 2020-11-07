@@ -1,8 +1,9 @@
-use crate::core::geometry::{Point3, Ray, Vec3};
+use crate::core::geometry::{Point3, Ray3, Vec3};
 use crate::materials::Material;
 
 use super::hitrecord::BasicHitRecord;
 
+use crate::core::time::TimeRay3;
 use std::rc::Rc;
 
 pub struct MaterialHitRecord {
@@ -15,7 +16,7 @@ impl MaterialHitRecord {
     pub fn new(
         point: Point3,
         t: f64,
-        ray: Ray,
+        ray: Ray3,
         outward_normal: Vec3,
         material: Rc<dyn Material>,
     ) -> Self {
@@ -55,7 +56,7 @@ impl MaterialHitRecord {
 }
 
 pub trait Hit {
-    fn hit(&self, ray: Ray, t_min: f64, t_max: f64) -> Option<MaterialHitRecord>;
+    fn hit(&self, ray: TimeRay3, t_min: f64, t_max: f64) -> Option<MaterialHitRecord>;
 }
 
 // Hit list
@@ -88,7 +89,7 @@ impl HitList {
 }
 
 impl Hit for HitList {
-    fn hit(&self, ray: Ray, t_min: f64, t_max: f64) -> Option<MaterialHitRecord> {
+    fn hit(&self, ray: TimeRay3, t_min: f64, t_max: f64) -> Option<MaterialHitRecord> {
         let mut last_hit: Option<MaterialHitRecord> = None;
         let mut closest_so_far = t_max;
 

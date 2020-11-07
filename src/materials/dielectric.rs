@@ -8,6 +8,7 @@ use crate::scene::BasicHitRecord;
 use crate::core::math::rand::rand;
 
 use super::material::{Material, ScatterRecord};
+use crate::core::time::TimeRay3;
 
 pub struct Dielectric {
     refractive_index: f64,
@@ -53,7 +54,7 @@ impl Dielectric {
 }
 
 impl Material for Dielectric {
-    fn scatter(&self, in_ray: Ray, hit: BasicHitRecord) -> Option<ScatterRecord> {
+    fn scatter(&self, in_ray: TimeRay3, hit: BasicHitRecord) -> Option<ScatterRecord> {
         let eta_in_over_eta_out = {
             if hit.front_face() {
                 1.0 / self.refractive_index
@@ -62,7 +63,7 @@ impl Material for Dielectric {
             }
         };
 
-        let unit_direction = in_ray.direction.normalized();
+        let unit_direction = in_ray.direction().normalized();
 
         let cos_theta = (-unit_direction).dot(hit.normal()).min(1.0);
         let sin_theta = (1.0 - cos_theta * cos_theta).sqrt();
@@ -75,10 +76,7 @@ impl Material for Dielectric {
         };
 
         let scatter_record = ScatterRecord {
-            ray: Ray {
-                origin: hit.point(),
-                direction: scatter_direction,
-            },
+            ray: TimeRay3::new(hit.point(), scatter_direction, in_ray.time()),
             attenuation: Color(1.0, 1.0, 1.0),
         };
 

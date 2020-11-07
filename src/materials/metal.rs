@@ -6,6 +6,7 @@ use crate::core::math::rand::rand_unit_vector;
 use crate::scene::BasicHitRecord;
 
 use super::material::{Material, ScatterRecord};
+use crate::core::time::TimeRay3;
 
 pub struct Metal {
     albedo: Color,
@@ -31,14 +32,15 @@ impl Metal {
 }
 
 impl Material for Metal {
-    fn scatter(&self, in_ray: Ray, hit: BasicHitRecord) -> Option<ScatterRecord> {
-        let reflected = in_ray.direction.normalized().reflect(hit.normal());
+    fn scatter(&self, in_ray: TimeRay3, hit: BasicHitRecord) -> Option<ScatterRecord> {
+        let reflected = in_ray.direction().normalized().reflect(hit.normal());
 
         let scatter_record = ScatterRecord {
-            ray: Ray {
-                origin: hit.point(),
-                direction: reflected + self.fuzz * rand_unit_vector(),
-            },
+            ray: TimeRay3::new(
+                hit.point(),
+                reflected + self.fuzz * rand_unit_vector(),
+                in_ray.time(),
+            ),
             attenuation: self.albedo,
         };
 

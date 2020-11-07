@@ -1,15 +1,12 @@
-use super::vec3::Point3;
+pub trait Ray {
+    // TODO Remove some of these types
+    type Point;
+    type Vector;
+    type Scalar;
 
-type Scalar = f64;
+    fn at(&self, t: Self::Scalar) -> Self::Point;
 
-#[derive(Copy, Clone)]
-pub struct Ray {
-    pub origin: Point3,
-    pub direction: Point3,
-}
+    fn origin(self) -> Self::Point;
 
-impl Ray {
-    pub fn at(&self, t: Scalar) -> Point3 {
-        self.origin + (self.direction * t)
-    }
+    fn direction(self) -> Self::Vector;
 }

@@ -10,12 +10,15 @@ use crate::core::color::write_color;
 use crate::core::color::Color;
 use crate::core::geometry::{Point3, Ray, Vec3, Vector};
 use crate::core::math::rand::{rand, rand_between};
+use crate::core::time::{Interval, TimeRay3};
 use crate::materials::{Dielectric, Lambertian, Material, Metal};
+use crate::scene::camera::Options;
+use crate::scene::object::movingsphere::MovingSphere;
 use crate::scene::{Hit, HitList};
 use scene::camera::Camera;
 use scene::object::sphere::Sphere;
 
-fn ray_color(ray: Ray, world: &HitList, depth: i32) -> Color {
+fn ray_color(ray: TimeRay3, world: &HitList, depth: i32) -> Color {
     // Stop recursion at ray bounce limit
     if depth <= 0 {
         return Color(0.0, 0.0, 0.0);
@@ -29,7 +32,7 @@ fn ray_color(ray: Ray, world: &HitList, depth: i32) -> Color {
             None => Color(0.0, 0.0, 0.0),
         },
         None => {
-            let unit: Vec3 = ray.direction.normalized();
+            let unit: Vec3 = ray.direction().normalized();
 
             let t: f64 = 0.5 * (unit.y() + 1.0);
 
@@ -59,6 +62,8 @@ fn generate_random_scene() -> HitList {
                 (b as f64) + (0.9 * rand()),
             );
 
+            let object: Box<dyn Hit>;
+
             if (center - Point3(4.0, 0.2, 0.0)).length() > 0.9 {
                 let sphere_material: Rc<dyn Material>;
 
@@ -67,22 +72,39 @@ fn generate_random_scene() -> HitList {
                     let albedo = Color::rand() * Color::rand();
 
                     sphere_material = Rc::new(Lambertian::new(albedo));
+
+                    let center2 = center + Vec3(0.0, rand_between(0.0, 0.5), 0.0);
+                    object = Box::new(MovingSphere::new(
+                        center,
+                        center2,
+                        Interval::new(0.0, 1.0),
+                        0.2,
+                        sphere_material,
+                    ));
                 } else if choose_material < 0.95 {
                     // Metal
                     let albedo = Color::rand_between(0.5, 1.0);
                     let fuzz = rand_between(0.0, 0.5);
 
                     sphere_material = Rc::new(Metal::new(albedo, fuzz));
+
+                    object = Box::new(Sphere {
+                        center,
+                        radius: 0.2,
+                        material: sphere_material,
+                    });
                 } else {
                     // Glass
                     sphere_material = Rc::new(Dielectric::new(1.5));
+
+                    object = Box::new(Sphere {
+                        center,
+                        radius: 0.2,
+                        material: sphere_material,
+                    });
                 }
 
-                world.add(Box::new(Sphere {
-                    center,
-                    radius: 0.2,
-                    material: sphere_material,
-                }));
+                world.add(object);
             }
         }
     }
@@ -132,15 +154,14 @@ fn main() {
     let distance_to_focus = 10.0;
     let aperture = 0.1;
 
-    let camera = Camera::new(
-        position,
-        look_at,
-        up,
-        20.0,
+    let options = Options {
+        vertical_fov: 20.0,
         aspect_ratio,
         aperture,
-        distance_to_focus,
-    );
+        focus_distance: distance_to_focus,
+    };
+
+    let camera = Camera::new(position, look_at, up, options, Interval::new(0.0, 1.0));
 
     println!("P3\n{} {}\n255", image_width, image_height);
 
