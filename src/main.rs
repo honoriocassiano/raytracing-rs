@@ -24,12 +24,9 @@ fn ray_color(ray: TimeRay3, world: &HitList, depth: i32) -> Color {
         return Color(0.0, 0.0, 0.0);
     }
 
-    // FIXME Pass TimeRay3 as argument and use here
-
     match world.hit(ray, 0.001, INFINITY) {
         Some(material_hit) => match material_hit.material().scatter(ray, material_hit.hit()) {
             Some(scatter_record) => {
-                // FIXME Use TimeRay3 here
                 scatter_record.attenuation * ray_color(scatter_record.ray, world, depth - 1)
             }
             None => Color(0.0, 0.0, 0.0),
@@ -178,7 +175,6 @@ fn main() {
                 let u = (column as f64 + rand()) / (image_width - 1) as f64;
                 let v = (line as f64 + rand()) / (image_height - 1) as f64;
 
-                // FIXME Remove this cast
                 let ray = camera.ray(u, v);
 
                 pixel_color += ray_color(ray, &world, max_depth);
