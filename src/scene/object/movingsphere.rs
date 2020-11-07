@@ -13,6 +13,7 @@ pub struct MovingSphere {
     material: Rc<dyn Material>,
 }
 
+#[allow(dead_code)]
 impl MovingSphere {
     pub fn new(
         start_center: Point3,

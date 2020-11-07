@@ -7,6 +7,7 @@ pub struct TimeRay3 {
     time: f64,
 }
 
+#[allow(dead_code)]
 impl TimeRay3 {
     pub fn new(origin: Point3, direction: Vec3, time: f64) -> TimeRay3 {
         TimeRay3 {
