@@ -5,7 +5,6 @@ mod core;
 mod materials;
 mod scene;
 mod sphere;
-mod util;
 
 use self::core::math::constants::INFINITY;
 use crate::core::camera::Camera;
