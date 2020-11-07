@@ -10,15 +10,3 @@ pub trait Ray {
 
     fn direction(self) -> Self::Vector;
 }
-
-// #[derive(Copy, Clone)]
-// pub struct Ray {
-//     pub origin: Point3,
-//     pub direction: Point3,
-// }
-//
-// impl Ray {
-//     pub fn at(&self, t: Scalar) -> Point3 {
-//         self.origin + (self.direction * t)
-//     }
-// }
