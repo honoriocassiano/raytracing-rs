@@ -46,11 +46,11 @@ fn generate_random_scene() -> HitList {
 
     let ground_material = Rc::new(Lambertian::new(Color(0.5, 0.5, 0.5)));
 
-    world.add(Box::new(Sphere {
-        center: Point3(0.0, -1000.0, 0.0),
-        radius: 1000.0,
-        material: ground_material,
-    }));
+    world.add(Box::new(Sphere::new(
+        Point3(0.0, -1000.0, 0.0),
+        1000.0,
+        ground_material,
+    )));
 
     for a in -11..11 {
         for b in -11..11 {
@@ -88,20 +88,12 @@ fn generate_random_scene() -> HitList {
 
                     sphere_material = Rc::new(Metal::new(albedo, fuzz));
 
-                    object = Box::new(Sphere {
-                        center,
-                        radius: 0.2,
-                        material: sphere_material,
-                    });
+                    object = Box::new(Sphere::new(center, 0.2, sphere_material));
                 } else {
                     // Glass
                     sphere_material = Rc::new(Dielectric::new(1.5));
 
-                    object = Box::new(Sphere {
-                        center,
-                        radius: 0.2,
-                        material: sphere_material,
-                    });
+                    object = Box::new(Sphere::new(center, 0.2, sphere_material));
                 }
 
                 world.add(object);
@@ -113,24 +105,15 @@ fn generate_random_scene() -> HitList {
     let material2 = Rc::new(Lambertian::new(Color(0.4, 0.4, 0.1)));
     let material3 = Rc::new(Metal::new(Color(0.7, 0.6, 0.5), 0.0));
 
-    world.add(Box::new(Sphere {
-        center: Point3(0.0, 1.0, 0.0),
-        radius: 1.0,
-        material: material1,
-    }));
+    world.add(Box::new(Sphere::new(Point3(0.0, 1.0, 0.0), 1.0, material1)));
 
-    world.add(Box::new(Sphere {
-        center: Point3(-4.0, 1.0, 0.0),
-        radius: 1.0,
-        material: material2,
-    }));
+    world.add(Box::new(Sphere::new(
+        Point3(-4.0, 1.0, 0.0),
+        1.0,
+        material2,
+    )));
 
-    world.add(Box::new(Sphere {
-        center: Point3(4.0, 1.0, 0.0),
-        radius: 1.0,
-        material: material3,
-    }));
-
+    world.add(Box::new(Sphere::new(Point3(4.0, 1.0, 0.0), 1.0, material3)));
     world
 }
 

@@ -6,9 +6,32 @@ use crate::core::time::TimeRay3;
 use std::rc::Rc;
 
 pub struct Sphere {
-    pub center: Point3,
-    pub radius: f64,
-    pub material: Rc<dyn Material>,
+    center: Point3,
+    radius: f64,
+    material: Rc<dyn Material>,
+}
+
+#[allow(dead_code)]
+impl Sphere {
+    pub fn new(center: Point3, radius: f64, material: Rc<dyn Material>) -> Sphere {
+        Sphere {
+            center,
+            radius,
+            material,
+        }
+    }
+
+    pub fn center(&self) -> Point3 {
+        self.center
+    }
+
+    pub fn radius(&self) -> f64 {
+        self.radius
+    }
+
+    pub fn material(&self) -> Rc<dyn Material> {
+        self.material.clone()
+    }
 }
 
 impl Hit for Sphere {
