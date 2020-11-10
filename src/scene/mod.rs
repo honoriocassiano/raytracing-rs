@@ -1,3 +1,4 @@
+pub mod bvh;
 pub mod camera;
 mod hit;
 mod hitrecord;
