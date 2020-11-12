@@ -4,6 +4,7 @@ use crate::materials::Material;
 use super::hitrecord::BasicHitRecord;
 
 use crate::core::time::TimeRay3;
+use crate::scene::bvh::AABB;
 use std::rc::Rc;
 
 pub struct MaterialHitRecord {
@@ -57,6 +58,8 @@ impl MaterialHitRecord {
 
 pub trait Hit {
     fn hit(&self, ray: TimeRay3, t_min: f64, t_max: f64) -> Option<MaterialHitRecord>;
+
+    fn bounding_box(&self, time0: f64, time1: f64) -> Option<AABB>;
 }
 
 // Hit list
@@ -101,5 +104,27 @@ impl Hit for HitList {
         }
 
         last_hit
+    }
+
+    // TODO Simplify this
+    fn bounding_box(&self, time0: f64, time1: f64) -> Option<AABB> {
+        let mut bounding_box: Option<AABB> = None;
+
+        for object in &self.objects {
+            match object.bounding_box(time0, time1) {
+                None => {
+                    break;
+                }
+
+                Some(current_box) => {
+                    bounding_box = match bounding_box {
+                        None => Some(current_box),
+                        Some(b) => Some(b.surrounding_box(&current_box)),
+                    }
+                }
+            }
+        }
+
+        bounding_box
     }
 }

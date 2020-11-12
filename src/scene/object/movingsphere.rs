@@ -1,8 +1,9 @@
-use crate::core::geometry::{Point3, Ray, Vector};
+use crate::core::geometry::{Point3, Ray, Vec3, Vector};
 use crate::materials::Material;
 use crate::scene::{Hit, MaterialHitRecord};
 
 use crate::core::time::{Interval, TimeRay3, Timestamp};
+use crate::scene::bvh::AABB;
 use std::rc::Rc;
 
 pub struct MovingSphere {
@@ -84,5 +85,21 @@ impl Hit for MovingSphere {
         }
 
         None
+    }
+
+    fn bounding_box(&self, time0: f64, time1: f64) -> Option<AABB> {
+        let radius_vec = Vec3(self.radius, self.radius, self.radius);
+
+        let box0 = AABB::new(
+            self.center(time0) - radius_vec,
+            self.center(time0) + radius_vec,
+        );
+
+        let box1 = AABB::new(
+            self.center(time1) - radius_vec,
+            self.center(time1) + radius_vec,
+        );
+
+        Some(box0.surrounding_box(&box1))
     }
 }
