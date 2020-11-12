@@ -1,5 +1,6 @@
 use super::Timestamp;
 
+#[derive(Copy, Clone)]
 pub struct Interval {
     start: Timestamp,
     end: Timestamp,

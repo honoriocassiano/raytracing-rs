@@ -25,6 +25,14 @@ impl TimeRay3 {
         Ray3::new(self.origin(), self.direction())
     }
 
+    pub fn origin(&self) -> Point3 {
+        self.origin
+    }
+
+    pub fn direction(&self) -> Vec3 {
+        self.direction
+    }
+
     pub fn time(self) -> f64 {
         self.time
     }

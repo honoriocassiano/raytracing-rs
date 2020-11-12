@@ -2,6 +2,7 @@ use rand::prelude::*;
 
 use super::constants::PI;
 use crate::core::geometry::{Vec3, Vector};
+use rand::distributions::uniform::SampleUniform;
 
 pub fn rand() -> f64 {
     let mut rng = rand::thread_rng();
@@ -9,7 +10,7 @@ pub fn rand() -> f64 {
     rng.gen_range(0.0, 1.0)
 }
 
-pub fn rand_between(min: f64, max: f64) -> f64 {
+pub fn rand_between<T: SampleUniform>(min: T, max: T) -> T {
     let mut rng = rand::thread_rng();
 
     rng.gen_range(min, max)
@@ -18,7 +19,7 @@ pub fn rand_between(min: f64, max: f64) -> f64 {
 pub fn rand_unit_vector() -> Vec3 {
     let azimuth = rand_between(0.0, 2.0 * PI);
     let z = rand_between(-1.0, 1.0);
-    let radius = (1.0 - z * z).sqrt();
+    let radius = ((1.0 as f64) - z * z).sqrt();
 
     Vec3(radius * azimuth.cos(), radius * azimuth.sin(), z)
 }
