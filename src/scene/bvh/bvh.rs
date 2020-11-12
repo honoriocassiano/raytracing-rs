@@ -11,6 +11,7 @@ pub struct BVH {
     bounding_box: AABB,
 }
 
+#[allow(dead_code)]
 impl BVH {
     pub fn from_objects(source_objects: &[Rc<(dyn Hit)>], interval: Interval) -> Self {
         let left: Rc<dyn Hit>;
@@ -102,11 +103,11 @@ impl Hit for BVH {
 #[cfg(test)]
 mod tests {
     use crate::core::color::Color;
-    use crate::core::geometry::{Point3, Vec3, Vector};
+    use crate::core::geometry::{Point3, Vec3};
     use crate::core::time::TimeRay3;
     use crate::materials::Lambertian;
     use crate::scene::object::sphere::Sphere;
-    use crate::scene::{Hit, HitList, MaterialHitRecord};
+    use crate::scene::{Hit, HitList};
     use std::rc::Rc;
 
     fn make_static_scene() -> HitList {
