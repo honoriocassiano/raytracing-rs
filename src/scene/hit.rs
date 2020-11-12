@@ -5,6 +5,7 @@ use super::hitrecord::BasicHitRecord;
 
 use crate::core::time::TimeRay3;
 use crate::scene::bvh::AABB;
+use std::cmp::Ordering;
 use std::rc::Rc;
 
 pub struct MaterialHitRecord {
@@ -60,6 +61,19 @@ pub trait Hit {
     fn hit(&self, ray: TimeRay3, t_min: f64, t_max: f64) -> Option<MaterialHitRecord>;
 
     fn bounding_box(&self, time0: f64, time1: f64) -> Option<AABB>;
+
+    fn box_compare(&self, other: &dyn Hit, axis: usize) -> Ordering {
+        let box_a = self.bounding_box(0.0, 0.0);
+        let box_b = other.bounding_box(0.0, 0.0);
+
+        if let (Some(a), Some(b)) = (box_a, box_b) {
+            if let Some(ord) = a.min()[axis].partial_cmp(&b.min()[axis]) {
+                return ord;
+            }
+        }
+
+        Ordering::Greater
+    }
 }
 
 // Hit list
