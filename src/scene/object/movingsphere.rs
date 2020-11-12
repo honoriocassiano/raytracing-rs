@@ -3,7 +3,7 @@ use crate::materials::Material;
 use crate::scene::{Hit, MaterialHitRecord};
 
 use crate::core::time::{Interval, TimeRay3, Timestamp};
-use crate::scene::bvh::AABB;
+use crate::scene::object::AABB;
 use std::rc::Rc;
 
 pub struct MovingSphere {

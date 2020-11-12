@@ -1,6 +1,6 @@
 use crate::core::math::rand::rand_between;
 use crate::core::time::{Interval, TimeRay3};
-use crate::scene::bvh::AABB;
+use crate::scene::object::AABB;
 use crate::scene::{Hit, MaterialHitRecord};
 use std::cmp::Ordering;
 use std::rc::Rc;
