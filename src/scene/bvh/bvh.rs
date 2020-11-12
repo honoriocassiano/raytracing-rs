@@ -52,10 +52,7 @@ impl BVH {
         let box_left: AABB;
         let box_right: AABB;
 
-        if let (Some(l), Some(r)) = (
-            left.bounding_box(interval),
-            right.bounding_box(interval),
-        ) {
+        if let (Some(l), Some(r)) = (left.bounding_box(interval), right.bounding_box(interval)) {
             box_left = l;
             box_right = r;
         } else {
