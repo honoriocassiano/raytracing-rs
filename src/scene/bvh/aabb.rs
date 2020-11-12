@@ -21,6 +21,7 @@ impl AABB {
     }
 
     // TODO Use Ray3 here?
+    #[allow(dead_code)]
     pub fn hit(&self, ray: &TimeRay3, t_min: f64, t_max: f64) -> bool {
         for i in 0..3 {
             let temp0 = (self.min[i] - ray.origin()[i]) / ray.direction()[1];
