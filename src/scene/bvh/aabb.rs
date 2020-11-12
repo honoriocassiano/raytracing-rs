@@ -36,4 +36,31 @@ impl AABB {
 
         true
     }
+
+    // TODO Apply DRY principle here
+    pub fn surrounding_box(&self, other: &Self) -> Self {
+        let small = {
+            let p0 = self.min();
+            let p1 = other.min();
+
+            let x = p0.x().min(p1.x());
+            let y = p0.y().min(p1.y());
+            let z = p0.z().min(p1.z());
+
+            Point3(x, y, z)
+        };
+
+        let big = {
+            let p0 = self.max();
+            let p1 = other.max();
+
+            let x = p0.x().max(p1.x());
+            let y = p0.y().max(p1.y());
+            let z = p0.z().max(p1.z());
+
+            Point3(x, y, z)
+        };
+
+        AABB::new(small, big)
+    }
 }
