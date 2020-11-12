@@ -114,7 +114,7 @@ mod tests {
         let material = Rc::new(Lambertian::new(Color(0.6, 0.6, 0.6)));
 
         let sphere1 = Sphere::new(Point3(0.0, 1.0, 0.0), 1.0, material.clone());
-        let sphere2 = Sphere::new(Point3(0.0, -1.0, 0.0), 1.0, material.clone());
+        let sphere2 = Sphere::new(Point3(0.0, -1.0, 0.0), 1.0, material);
 
         let mut list = HitList::new();
         list.add(Box::new(sphere1));
@@ -131,8 +131,6 @@ mod tests {
 
         let hit = scene.hit(ray, 0.0, 1.0);
 
-        if let None = hit {
-            panic!("Ray doesn't hit anything");
-        }
+        assert!(hit.is_some());
     }
 }
