@@ -89,7 +89,7 @@ impl Hit for BVH {
             return None;
         }
 
-        let hit_left = self.right.hit(ray, t_min, t_max);
+        let hit_left = self.left.hit(ray, t_min, t_max);
 
         match hit_left {
             None => self.right.hit(ray, t_min, t_max),
