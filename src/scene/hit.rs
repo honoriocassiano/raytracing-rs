@@ -3,7 +3,7 @@ use crate::materials::Material;
 
 use super::hitrecord::BasicHitRecord;
 
-use crate::core::time::TimeRay3;
+use crate::core::time::{TimeRay3, Interval};
 use crate::scene::bvh::AABB;
 use std::cmp::Ordering;
 use std::rc::Rc;
@@ -60,11 +60,11 @@ impl MaterialHitRecord {
 pub trait Hit {
     fn hit(&self, ray: TimeRay3, t_min: f64, t_max: f64) -> Option<MaterialHitRecord>;
 
-    fn bounding_box(&self, time0: f64, time1: f64) -> Option<AABB>;
+    fn bounding_box(&self, interval: Interval) -> Option<AABB>;
 
     fn box_compare(&self, other: &dyn Hit, axis: usize) -> Ordering {
-        let box_a = self.bounding_box(0.0, 0.0);
-        let box_b = other.bounding_box(0.0, 0.0);
+        let box_a = self.bounding_box(Interval::new(0.0, 0.0));
+        let box_b = other.bounding_box(Interval::new(0.0, 0.0));
 
         if let (Some(a), Some(b)) = (box_a, box_b) {
             if let Some(ord) = a.min()[axis].partial_cmp(&b.min()[axis]) {
@@ -121,11 +121,11 @@ impl Hit for HitList {
     }
 
     // TODO Simplify this
-    fn bounding_box(&self, time0: f64, time1: f64) -> Option<AABB> {
+    fn bounding_box(&self, interval: Interval) -> Option<AABB> {
         let mut bounding_box: Option<AABB> = None;
 
         for object in &self.objects {
-            match object.bounding_box(time0, time1) {
+            match object.bounding_box(interval) {
                 None => {
                     break;
                 }

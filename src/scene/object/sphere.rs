@@ -2,7 +2,7 @@ use crate::core::geometry::{Point3, Ray, Vector};
 use crate::materials::Material;
 use crate::scene::{Hit, MaterialHitRecord};
 
-use crate::core::time::TimeRay3;
+use crate::core::time::{TimeRay3, Interval};
 use crate::scene::bvh::AABB;
 use std::rc::Rc;
 
@@ -77,7 +77,7 @@ impl Hit for Sphere {
         None
     }
 
-    fn bounding_box(&self, _time0: f64, _time1: f64) -> Option<AABB> {
+    fn bounding_box(&self, _interval: Interval) -> Option<AABB> {
         let radius_vec = Point3(self.radius, self.radius, self.radius);
 
         Some(AABB::new(

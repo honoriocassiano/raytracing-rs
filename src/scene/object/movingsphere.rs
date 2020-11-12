@@ -87,17 +87,17 @@ impl Hit for MovingSphere {
         None
     }
 
-    fn bounding_box(&self, time0: f64, time1: f64) -> Option<AABB> {
+    fn bounding_box(&self, interval: Interval) -> Option<AABB> {
         let radius_vec = Vec3(self.radius, self.radius, self.radius);
 
         let box0 = AABB::new(
-            self.center(time0) - radius_vec,
-            self.center(time0) + radius_vec,
+            self.center(interval.start()) - radius_vec,
+            self.center(interval.start()) + radius_vec,
         );
 
         let box1 = AABB::new(
-            self.center(time1) - radius_vec,
-            self.center(time1) + radius_vec,
+            self.center(interval.end()) - radius_vec,
+            self.center(interval.end()) + radius_vec,
         );
 
         Some(box0.surrounding_box(&box1))

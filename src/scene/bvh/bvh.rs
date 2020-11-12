@@ -53,8 +53,8 @@ impl BVH {
         let box_right: AABB;
 
         if let (Some(l), Some(r)) = (
-            left.bounding_box(time0, time1),
-            right.bounding_box(time0, time1),
+            left.bounding_box(interval),
+            right.bounding_box(interval),
         ) {
             box_left = l;
             box_right = r;
@@ -97,7 +97,7 @@ impl Hit for BVH {
         }
     }
 
-    fn bounding_box(&self, time0: f64, time1: f64) -> Option<AABB> {
+    fn bounding_box(&self, _interval: Interval) -> Option<AABB> {
         Some(self.bounding_box)
     }
 }
