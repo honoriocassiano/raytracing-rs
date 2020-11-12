@@ -3,7 +3,7 @@ use crate::materials::Material;
 
 use super::hitrecord::BasicHitRecord;
 
-use crate::core::time::{TimeRay3, Interval};
+use crate::core::time::{Interval, TimeRay3};
 use crate::scene::bvh::AABB;
 use std::cmp::Ordering;
 use std::rc::Rc;

@@ -2,7 +2,7 @@ use crate::core::geometry::{Point3, Ray, Vector};
 use crate::materials::Material;
 use crate::scene::{Hit, MaterialHitRecord};
 
-use crate::core::time::{TimeRay3, Interval};
+use crate::core::time::{Interval, TimeRay3};
 use crate::scene::bvh::AABB;
 use std::rc::Rc;
 
