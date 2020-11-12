@@ -101,3 +101,40 @@ impl Hit for BVH {
         Some(self.bounding_box)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::core::color::Color;
+    use crate::core::geometry::{Point3, Vec3, Vector};
+    use crate::core::time::TimeRay3;
+    use crate::materials::Lambertian;
+    use crate::scene::object::sphere::Sphere;
+    use crate::scene::{Hit, HitList, MaterialHitRecord};
+    use std::rc::Rc;
+
+    fn make_static_scene() -> HitList {
+        let material = Rc::new(Lambertian::new(Color(0.6, 0.6, 0.6)));
+
+        let sphere1 = Sphere::new(Point3(0.0, 1.0, 0.0), 1.0, material.clone());
+        let sphere2 = Sphere::new(Point3(0.0, -1.0, 0.0), 1.0, material.clone());
+
+        let mut list = HitList::new();
+        list.add(Box::new(sphere1));
+        list.add(Box::new(sphere2));
+
+        list
+    }
+
+    #[test]
+    fn must_hit_something() {
+        let scene = make_static_scene();
+
+        let ray = TimeRay3::new(Point3(-2.0, 0.1, 0.0), Vec3(5.0, 0.0, 0.0), 0.0);
+
+        let hit = scene.hit(ray, 0.0, 1.0);
+
+        if let None = hit {
+            panic!("Ray doesn't hit anything");
+        }
+    }
+}
