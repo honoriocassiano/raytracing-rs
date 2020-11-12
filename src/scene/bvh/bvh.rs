@@ -1,5 +1,5 @@
 use crate::core::math::rand::rand_between;
-use crate::core::time::TimeRay3;
+use crate::core::time::{Interval, TimeRay3};
 use crate::scene::bvh::AABB;
 use crate::scene::{Hit, MaterialHitRecord};
 use std::cmp::Ordering;
@@ -12,7 +12,7 @@ pub struct BVH {
 }
 
 impl BVH {
-    pub fn from_objects(source_objects: &[Rc<(dyn Hit)>], time0: f64, time1: f64) -> Self {
+    pub fn from_objects(source_objects: &[Rc<(dyn Hit)>], interval: Interval) -> Self {
         let left: Rc<dyn Hit>;
         let right: Rc<dyn Hit>;
 
@@ -44,8 +44,8 @@ impl BVH {
 
                 let mid = vec.len() / 2;
 
-                left = Rc::new(BVH::from_objects(&vec[..mid], time0, time1));
-                right = Rc::new(BVH::from_objects(&vec[mid..], time0, time1));
+                left = Rc::new(BVH::from_objects(&vec[..mid], interval));
+                right = Rc::new(BVH::from_objects(&vec[mid..], interval));
             }
         }
 
