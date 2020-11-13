@@ -4,6 +4,7 @@ use std::rc::Rc;
 mod core;
 mod materials;
 mod scene;
+mod textures;
 
 use self::core::math::constants::INFINITY;
 use crate::core::color::write_color;
