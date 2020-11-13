@@ -45,6 +45,10 @@ impl BasicHitRecord {
         self.t
     }
 
+    pub fn texture_coordinate(&self) -> Vec2 {
+        self.texture_coord
+    }
+
     pub fn front_face(&self) -> bool {
         self.front_face
     }
