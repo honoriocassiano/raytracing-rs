@@ -1,8 +1,8 @@
 mod ray;
 mod ray3;
+mod vec2;
 mod vec3;
 mod vector;
-mod vec2;
 
 pub use ray::*;
 pub use ray3::*;
