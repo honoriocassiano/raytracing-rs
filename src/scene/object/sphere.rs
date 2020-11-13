@@ -1,4 +1,4 @@
-use crate::core::geometry::{Point2, Point3, Ray, Vec2, Vector};
+use crate::core::geometry::{Point2, Point3, Ray, Vector};
 use crate::materials::Material;
 use crate::scene::{Hit, MaterialHitRecord};
 
@@ -65,12 +65,14 @@ impl Hit for Sphere {
                     let point = ray.at(val);
 
                     let outward_normal = (point - self.center) / self.radius;
+                    let text_coord = Sphere::get_uv(outward_normal);
 
                     return Some(MaterialHitRecord::new(
                         point,
                         t,
                         // FIXME Use TimeRay3 here
                         ray.to_ray(),
+                        text_coord,
                         outward_normal,
                         self.material.clone(),
                     ));

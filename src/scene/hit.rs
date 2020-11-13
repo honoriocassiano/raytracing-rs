@@ -1,4 +1,4 @@
-use crate::core::geometry::{Point3, Ray3, Vec3};
+use crate::core::geometry::{Point3, Ray3, Vec2, Vec3};
 use crate::materials::Material;
 
 use super::hitrecord::BasicHitRecord;
@@ -19,11 +19,12 @@ impl MaterialHitRecord {
         point: Point3,
         t: f64,
         ray: Ray3,
+        text_coord: Vec2,
         outward_normal: Vec3,
         material: Rc<dyn Material>,
     ) -> Self {
         Self {
-            hit: BasicHitRecord::new(point, t, ray, outward_normal),
+            hit: BasicHitRecord::new(point, t, text_coord, ray, outward_normal),
             material,
         }
     }

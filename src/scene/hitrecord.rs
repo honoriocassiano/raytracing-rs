@@ -1,15 +1,22 @@
-use crate::core::geometry::{Point3, Ray, Ray3, Vec3, Vector};
+use crate::core::geometry::{Point3, Ray, Ray3, Vec2, Vec3, Vector};
 
 #[derive(Copy, Clone)]
 pub struct BasicHitRecord {
     point: Point3,
     normal: Vec3,
     t: f64,
+    texture_coord: Vec2,
     front_face: bool,
 }
 
 impl BasicHitRecord {
-    pub fn new(point: Point3, t: f64, ray: Ray3, outward_normal: Vec3) -> Self {
+    pub fn new(
+        point: Point3,
+        t: f64,
+        texture_coord: Vec2,
+        ray: Ray3,
+        outward_normal: Vec3,
+    ) -> Self {
         let front_face = ray.direction().dot(outward_normal) < 0.0;
         let normal = if front_face {
             outward_normal
@@ -22,6 +29,7 @@ impl BasicHitRecord {
             normal,
             front_face,
             t,
+            texture_coord,
         }
     }
 
