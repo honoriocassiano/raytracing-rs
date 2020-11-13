@@ -45,7 +45,7 @@ fn ray_color(ray: TimeRay3, world: &HitList, depth: i32) -> Color {
 fn generate_random_scene() -> HitList {
     let mut world = HitList::new();
 
-    let ground_material = Rc::new(Lambertian::new(Color(0.5, 0.5, 0.5)));
+    let ground_material = Rc::new(Lambertian::from_color(Color(0.5, 0.5, 0.5)));
 
     world.add(Box::new(Sphere::new(
         Point3(0.0, -1000.0, 0.0),
@@ -72,7 +72,7 @@ fn generate_random_scene() -> HitList {
                     // Diffuse
                     let albedo = Color::rand() * Color::rand();
 
-                    sphere_material = Rc::new(Lambertian::new(albedo));
+                    sphere_material = Rc::new(Lambertian::from_color(albedo));
 
                     let center2 = center + Vec3(0.0, rand_between(0.0, 0.5), 0.0);
                     object = Box::new(MovingSphere::new(
@@ -103,7 +103,7 @@ fn generate_random_scene() -> HitList {
     }
 
     let material1 = Rc::new(Dielectric::new(1.5));
-    let material2 = Rc::new(Lambertian::new(Color(0.4, 0.4, 0.1)));
+    let material2 = Rc::new(Lambertian::from_color(Color(0.4, 0.4, 0.1)));
     let material3 = Rc::new(Metal::new(Color(0.7, 0.6, 0.5), 0.0));
 
     world.add(Box::new(Sphere::new(Point3(0.0, 1.0, 0.0), 1.0, material1)));

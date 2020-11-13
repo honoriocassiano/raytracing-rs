@@ -111,7 +111,7 @@ mod tests {
     use std::rc::Rc;
 
     fn make_static_scene() -> HitList {
-        let material = Rc::new(Lambertian::new(Color(0.6, 0.6, 0.6)));
+        let material = Rc::new(Lambertian::from_color(Color(0.6, 0.6, 0.6)));
 
         let sphere1 = Sphere::new(Point3(0.0, 1.0, 0.0), 1.0, material.clone());
         let sphere2 = Sphere::new(Point3(0.0, -1.0, 0.0), 1.0, material);
