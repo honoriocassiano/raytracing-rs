@@ -1,6 +1,6 @@
 use crate::core::color::Color;
-use crate::core::geometry::Point3;
+use crate::core::geometry::{Point3, Vec2};
 
 pub trait Texture {
-    fn value(&self, u: f64, v: f64, point: Point3) -> Color;
+    fn value(&self, coord: Vec2, point: Point3) -> Color;
 }

@@ -1,5 +1,5 @@
 use crate::core::color::Color;
-use crate::core::geometry::Vec3;
+use crate::core::geometry::{Vec2, Vec3};
 use crate::textures::Texture;
 
 pub struct SolidColor {
@@ -13,7 +13,7 @@ impl SolidColor {
 }
 
 impl Texture for SolidColor {
-    fn value(&self, _u: f64, _v: f64, _point: Vec3) -> Color {
+    fn value(&self, _coord: Vec2, _point: Vec3) -> Color {
         self.color
     }
 }
