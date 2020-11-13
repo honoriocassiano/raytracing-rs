@@ -1,7 +1,8 @@
-use crate::core::geometry::{Point3, Ray, Vector};
+use crate::core::geometry::{Point2, Point3, Ray, Vec2, Vector};
 use crate::materials::Material;
 use crate::scene::{Hit, MaterialHitRecord};
 
+use crate::core::math::constants::PI;
 use crate::core::time::{Interval, TimeRay3};
 use crate::scene::object::AABB;
 use std::rc::Rc;
@@ -20,6 +21,16 @@ impl Sphere {
             radius,
             material,
         }
+    }
+
+    pub fn get_uv(point: Point3) -> Point2 {
+        let theta = (-point.y()).acos();
+        let phi = (-point.z()).atan2(point.x()) + PI;
+
+        let x = phi / (2.0 * PI);
+        let y = theta / PI;
+
+        Point2(x, y)
     }
 
     pub fn center(&self) -> Point3 {
