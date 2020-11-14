@@ -1,4 +1,5 @@
 mod checker;
+mod perlin;
 mod solidcolor;
 mod texture;
 
