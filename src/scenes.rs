@@ -87,3 +87,16 @@ pub fn generate_random_scene() -> HitList {
     world.add(Box::new(Sphere::new(Point3(4.0, 1.0, 0.0), 1.0, material3)));
     world
 }
+
+pub fn generate_scene_two_spheres() -> HitList {
+    let checker_texture = Rc::new(Checker::from_color(Color(0.2, 0.3, 0.1), Color(0.9, 0.9, 0.9)));
+
+    let mut hitlist = HitList::new();
+    let lambertian =Rc::new(Lambertian::new(checker_texture.clone()));
+
+    hitlist.add(Box::new(Sphere::new(Point3(0.0, -10.0, 0.0), 1.0, lambertian.clone())));
+    hitlist.add(Box::new(Sphere::new(Point3(0.0, 10.0, 0.0), 1.0, lambertian)));
+
+    hitlist
+
+}
