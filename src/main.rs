@@ -16,6 +16,7 @@ use crate::materials::{Dielectric, Lambertian, Material, Metal};
 use crate::scene::camera::Options;
 use crate::scene::object::movingsphere::MovingSphere;
 use crate::scene::{Hit, HitList};
+use crate::textures::Checker;
 use scene::camera::Camera;
 use scene::object::sphere::Sphere;
 
@@ -45,7 +46,10 @@ fn ray_color(ray: TimeRay3, world: &HitList, depth: i32) -> Color {
 fn generate_random_scene() -> HitList {
     let mut world = HitList::new();
 
-    let ground_material = Rc::new(Lambertian::from_color(Color(0.5, 0.5, 0.5)));
+    let ground_material = Rc::new(Lambertian::new(Rc::new(Checker::from_color(
+        Color(0.2, 0.3, 0.1),
+        Color(0.9, 0.9, 0.9),
+    ))));
 
     world.add(Box::new(Sphere::new(
         Point3(0.0, -1000.0, 0.0),
