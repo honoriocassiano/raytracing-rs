@@ -9,7 +9,7 @@ pub struct Checker {
 }
 
 impl Checker {
-	#[allow(dead_code)]
+    #[allow(dead_code)]
     pub fn new(odd: Rc<dyn Texture>, even: Rc<dyn Texture>) -> Self {
         Self { odd, even }
     }
