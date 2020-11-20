@@ -15,8 +15,8 @@ pub struct Sphere {
 
 #[allow(dead_code)]
 impl Sphere {
-    pub fn new(center: Point3, radius: f64, material: Rc<dyn Material>) -> Sphere {
-        Sphere {
+    pub fn new(center: Point3, radius: f64, material: Rc<dyn Material>) -> Self {
+        Self {
             center,
             radius,
             material,
@@ -33,11 +33,11 @@ impl Sphere {
         Point2(x, y)
     }
 
-    pub fn center(&self) -> Point3 {
+    pub const fn center(&self) -> Point3 {
         self.center
     }
 
-    pub fn radius(&self) -> f64 {
+    pub const fn radius(&self) -> f64 {
         self.radius
     }
 
@@ -65,7 +65,7 @@ impl Hit for Sphere {
                     let point = ray.at(val);
 
                     let outward_normal = (point - self.center) / self.radius;
-                    let text_coord = Sphere::get_uv(outward_normal);
+                    let text_coord = Self::get_uv(outward_normal);
 
                     return Some(MaterialHitRecord::new(
                         point,

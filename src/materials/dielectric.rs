@@ -15,12 +15,12 @@ pub struct Dielectric {
 }
 
 impl Dielectric {
-    pub fn new(refractive_index: f64) -> Self {
+    pub const fn new(refractive_index: f64) -> Self {
         Self { refractive_index }
     }
 
     #[allow(dead_code)]
-    pub fn refractive_index(&self) -> f64 {
+    pub const fn refractive_index(&self) -> f64 {
         self.refractive_index
     }
 

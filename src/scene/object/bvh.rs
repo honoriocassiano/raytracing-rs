@@ -45,8 +45,8 @@ impl BVH {
 
                 let mid = vec.len() / 2;
 
-                left = Rc::new(BVH::from_objects(&vec[..mid], interval));
-                right = Rc::new(BVH::from_objects(&vec[mid..], interval));
+                left = Rc::new(Self::from_objects(&vec[..mid], interval));
+                right = Rc::new(Self::from_objects(&vec[mid..], interval));
             }
         }
 
@@ -76,7 +76,7 @@ impl BVH {
         &self.right
     }
 
-    pub fn bounding_box(&self) -> &AABB {
+    pub const fn bounding_box(&self) -> &AABB {
         &self.bounding_box
     }
 }

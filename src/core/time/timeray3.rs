@@ -9,31 +9,31 @@ pub struct TimeRay3 {
 
 #[allow(dead_code)]
 impl TimeRay3 {
-    pub fn new(origin: Point3, direction: Vec3, time: f64) -> TimeRay3 {
-        TimeRay3 {
+    pub const fn new(origin: Point3, direction: Vec3, time: f64) -> Self {
+        Self {
             origin,
             direction,
             time,
         }
     }
 
-    pub fn from_ray(ray: Ray3) -> TimeRay3 {
-        TimeRay3::new(ray.origin(), ray.direction(), 0.0)
+    pub fn from_ray(ray: Ray3) -> Self {
+        Self::new(ray.origin(), ray.direction(), 0.0)
     }
 
     pub fn to_ray(self) -> Ray3 {
         Ray3::new(self.origin(), self.direction())
     }
 
-    pub fn origin(&self) -> Point3 {
+    pub const fn origin(&self) -> Point3 {
         self.origin
     }
 
-    pub fn direction(&self) -> Vec3 {
+    pub const fn direction(&self) -> Vec3 {
         self.direction
     }
 
-    pub fn time(self) -> f64 {
+    pub const fn time(self) -> f64 {
         self.time
     }
 }

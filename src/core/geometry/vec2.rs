@@ -19,11 +19,11 @@ impl Vec2 {
         Self(rand_between(min, max), rand_between(min, max))
     }
 
-    pub fn x(&self) -> Scalar {
+    pub const fn x(&self) -> Scalar {
         self.0
     }
 
-    pub fn y(&self) -> Scalar {
+    pub const fn y(&self) -> Scalar {
         self.1
     }
 }
@@ -40,7 +40,7 @@ impl Vector for Vec2 {
     }
 
     fn sq_length(&self) -> Self::Scalar {
-        (self.0 * self.0) + (self.1 * self.1)
+        self.0.mul_add(self.0, self.1 * self.1)
     }
 
     fn normalize(&mut self) -> &mut Self {
@@ -57,7 +57,7 @@ impl Vector for Vec2 {
     }
 
     fn dot(&self, v: Self) -> Self::Scalar {
-        (self.0 * v.0) + (self.1 * v.1)
+        self.0.mul_add(v.0, self.1 * v.1)
     }
 
     fn cross(&self, v: Self) -> Self {
@@ -74,7 +74,7 @@ impl Reflect for Vec2 {
 impl Refract for Vec2 {
     type Scalar = Scalar;
 
-    fn refract(&self, normal: Self, eta_in_over_eta_out: Self::Scalar) -> Vec2 {
+    fn refract(&self, normal: Self, eta_in_over_eta_out: Self::Scalar) -> Self {
         let cos_theta: f64 = (-(*self)).dot(normal);
 
         let vec_out_perp: Self = eta_in_over_eta_out * ((*self) + cos_theta * normal);
