@@ -8,8 +8,8 @@ pub struct AABB {
 }
 
 impl AABB {
-    pub fn new(min: Point3, max: Point3) -> AABB {
-        AABB { min, max }
+    pub fn new(min: Point3, max: Point3) -> Self {
+        Self { min, max }
     }
 
     pub fn min(&self) -> Point3 {
@@ -62,6 +62,6 @@ impl AABB {
             Point3(x, y, z)
         };
 
-        AABB::new(small, big)
+        Self::new(small, big)
     }
 }

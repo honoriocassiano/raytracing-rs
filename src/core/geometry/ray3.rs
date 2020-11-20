@@ -7,8 +7,8 @@ pub struct Ray3 {
 }
 
 impl Ray3 {
-    pub fn new(origin: Point3, direction: Vec3) -> Ray3 {
-        Ray3 { origin, direction }
+    pub fn new(origin: Point3, direction: Vec3) -> Self {
+        Self { origin, direction }
     }
 }
 

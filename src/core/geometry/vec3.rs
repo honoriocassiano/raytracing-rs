@@ -86,7 +86,7 @@ impl Reflect for Vec3 {
 impl Refract for Vec3 {
     type Scalar = Scalar;
 
-    fn refract(&self, normal: Self, eta_in_over_eta_out: Self::Scalar) -> Vec3 {
+    fn refract(&self, normal: Self, eta_in_over_eta_out: Self::Scalar) -> Self {
         let cos_theta: f64 = (-(*self)).dot(normal);
 
         let vec_out_perp: Self = eta_in_over_eta_out * ((*self) + cos_theta * normal);

@@ -7,8 +7,8 @@ pub struct Interval {
 }
 
 impl Interval {
-    pub fn new(start: Timestamp, end: Timestamp) -> Interval {
-        Interval { start, end }
+    pub fn new(start: Timestamp, end: Timestamp) -> Self {
+        Self { start, end }
     }
 
     pub fn start(&self) -> Timestamp {

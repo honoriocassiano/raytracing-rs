@@ -74,7 +74,7 @@ impl Reflect for Vec2 {
 impl Refract for Vec2 {
     type Scalar = Scalar;
 
-    fn refract(&self, normal: Self, eta_in_over_eta_out: Self::Scalar) -> Vec2 {
+    fn refract(&self, normal: Self, eta_in_over_eta_out: Self::Scalar) -> Self {
         let cos_theta: f64 = (-(*self)).dot(normal);
 
         let vec_out_perp: Self = eta_in_over_eta_out * ((*self) + cos_theta * normal);

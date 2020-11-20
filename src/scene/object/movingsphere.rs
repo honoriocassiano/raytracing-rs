@@ -22,8 +22,8 @@ impl MovingSphere {
         time_interval: Interval,
         radius: f64,
         material: Rc<dyn Material>,
-    ) -> MovingSphere {
-        MovingSphere {
+    ) -> Self {
+        Self {
             start_center,
             end_center,
             time_interval,
