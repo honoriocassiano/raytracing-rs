@@ -88,6 +88,7 @@ pub fn generate_random_scene() -> HitList {
     world
 }
 
+#[allow(dead_code)]
 pub fn generate_scene_two_spheres() -> HitList {
     let checker_texture = Rc::new(Checker::from_color(
         Color(0.2, 0.3, 0.1),
@@ -95,7 +96,7 @@ pub fn generate_scene_two_spheres() -> HitList {
     ));
 
     let mut hitlist = HitList::new();
-    let lambertian = Rc::new(Lambertian::new(checker_texture.clone()));
+    let lambertian = Rc::new(Lambertian::new(checker_texture));
 
     hitlist.add(Box::new(Sphere::new(
         Point3(0.0, -10.0, 0.0),
