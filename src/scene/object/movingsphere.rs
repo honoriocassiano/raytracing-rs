@@ -32,7 +32,7 @@ impl MovingSphere {
         }
     }
 
-    pub fn radius(&self) -> f64 {
+    pub const fn radius(&self) -> f64 {
         self.radius
     }
 

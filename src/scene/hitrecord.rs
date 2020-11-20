@@ -33,23 +33,23 @@ impl BasicHitRecord {
         }
     }
 
-    pub fn point(&self) -> Point3 {
+    pub const fn point(&self) -> Point3 {
         self.point
     }
 
-    pub fn normal(&self) -> Vec3 {
+    pub const fn normal(&self) -> Vec3 {
         self.normal
     }
 
-    pub fn t(&self) -> f64 {
+    pub const fn t(&self) -> f64 {
         self.t
     }
 
-    pub fn texture_coordinate(&self) -> Vec2 {
+    pub const fn texture_coordinate(&self) -> Vec2 {
         self.texture_coord
     }
 
-    pub fn front_face(&self) -> bool {
+    pub const fn front_face(&self) -> bool {
         self.front_face
     }
 }

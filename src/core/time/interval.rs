@@ -7,15 +7,15 @@ pub struct Interval {
 }
 
 impl Interval {
-    pub fn new(start: Timestamp, end: Timestamp) -> Self {
+    pub const fn new(start: Timestamp, end: Timestamp) -> Self {
         Self { start, end }
     }
 
-    pub fn start(&self) -> Timestamp {
+    pub const fn start(&self) -> Timestamp {
         self.start
     }
 
-    pub fn end(&self) -> Timestamp {
+    pub const fn end(&self) -> Timestamp {
         self.end
     }
 }

@@ -8,15 +8,15 @@ pub struct AABB {
 }
 
 impl AABB {
-    pub fn new(min: Point3, max: Point3) -> Self {
+    pub const fn new(min: Point3, max: Point3) -> Self {
         Self { min, max }
     }
 
-    pub fn min(&self) -> Point3 {
+    pub const fn min(&self) -> Point3 {
         self.min
     }
 
-    pub fn max(&self) -> Point3 {
+    pub const fn max(&self) -> Point3 {
         self.max
     }
 

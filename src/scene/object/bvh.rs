@@ -76,7 +76,7 @@ impl BVH {
         &self.right
     }
 
-    pub fn bounding_box(&self) -> &AABB {
+    pub const fn bounding_box(&self) -> &AABB {
         &self.bounding_box
     }
 }

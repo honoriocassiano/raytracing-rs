@@ -33,23 +33,23 @@ impl MaterialHitRecord {
         Self { hit, material }
     }
 
-    pub fn hit(&self) -> BasicHitRecord {
+    pub const fn hit(&self) -> BasicHitRecord {
         self.hit
     }
 
-    pub fn point(&self) -> Point3 {
+    pub const fn point(&self) -> Point3 {
         self.hit.point()
     }
 
-    pub fn normal(&self) -> Vec3 {
+    pub const fn normal(&self) -> Vec3 {
         self.hit.normal()
     }
 
-    pub fn t(&self) -> f64 {
+    pub const fn t(&self) -> f64 {
         self.hit.t()
     }
 
-    pub fn front_face(&self) -> bool {
+    pub const fn front_face(&self) -> bool {
         self.hit.front_face()
     }
 

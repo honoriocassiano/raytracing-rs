@@ -19,11 +19,11 @@ impl Vec2 {
         Self(rand_between(min, max), rand_between(min, max))
     }
 
-    pub fn x(&self) -> Scalar {
+    pub const fn x(&self) -> Scalar {
         self.0
     }
 
-    pub fn y(&self) -> Scalar {
+    pub const fn y(&self) -> Scalar {
         self.1
     }
 }

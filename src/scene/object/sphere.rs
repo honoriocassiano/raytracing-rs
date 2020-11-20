@@ -33,11 +33,11 @@ impl Sphere {
         Point2(x, y)
     }
 
-    pub fn center(&self) -> Point3 {
+    pub const fn center(&self) -> Point3 {
         self.center
     }
 
-    pub fn radius(&self) -> f64 {
+    pub const fn radius(&self) -> f64 {
         self.radius
     }
 

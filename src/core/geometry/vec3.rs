@@ -23,15 +23,15 @@ impl Vec3 {
         )
     }
 
-    pub fn x(&self) -> Scalar {
+    pub const fn x(&self) -> Scalar {
         self.0
     }
 
-    pub fn y(&self) -> Scalar {
+    pub const fn y(&self) -> Scalar {
         self.1
     }
 
-    pub fn z(&self) -> Scalar {
+    pub const fn z(&self) -> Scalar {
         self.2
     }
 }

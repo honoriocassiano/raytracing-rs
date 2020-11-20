@@ -22,11 +22,11 @@ impl Metal {
         }
     }
 
-    pub fn albedo(&self) -> Color {
+    pub const fn albedo(&self) -> Color {
         self.albedo
     }
 
-    pub fn fuzz(&self) -> f64 {
+    pub const fn fuzz(&self) -> f64 {
         self.fuzz
     }
 }

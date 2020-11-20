@@ -9,7 +9,7 @@ pub struct TimeRay3 {
 
 #[allow(dead_code)]
 impl TimeRay3 {
-    pub fn new(origin: Point3, direction: Vec3, time: f64) -> Self {
+    pub const fn new(origin: Point3, direction: Vec3, time: f64) -> Self {
         Self {
             origin,
             direction,
@@ -25,15 +25,15 @@ impl TimeRay3 {
         Ray3::new(self.origin(), self.direction())
     }
 
-    pub fn origin(&self) -> Point3 {
+    pub const fn origin(&self) -> Point3 {
         self.origin
     }
 
-    pub fn direction(&self) -> Vec3 {
+    pub const fn direction(&self) -> Vec3 {
         self.direction
     }
 
-    pub fn time(self) -> f64 {
+    pub const fn time(self) -> f64 {
         self.time
     }
 }
