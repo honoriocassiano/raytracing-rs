@@ -1,4 +1,4 @@
-use crate::core::geometry::{Point3, Ray, Vec3, Vector};
+use crate::core::geometry::{Point3, Ray, Vec2, Vec3, Vector};
 use crate::materials::Material;
 use crate::scene::{Hit, MaterialHitRecord};
 
@@ -70,6 +70,8 @@ impl Hit for MovingSphere {
                         t,
                         // FIXME Use TimeRay3 here
                         ray.to_ray(),
+                        // FIXME Use a real value here
+                        Vec2::zero(),
                         outward_normal,
                         self.material.clone(),
                     ));
