@@ -315,7 +315,7 @@ mod tests {
     }
 
     #[test]
-    #[should_panic(expected = "Index 3 is not in Vec2")]
+    #[should_panic(expected = "Index 2 is not in Vec2")]
     #[allow(clippy::no_effect)]
     fn must_panic_on_invalid_index() {
         let vec = Vec2::zero();
