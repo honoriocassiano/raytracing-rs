@@ -48,7 +48,8 @@ impl Vector for Vec3 {
     }
 
     fn sq_length(&self) -> Self::Scalar {
-        self.2.mul_add(self.2, self.0.mul_add(self.0, self.1 * self.1))
+        self.2
+            .mul_add(self.2, self.0.mul_add(self.0, self.1 * self.1))
     }
 
     fn normalize(&mut self) -> &mut Self {
@@ -65,7 +66,7 @@ impl Vector for Vec3 {
     }
 
     fn dot(&self, v: Self) -> Self::Scalar {
-        self.2.mul_add(v.2, self.0.mul_add( v.0, self.1 * v.1))
+        self.2.mul_add(v.2, self.0.mul_add(v.0, self.1 * v.1))
     }
 
     fn cross(&self, v: Self) -> Self {

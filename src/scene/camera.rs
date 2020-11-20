@@ -1,5 +1,4 @@
 use crate::core::geometry::{Point3, Vec3, Vector};
-use crate::core::math::geometry::degrees_to_radians;
 use crate::core::math::rand::{rand_between, rand_in_unit_disk};
 use crate::core::time::{Interval, TimeRay3};
 
@@ -35,7 +34,7 @@ impl Camera {
         options: Options,
         time_interval: Interval,
     ) -> Self {
-        let theta: f64 = degrees_to_radians(options.vertical_fov);
+        let theta: f64 = options.vertical_fov.to_radians();
         let h: f64 = (theta / 2.0).tan();
 
         let viewport_height: f64 = 2.0 * h;
