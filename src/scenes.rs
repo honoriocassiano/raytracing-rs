@@ -28,9 +28,9 @@ pub fn generate_random_scene() -> HitList {
             let choose_material = rand();
 
             let center = Point3(
-                (a as f64) + (0.9 * rand()),
+                0.9f64.mul_add(rand(), a as f64),
                 0.2,
-                (b as f64) + (0.9 * rand()),
+                0.9f64.mul_add(rand(), b as f64),
             );
 
             let object: Box<dyn Hit>;
