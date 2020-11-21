@@ -30,9 +30,10 @@ pub fn rand_in_hemisphere(normal: Vec3) -> Vec3 {
 
     let same_hemispherial = unit_in_shpere.dot(normal) > 0.0;
 
-    match same_hemispherial {
-        true => unit_in_shpere,
-        false => -unit_in_shpere,
+    if same_hemispherial {
+        unit_in_shpere
+    } else {
+        -unit_in_shpere
     }
 }
 
