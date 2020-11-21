@@ -128,7 +128,7 @@ impl Hit for HitList {
         for object in &self.objects {
             match object.bounding_box(interval) {
                 None => {
-                    break;
+                    return None;
                 }
 
                 Some(current_box) => {
