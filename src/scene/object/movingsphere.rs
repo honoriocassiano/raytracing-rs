@@ -58,14 +58,14 @@ impl Hit for MovingSphere {
         if discriminant > 0.0 {
             let root: f64 = discriminant.sqrt();
 
-            let check_hit = |val: f64| -> Option<MaterialHitRecord> {
+            let check_hit = |val: f64| {
                 if (t_min < val) && (val < t_max) {
                     let t = val;
                     let point = ray.at(val);
 
                     let outward_normal = (point - self.center(ray.time())) / self.radius;
 
-                    return Some(MaterialHitRecord::new(
+                    Some(MaterialHitRecord::new(
                         point,
                         t,
                         // FIXME Use TimeRay3 here
@@ -74,19 +74,16 @@ impl Hit for MovingSphere {
                         Vec2::zero(),
                         outward_normal,
                         self.material.clone(),
-                    ));
+                    ))
+                } else {
+                    None
                 }
-
-                None
             };
 
-            return match check_hit((-half_b - root) / a) {
-                Some(val) => Some(val),
-                None => check_hit((-half_b + root) / a),
-            };
+            check_hit((-half_b - root) / a).or_else(|| check_hit((-half_b + root) / a))
+        } else {
+            None
         }
-
-        None
     }
 
     fn bounding_box(&self, interval: Interval) -> Option<AABB> {
