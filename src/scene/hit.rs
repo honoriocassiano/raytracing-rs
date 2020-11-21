@@ -123,19 +123,18 @@ impl Hit for HitList {
 
     // TODO Simplify this
     fn bounding_box(&self, interval: Interval) -> Option<AABB> {
-        let mut bounding_box: Option<AABB> = None;
+        let mut bounding_box: Option<AABB> = self.objects.first().map_or(None,
+            |obj| obj.bounding_box(interval)
+        );
 
-        for object in &self.objects {
+        for object in self.objects.iter().skip(1) {
             match object.bounding_box(interval) {
                 None => {
                     return None;
                 }
 
                 Some(current_box) => {
-                    bounding_box = match bounding_box {
-                        None => Some(current_box),
-                        Some(b) => Some(b.surrounding_box(&current_box)),
-                    }
+                    bounding_box = bounding_box.map(|b| b.surrounding_box(&current_box));
                 }
             }
         }
