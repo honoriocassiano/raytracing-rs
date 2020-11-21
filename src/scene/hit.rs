@@ -121,21 +121,21 @@ impl Hit for HitList {
         last_hit
     }
 
-    // TODO Simplify this
+    // TODO Remove these mutable variables
     fn bounding_box(&self, interval: Interval) -> Option<AABB> {
-        let mut bounding_box: Option<AABB> = self.objects.first().map_or(None,
-            |obj| obj.bounding_box(interval)
-        );
+        let mut iterator = self.objects.iter().map(|obj| obj.bounding_box(interval));
 
-        for object in self.objects.iter().skip(1) {
-            match object.bounding_box(interval) {
-                None => {
-                    return None;
-                }
+        let mut bounding_box = iterator.next().unwrap_or(None);
 
-                Some(current_box) => {
-                    bounding_box = bounding_box.map(|b| b.surrounding_box(&current_box));
-                }
+        for current_bbox in iterator {
+            let bbox = bounding_box
+                .zip(current_bbox)
+                .map(|(aabb, curr_aabb)| aabb.surrounding_box(&curr_aabb));
+
+            bounding_box = bbox;
+
+            if bounding_box.is_none() {
+                break;
             }
         }
 
