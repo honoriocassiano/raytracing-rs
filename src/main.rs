@@ -24,12 +24,13 @@ fn ray_color(ray: TimeRay3, world: &HitList, depth: i32) -> Color {
     }
 
     match world.hit(ray, 0.001, INFINITY) {
-        Some(material_hit) => match material_hit.material().scatter(ray, material_hit.hit()) {
-            Some(scatter_record) => {
-                scatter_record.attenuation * ray_color(scatter_record.ray, world, depth - 1)
-            }
-            None => Color(0.0, 0.0, 0.0),
-        },
+        Some(material_hit) => {
+            let scatter_record = material_hit.material().scatter(ray, material_hit.hit());
+
+            scatter_record.map_or(Color(0.0, 0.0, 0.0), |scr| {
+                scr.attenuation * ray_color(scr.ray, world, depth - 1)
+            })
+        }
         None => {
             let unit: Vec3 = ray.direction().normalized();
 
