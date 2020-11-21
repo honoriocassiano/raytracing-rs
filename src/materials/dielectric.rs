@@ -68,12 +68,9 @@ impl Material for Dielectric {
         let cos_theta = (-unit_direction).dot(hit.normal()).min(1.0);
         let sin_theta = (1.0 - cos_theta * cos_theta).sqrt();
 
-        let scatter_direction: Vec3 = {
-            match self.is_reflection(&unit_direction, &hit, cos_theta, sin_theta) {
-                Some(reflected) => reflected,
-                None => unit_direction.refract(hit.normal(), eta_in_over_eta_out),
-            }
-        };
+        let scatter_direction: Vec3 = self
+            .is_reflection(&unit_direction, &hit, cos_theta, sin_theta)
+            .unwrap_or_else(|| unit_direction.refract(hit.normal(), eta_in_over_eta_out));
 
         let scatter_record = ScatterRecord {
             ray: TimeRay3::new(hit.point(), scatter_direction, in_ray.time()),
