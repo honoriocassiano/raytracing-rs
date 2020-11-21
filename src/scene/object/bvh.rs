@@ -57,7 +57,6 @@ impl BVH {
             box_left = l;
             box_right = r;
         } else {
-            // TODO Print error here
             panic!("No bounding box in BVH constructor");
         }
 
