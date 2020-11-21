@@ -55,12 +55,10 @@ impl Dielectric {
 
 impl Material for Dielectric {
     fn scatter(&self, in_ray: TimeRay3, hit: BasicHitRecord) -> Option<ScatterRecord> {
-        let eta_in_over_eta_out = {
-            if hit.front_face() {
-                1.0 / self.refractive_index
-            } else {
-                self.refractive_index
-            }
+        let eta_in_over_eta_out = if hit.front_face() {
+            1.0 / self.refractive_index
+        } else {
+            self.refractive_index
         };
 
         let unit_direction = in_ray.direction().normalized();
