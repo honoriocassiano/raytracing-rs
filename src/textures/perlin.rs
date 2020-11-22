@@ -1,5 +1,7 @@
-use crate::core::geometry::Point3;
+use crate::core::color::Color;
+use crate::core::geometry::{Point3, Vec2, Vec3};
 use crate::core::math::rand::{rand, rand_between};
+use crate::textures::Texture;
 
 // TODO Set as parameter of Perlin?
 const POINTS: usize = 256;
@@ -54,5 +56,23 @@ impl Perlin {
         }
 
         copy
+    }
+}
+
+pub struct PerlinTexture {
+    noise: Perlin,
+}
+
+impl PerlinTexture {
+    pub fn new() -> Self {
+        Self {
+            noise: Perlin::new(),
+        }
+    }
+}
+
+impl Texture for PerlinTexture {
+    fn value(&self, _coord: Vec2, point: Vec3) -> Vec3 {
+        Color(1.0, 1.0, 1.0) * self.noise.noise(point)
     }
 }

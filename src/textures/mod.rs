@@ -1,7 +1,7 @@
 mod checker;
+mod perlin;
 mod solidcolor;
 mod texture;
-mod perlin;
 
 pub use checker::*;
 pub use solidcolor::*;
