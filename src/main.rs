@@ -1,4 +1,20 @@
 use std::io::stdout;
+use std::sync::Arc;
+
+use rayon::prelude::*;
+
+use scene::camera::Camera;
+
+use crate::core::color::Color;
+use crate::core::color::{write_color, write_line};
+use crate::core::geometry::{Point3, Ray, Vec3, Vector};
+use crate::core::math::rand::rand;
+use crate::core::time::{Interval, TimeRay3};
+use crate::scene::camera::Options;
+use crate::scene::{Hit, HitList};
+use crate::scenes::generate_random_scene;
+
+use self::core::math::constants::INFINITY;
 
 mod core;
 mod materials;
@@ -6,18 +22,7 @@ mod scene;
 mod scenes;
 mod textures;
 
-use self::core::math::constants::INFINITY;
-use crate::core::color::write_color;
-use crate::core::color::Color;
-use crate::core::geometry::{Point3, Ray, Vec3, Vector};
-use crate::core::math::rand::rand;
-use crate::core::time::{Interval, TimeRay3};
-use crate::scene::camera::Options;
-use crate::scene::{Hit, HitList};
-use crate::scenes::generate_random_scene;
-use scene::camera::Camera;
-
-fn ray_color(ray: TimeRay3, world: &HitList, depth: i32) -> Color {
+fn ray_color(ray: TimeRay3, world: Arc<HitList>, depth: i32) -> Color {
     // Stop recursion at ray bounce limit
     if depth <= 0 {
         return Color(0.0, 0.0, 0.0);
@@ -52,7 +57,7 @@ fn main() {
     // let samples_per_pixel: i32 = 100;
     let samples_per_pixel: i32 = 500;
 
-    let world = generate_random_scene();
+    let world = Arc::new(generate_random_scene());
 
     let position = Point3(13.0, 2.0, 3.0);
     let look_at = Point3(0.0, 0.0, 0.0);
@@ -75,20 +80,24 @@ fn main() {
     for line in (0..image_height).rev() {
         eprint!("\rScanlines remaining: {} ", line);
 
-        for column in 0..image_width {
-            let mut pixel_color = Color(0.0, 0.0, 0.0);
+        let colors: Vec<Color> = (0..image_width)
+            .into_par_iter()
+            .map(|column| {
+                (0..samples_per_pixel)
+                    .into_iter()
+                    .map(|_| {
+                        let u = (column as f64 + rand()) / (image_width - 1) as f64;
+                        let v = (line as f64 + rand()) / (image_height - 1) as f64;
 
-            for _sample in 0..samples_per_pixel {
-                let u = (column as f64 + rand()) / (image_width - 1) as f64;
-                let v = (line as f64 + rand()) / (image_height - 1) as f64;
+                        let ray = camera.ray(u, v);
 
-                let ray = camera.ray(u, v);
+                        ray_color(ray, world.clone(), max_depth)
+                    })
+                    .sum()
+            })
+            .collect();
 
-                pixel_color += ray_color(ray, &world, max_depth);
-            }
-
-            write_color(&mut stdout(), pixel_color, samples_per_pixel);
-        }
+        write_line(&mut stdout(), colors, samples_per_pixel);
     }
 
     eprintln!("\nDone.");

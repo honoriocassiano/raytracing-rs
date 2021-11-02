@@ -5,25 +5,25 @@ use crate::scene::BasicHitRecord;
 use super::material::{Material, ScatterRecord};
 use crate::core::time::TimeRay3;
 use crate::textures::{SolidColor, Texture};
-use std::rc::Rc;
+use std::sync::Arc;
 
 pub struct Lambertian {
-    albedo: Rc<dyn Texture>,
+    albedo: Arc<dyn Texture>,
 }
 
 #[allow(dead_code)]
 impl Lambertian {
-    pub fn new(color: Rc<dyn Texture>) -> Self {
+    pub fn new(color: Arc<dyn Texture>) -> Self {
         Self { albedo: color }
     }
 
     pub fn from_color(color: Color) -> Self {
-        let albedo = Rc::new(SolidColor::new(color));
+        let albedo = Arc::new(SolidColor::new(color));
 
         Self { albedo }
     }
 
-    pub fn albedo(&self) -> Rc<dyn Texture> {
+    pub fn albedo(&self) -> Arc<dyn Texture> {
         self.albedo.clone()
     }
 }

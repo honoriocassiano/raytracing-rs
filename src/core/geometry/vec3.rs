@@ -1,4 +1,5 @@
 use std::fmt;
+use std::iter::Sum;
 use std::ops;
 
 use super::vector::Vector;
@@ -212,6 +213,12 @@ impl ops::IndexMut<usize> for Vec3 {
 impl fmt::Display for Vec3 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "({}, {}, {})", self.0, self.1, self.2)
+    }
+}
+
+impl Sum for Vec3 {
+    fn sum<I: Iterator<Item = Self>>(iter: I) -> Self {
+        iter.fold(Vec3::zero(), |acc, v| acc + v)
     }
 }
 
