@@ -6,11 +6,11 @@ use super::hitrecord::BasicHitRecord;
 use crate::core::time::{Interval, TimeRay3};
 use crate::scene::object::AABB;
 use std::cmp::Ordering;
-use std::rc::Rc;
+use std::sync::Arc;
 
 pub struct MaterialHitRecord {
     hit: BasicHitRecord,
-    material: Rc<dyn Material>,
+    material: Arc<dyn Material>,
 }
 
 #[allow(dead_code)]
@@ -21,7 +21,7 @@ impl MaterialHitRecord {
         ray: Ray3,
         text_coord: Vec2,
         outward_normal: Vec3,
-        material: Rc<dyn Material>,
+        material: Arc<dyn Material>,
     ) -> Self {
         Self {
             hit: BasicHitRecord::new(point, t, text_coord, ray, outward_normal),
@@ -29,7 +29,7 @@ impl MaterialHitRecord {
         }
     }
 
-    pub fn from_hit(hit: BasicHitRecord, material: Rc<dyn Material>) -> Self {
+    pub fn from_hit(hit: BasicHitRecord, material: Arc<dyn Material>) -> Self {
         Self { hit, material }
     }
 
@@ -53,7 +53,7 @@ impl MaterialHitRecord {
         self.hit.front_face()
     }
 
-    pub fn material(&self) -> Rc<dyn Material> {
+    pub fn material(&self) -> Arc<dyn Material> {
         self.material.clone()
     }
 }
@@ -79,8 +79,11 @@ pub trait Hit {
 
 // Hit list
 pub struct HitList {
-    objects: Vec<Box<(dyn Hit)>>,
+    objects: Vec<Arc<(dyn Hit)>>,
 }
+
+unsafe impl Send for HitList {}
+unsafe impl Sync for HitList {}
 
 impl HitList {
     pub fn new() -> Self {
@@ -90,7 +93,7 @@ impl HitList {
     }
 
     #[allow(dead_code)]
-    pub fn with(object: Box<dyn Hit>) -> Self {
+    pub fn with(object: Arc<dyn Hit>) -> Self {
         Self {
             objects: vec![object],
         }
@@ -101,7 +104,7 @@ impl HitList {
         self.objects.clear();
     }
 
-    pub fn add(&mut self, object: Box<dyn Hit>) {
+    pub fn add(&mut self, object: Arc<dyn Hit>) {
         self.objects.push(object);
     }
 }

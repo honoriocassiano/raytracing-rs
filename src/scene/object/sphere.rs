@@ -5,17 +5,17 @@ use crate::scene::{Hit, MaterialHitRecord};
 use crate::core::math::constants::PI;
 use crate::core::time::{Interval, TimeRay3};
 use crate::scene::object::AABB;
-use std::rc::Rc;
+use std::sync::Arc;
 
 pub struct Sphere {
     center: Point3,
     radius: f64,
-    material: Rc<dyn Material>,
+    material: Arc<dyn Material>,
 }
 
 #[allow(dead_code)]
 impl Sphere {
-    pub fn new(center: Point3, radius: f64, material: Rc<dyn Material>) -> Self {
+    pub fn new(center: Point3, radius: f64, material: Arc<dyn Material>) -> Self {
         Self {
             center,
             radius,
@@ -41,7 +41,7 @@ impl Sphere {
         self.radius
     }
 
-    pub fn material(&self) -> Rc<dyn Material> {
+    pub fn material(&self) -> Arc<dyn Material> {
         self.material.clone()
     }
 }

@@ -19,4 +19,10 @@ pub fn write_color<T: Write>(out: &mut T, pixel_color: Color, samples_per_pixel:
         .unwrap();
 }
 
+pub fn write_line<T: Write>(out: &mut T, pixels: Vec<Color>, samples_per_pixel: i32) {
+    pixels.iter().for_each(|&color| {
+        write_color(out, color, samples_per_pixel);
+    })
+}
+
 pub use super::geometry::Vec3 as Color;

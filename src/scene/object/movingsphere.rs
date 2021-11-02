@@ -4,14 +4,14 @@ use crate::scene::{Hit, MaterialHitRecord};
 
 use crate::core::time::{Interval, TimeRay3, Timestamp};
 use crate::scene::object::AABB;
-use std::rc::Rc;
+use std::sync::Arc;
 
 pub struct MovingSphere {
     start_center: Point3,
     end_center: Point3,
     time_interval: Interval,
     radius: f64,
-    material: Rc<dyn Material>,
+    material: Arc<dyn Material>,
 }
 
 #[allow(dead_code)]
@@ -21,7 +21,7 @@ impl MovingSphere {
         end_center: Point3,
         time_interval: Interval,
         radius: f64,
-        material: Rc<dyn Material>,
+        material: Arc<dyn Material>,
     ) -> Self {
         Self {
             start_center,
