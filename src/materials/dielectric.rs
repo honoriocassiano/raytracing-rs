@@ -31,12 +31,10 @@ impl Dielectric {
         cos_theta: f64,
         sin_theta: f64,
     ) -> Option<Vec3> {
-        let eta_in_over_eta_out = {
-            if hit.front_face() {
-                1.0 / self.refractive_index
-            } else {
-                self.refractive_index
-            }
+        let eta_in_over_eta_out = if hit.front_face() {
+            1.0 / self.refractive_index
+        } else {
+            self.refractive_index
         };
 
         if (eta_in_over_eta_out * sin_theta) > 1.0 {
